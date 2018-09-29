@@ -1,0 +1,4 @@
+2018-09-29 17:48:48.789 [main] DEBUG logbackTest.LogbackDemo - *****debug*****
+2018-09-29 17:48:48.794 [main] INFO  logbackTest.LogbackDemo - *****info*****
+2018-09-29 17:48:48.795 [main] WARN  logbackTest.LogbackDemo - *****warn*****
+2018-09-29 17:48:48.796 [main] ERROR logbackTest.LogbackDemo - *****error*****
