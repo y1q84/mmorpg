@@ -1,4 +1,4 @@
-package com.server.handler;
+package com.communication.handler;
 
 import com.common.model.Response;
 import com.module.player.packet.PlayerLoginResponse;

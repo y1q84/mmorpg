@@ -1,4 +1,4 @@
-package com.client;
+package com.communication;
 
 import java.net.InetSocketAddress;
 import java.util.Scanner;
@@ -7,8 +7,8 @@ import java.util.concurrent.Executors;
 
 import com.common.codc.RequestEncoder;
 import com.common.codc.ResponseDecoder;
+import com.communication.handler.ClientHandler;
 import com.module.player.packet.PlayerLoginRequest;
-import com.server.handler.ClientHandler;
 import com.common.model.Request;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.Channel;
