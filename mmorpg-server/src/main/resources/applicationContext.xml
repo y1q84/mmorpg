@@ -11,6 +11,4 @@
         <context:include-filter type="annotation" expression="com.module"/>
     </context:component-scan>
 
-
-
 </beans>

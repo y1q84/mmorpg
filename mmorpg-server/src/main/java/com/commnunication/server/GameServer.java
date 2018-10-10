@@ -1,20 +1,21 @@
-package com.server;
+package com.commnunication.server;
 
 import com.common.codc.RequestDecoder;
 import com.common.codc.ResponseEncoder;
-import com.server.handler.ServerHandler;
+import com.commnunication.server.handler.ServerHandler;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Service("gameServer")
+@Component
 public class GameServer {
 
     public static void start(){
@@ -44,6 +45,6 @@ public class GameServer {
 
         bootstrap.bind(new InetSocketAddress(12345));
 
-        System.out.println("start!!!");
+        System.out.println("服务器启动成功!!!");
     }
 }

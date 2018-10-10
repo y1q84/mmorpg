@@ -1,4 +1,4 @@
-package com.server.handler;
+package com.commnunication.server.handler;
 
 import com.common.model.Request;
 import com.common.model.Response;
@@ -10,15 +10,17 @@ import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
  * 消息接受处理类
- *
  */
 @Service
 public class ServerHandler extends SimpleChannelHandler {
 
+	private static Logger logger= LoggerFactory.getLogger(ServerHandler.class);
 	/**
 	 * 接收消息
 	 */
@@ -30,6 +32,9 @@ public class ServerHandler extends SimpleChannelHandler {
 		if(message.getModule() == 1){
 			
 			if(message.getCmd() == 1){
+				String content=new String(message.getData());
+				System.out.println("客户端发送过来的命令目标位置为："+content);
+
 
 			}else if(message.getCmd() == 2){
 				PlayerLoginRequest playerLoginRequest=new PlayerLoginRequest();
@@ -63,7 +68,6 @@ public class ServerHandler extends SimpleChannelHandler {
 	 */
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
-		System.out.println("exceptionCaught");
 		super.exceptionCaught(ctx, e);
 	}
 
@@ -72,8 +76,9 @@ public class ServerHandler extends SimpleChannelHandler {
 	 */
 	@Override
 	public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-		System.out.println("channelConnected");
+		logger.info("客户端连接进来了...");
 		super.channelConnected(ctx, e);
+
 	}
 
 	/**
@@ -81,7 +86,7 @@ public class ServerHandler extends SimpleChannelHandler {
 	 */
 	@Override
 	public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-		System.out.println("channelDisconnected");
+		logger.info("channel连接断开...");
 		super.channelDisconnected(ctx, e);
 	}
 
@@ -90,7 +95,8 @@ public class ServerHandler extends SimpleChannelHandler {
 	 */
 	@Override
 	public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-		System.out.println("channelClosed");
+		logger.info("channel关闭...");
 		super.channelClosed(ctx, e);
+
 	}
 }
