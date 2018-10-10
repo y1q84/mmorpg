@@ -1,4 +1,4 @@
-package com.communication;
+package com.communication.communicateWithServer;
 
 import java.net.InetSocketAddress;
 import java.util.Scanner;
@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 
 import com.common.codc.RequestEncoder;
 import com.common.codc.ResponseDecoder;
-import com.communication.handler.ClientHandler;
+import com.communication.communicateWithServer.handler.ClientHandler;
 import com.module.player.packet.PlayerLoginRequest;
 import com.common.model.Request;
 import org.jboss.netty.bootstrap.ClientBootstrap;
@@ -23,23 +23,25 @@ import org.springframework.stereotype.Service;
  * 客户端
  *
  */
-
 @Service
 public class Client {
 
-    public static void clientStart(){
-        //服务类
-        ClientBootstrap bootstrap = new  ClientBootstrap();
+    private static Channel channel;
 
-        //线程池
+
+    public Channel getChannel(){
+        return channel;
+    }
+
+    public static void clientStart(){
+        ClientBootstrap bootstrapToServer = new  ClientBootstrap();
+
         ExecutorService boss = Executors.newCachedThreadPool();
         ExecutorService worker = Executors.newCachedThreadPool();
 
-        //socket工厂
-        bootstrap.setFactory(new NioClientSocketChannelFactory(boss, worker));
+        bootstrapToServer.setFactory(new NioClientSocketChannelFactory(boss, worker));
 
-        //管道工厂
-        bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
+        bootstrapToServer.setPipelineFactory(new ChannelPipelineFactory() {
 
             @Override
             public ChannelPipeline getPipeline() throws Exception {
@@ -51,16 +53,15 @@ public class Client {
             }
         });
 
-        //连接服务端
-        ChannelFuture connect = bootstrap.connect(new InetSocketAddress("127.0.0.1", 12345));
-        Channel channel = null;
+        ChannelFuture connect = bootstrapToServer.connect(new InetSocketAddress("127.0.0.1", 12345));
+        //Channel channel = null;
         try {
             channel = connect.sync().getChannel();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        System.out.println("client start");
+        System.out.println("客户端启动成功...");
 
         Scanner scanner = new Scanner(System.in);
         while(true){
@@ -82,6 +83,10 @@ public class Client {
             //发送请求
             channel.write(request);
         }
+    }
+
+    public static void main(String[] args) {
+
     }
 
 }
