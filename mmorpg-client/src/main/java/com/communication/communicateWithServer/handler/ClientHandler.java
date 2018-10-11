@@ -2,6 +2,7 @@ package com.communication.communicateWithServer.handler;
 
 import com.common.model.Response;
 import com.module.player.packet.PlayerLoginResponse;
+import io.netty.channel.SimpleChannelInboundHandler;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.channel.ExceptionEvent;
@@ -14,67 +15,28 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service
-public class ClientHandler extends SimpleChannelHandler {
+public class ClientHandler extends SimpleChannelInboundHandler {
 
-	/**
-	 * 接收消息
-	 */
 	@Override
-	public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
-			Response message = (Response)e.getMessage();
+	protected void channelRead0(io.netty.channel.ChannelHandlerContext ctx, Object msg) throws Exception {
+		Response message = (Response)msg;
 
-			if(message.getModule() == 1){
-				
-				if(message.getCmd() == 1){
-					
-				}else if(message.getCmd() == 2){
+		if(message.getModule() == 1){
 
-					PlayerLoginResponse playerLoginResponse=new PlayerLoginResponse();
-					playerLoginResponse.readFromBytes(message.getData());
+			if(message.getCmd() == 1){
 
-					System.out.println("登录成功奖励金币："+playerLoginResponse.getMoney());
-					
-				}
-				
-			}else if (message.getModule() != 1){
-				
-				
+			}else if(message.getCmd() == 2){
+
+				PlayerLoginResponse playerLoginResponse=new PlayerLoginResponse();
+				playerLoginResponse.readFromBytes(message.getData());
+
+				System.out.println("登录成功奖励金币："+playerLoginResponse.getMoney());
+
 			}
-	}
 
-	/**
-	 * 捕获异常
-	 */
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
-		System.out.println("exceptionCaught");
-		super.exceptionCaught(ctx, e);
-	}
+		}else if (message.getModule() != 1){
 
-	/**
-	 * 新连接
-	 */
-	@Override
-	public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-		System.out.println("channelConnected");
-		super.channelConnected(ctx, e);
-	}
 
-	/**
-	 * 必须是链接已经建立，关闭通道的时候才会触发
-	 */
-	@Override
-	public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-		System.out.println("channelDisconnected");
-		super.channelDisconnected(ctx, e);
-	}
-
-	/**
-	 * channel关闭的时候触发
-	 */
-	@Override
-	public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-		System.out.println("channelClosed");
-		super.channelClosed(ctx, e);
+		}
 	}
 }
