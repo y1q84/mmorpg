@@ -10,6 +10,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
@@ -21,6 +23,8 @@ import java.util.Scanner;
 // */
 @Component
 public class Client {
+
+    private static Logger logger= LoggerFactory.getLogger(Client.class);
 
     private static Channel channel;
 
@@ -54,7 +58,7 @@ public class Client {
 
             channel=f.channel();
 
-            System.out.println("客户端启动成功...");
+            logger.info("communicateWithServer端启动成功...");
 
             Scanner scanner = new Scanner(System.in);
             while(true){
@@ -81,11 +85,6 @@ public class Client {
             e.printStackTrace();
 
         }
-    }
-
-    public static void main(String[] args) {
-        ClientForNetty4 clientForNetty4=new ClientForNetty4();
-        clientForNetty4.clientStart();
     }
 
 }

@@ -47,7 +47,7 @@ public class GMMoveCommand  extends AbstractGMCommand {
         request.setData(type.getBytes());
 
         //发送到服务端
-        client.getChannel().write(request);
+        client.getChannel().writeAndFlush(request);
 
         return null;
     }

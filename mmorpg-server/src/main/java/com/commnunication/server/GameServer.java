@@ -1,7 +1,7 @@
 package com.commnunication.server;
 
+import com.ServerStart;
 import com.commnunication.server.handler.ServerHandler;
-import com.commnunication.server.handler.ServerHandlerForNetty4;
 import com.common.codc.RequestDecoder;
 import com.common.codc.ResponseEncoder;
 import io.netty.bootstrap.ServerBootstrap;
@@ -9,10 +9,14 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GameServer {
+
+    private static Logger logger= LoggerFactory.getLogger(ServerStart.class);
 
     public static void start(){
         //服务类
@@ -40,10 +44,10 @@ public class GameServer {
 
             ChannelFuture f = bootstrap.bind(12345).sync();
 
-            System.out.println("服务器启动成功!!!");
+            logger.info("服务器启动成功...");
 
         }catch (Exception e){
-
+            e.printStackTrace();
         }
 
     }
