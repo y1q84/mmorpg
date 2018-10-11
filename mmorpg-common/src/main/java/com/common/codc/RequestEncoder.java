@@ -2,12 +2,9 @@ package com.common.codc;
 
 import com.common.constant.ConstantValue;
 import com.common.model.Request;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
-
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
 
 /**
  * 请求编码器
@@ -21,27 +18,46 @@ import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
  * 长度4字节(描述数据部分字节长度)
  *
  */
-public class RequestEncoder extends OneToOneEncoder{
+//OneToOneEncoder
+public class RequestEncoder extends MessageToByteEncoder {
+
+//	@Override
+//	protected Object encode(ChannelHandlerContext context, Channel channel, Object rs) throws Exception {
+//		Request request = (Request)(rs);
+//
+//		ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
+//		//包头
+//		buffer.writeInt(ConstantValue.FLAG);
+//		//module
+//		buffer.writeShort(request.getModule());
+//		//cmd
+//		buffer.writeShort(request.getCmd());
+//		//长度
+//		buffer.writeInt(request.getDataLength());
+//		//data
+//		if(request.getData() != null){
+//			buffer.writeBytes(request.getData());
+//		}
+//
+//		return buffer;
+//	}
 
 	@Override
-	protected Object encode(ChannelHandlerContext context, Channel channel, Object rs) throws Exception {
-		Request request = (Request)(rs);
-		
-		ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
+	protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
+		Request request = (Request)(msg);
 		//包头
-		buffer.writeInt(ConstantValue.FLAG);
+		out.writeInt(ConstantValue.FLAG);
 		//module
-		buffer.writeShort(request.getModule());
+		out.writeShort(request.getModule());
 		//cmd
-		buffer.writeShort(request.getCmd());
+		out.writeShort(request.getCmd());
 		//长度
-		buffer.writeInt(request.getDataLength());
+		out.writeInt(request.getDataLength());
 		//data
 		if(request.getData() != null){
-			buffer.writeBytes(request.getData());
+			out.writeBytes(request.getData());
 		}
-		
-		return buffer;
-	}
 
+		//return buffer;
+	}
 }

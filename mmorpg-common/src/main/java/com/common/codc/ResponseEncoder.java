@@ -2,11 +2,9 @@ package com.common.codc;
 
 import com.common.constant.ConstantValue;
 import com.common.model.Response;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
 
 /**
  * 响应编码器
@@ -20,29 +18,51 @@ import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
  * 长度4字节(描述数据部分字节长度)
  *
  */
-public class ResponseEncoder extends OneToOneEncoder{
+//OneToOneEncoder
+public class ResponseEncoder extends MessageToByteEncoder {
+
+//	@Override
+//	protected Object encode(ChannelHandlerContext context, Channel channel, Object rs) throws Exception {
+//		Response response = (Response)(rs);
+//
+//		ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
+//		//包头
+//		buffer.writeInt(ConstantValue.FLAG);
+//		//module
+//		buffer.writeShort(response.getModule());
+//		//cmd
+//		buffer.writeShort(response.getCmd());
+//		//状态码
+//		buffer.writeInt(response.getStateCode());
+//		//长度
+//		buffer.writeInt(response.getDataLength());
+//		//data
+//		if(response.getData() != null){
+//			buffer.writeBytes(response.getData());
+//		}
+//
+//		return buffer;
+//	}
 
 	@Override
-	protected Object encode(ChannelHandlerContext context, Channel channel, Object rs) throws Exception {
-		Response response = (Response)(rs);
-		
-		ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
+	protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
+		Response response = (Response)msg;
+
+		//ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
 		//包头
-		buffer.writeInt(ConstantValue.FLAG);
+		out.writeInt(ConstantValue.FLAG);
 		//module
-		buffer.writeShort(response.getModule());
+		out.writeShort(response.getModule());
 		//cmd
-		buffer.writeShort(response.getCmd());
+		out.writeShort(response.getCmd());
 		//状态码
-		buffer.writeInt(response.getStateCode());
+		out.writeInt(response.getStateCode());
 		//长度
-		buffer.writeInt(response.getDataLength());
+		out.writeInt(response.getDataLength());
 		//data
 		if(response.getData() != null){
-			buffer.writeBytes(response.getData());
+			out.writeBytes(response.getData());
 		}
-	
-		return buffer;
+		//return buffer;
 	}
-
 }

@@ -2,10 +2,11 @@ package com.common.codc;
 
 import com.common.constant.ConstantValue;
 import com.common.model.Response;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.frame.FrameDecoder;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.ByteToMessageDecoder;
+
+import java.util.List;
 
 /**
  * 响应解码器
@@ -19,58 +20,63 @@ import org.jboss.netty.handler.codec.frame.FrameDecoder;
  * 长度4字节(描述数据部分字节长度)
  *
  */
-public class ResponseDecoder extends FrameDecoder{
+//FrameDecoder
+public class ResponseDecoder extends ByteToMessageDecoder {
 	
 	/**
 	 * 数据包基本长度
 	 */
 	public static int BASE_LENTH = 4 + 2 + 2 + 4;
 
+//	@Override
+//	protected Object decode(ChannelHandlerContext arg0, Channel arg1, ChannelBuffer buffer) throws Exception {
+//
+//
+//		//数据包不完整，需要等待后面的包来
+//		return null;
+//	}
+
 	@Override
-	protected Object decode(ChannelHandlerContext arg0, Channel arg1, ChannelBuffer buffer) throws Exception {
-		
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		//可读长度必须大于基本长度
-		if(buffer.readableBytes() >= BASE_LENTH){
-			
+		if(in.readableBytes() >= BASE_LENTH){
+
 			//记录包头开始的index
-			int beginReader = buffer.readerIndex();
-			
+			int beginReader = in.readerIndex();
+
 			while(true){
-				if(buffer.readInt() == ConstantValue.FLAG){
+				if(in.readInt() == ConstantValue.FLAG){
 					break;
 				}
 			}
-			
+
 			//模块号
-			short module = buffer.readShort();
+			short module = in.readShort();
 			//命令号
-			short cmd = buffer.readShort();
+			short cmd = in.readShort();
 			//状态码
-			int stateCode = buffer.readInt();
+			int stateCode = in.readInt();
 			//长度
-			int length = buffer.readInt();
-			
-			if(buffer.readableBytes() < length){
+			int length = in.readInt();
+
+			if(in.readableBytes() < length){
 				//还原读指针
-				buffer.readerIndex(beginReader);
-				return null;
+				in.readerIndex(beginReader);
+				return ;
 			}
-			
+
 			byte[] data = new byte[length];
-			buffer.readBytes(data);
-			
+			in.readBytes(data);
+
 			Response response = new Response();
 			response.setModule(module);
 			response.setCmd(cmd);
 			response.setStateCode(stateCode);
 			response.setData(data);
-			
-			//继续往下传递 
-			return response;
-			
-		}
-		//数据包不完整，需要等待后面的包来
-		return null;
-	}
 
+			//继续往下传递
+			out.add(response);
+
+		}
+	}
 }
