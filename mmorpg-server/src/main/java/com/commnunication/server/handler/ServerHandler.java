@@ -33,6 +33,14 @@ public class ServerHandler extends SimpleChannelInboundHandler{
 				String content=new String(message.getData());
 				System.out.println("客户端发送过来的命令目标位置为："+content);
 
+				Response response=new Response();
+				response.setModule((short)1);
+				response.setCmd((short)1);
+				response.setStateCode(StateCode.SUCCESS);
+				response.setData("成功进入场景...".getBytes());
+				ctx.channel().writeAndFlush(response);
+				response.setData("场景内有：猪，狗，牛，羊".getBytes());
+				ctx.channel().writeAndFlush(response);
 
 			}else if(message.getCmd() == 2){
 				PlayerLoginRequest playerLoginRequest=new PlayerLoginRequest();
@@ -50,7 +58,7 @@ public class ServerHandler extends SimpleChannelInboundHandler{
 				response.setStateCode(StateCode.SUCCESS);
 				response.setData(playerLoginResponse.getBytes());
 
-				//回写数据
+				//发送数据
 				ctx.channel().writeAndFlush(response);
 
 			}

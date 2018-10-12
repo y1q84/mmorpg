@@ -9,6 +9,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -30,6 +32,7 @@ public class GameServer {
             worker=new NioEventLoopGroup();
 
             bootstrap.group(boss, worker).channel(NioServerSocketChannel.class)
+                    .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
@@ -44,7 +47,7 @@ public class GameServer {
 
             ChannelFuture f = bootstrap.bind(12345).sync();
 
-            logger.info("服务器启动成功...");
+            logger.info("启动服务器...");
 
         }catch (Exception e){
             e.printStackTrace();

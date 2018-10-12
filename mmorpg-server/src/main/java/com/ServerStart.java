@@ -13,6 +13,9 @@ public class ServerStart {
         ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
         GameServer server=applicationContext.getBean(GameServer.class);
         server.start();
-        logger.info("ServerStart启动服务器..");
+        logger.info("ServerStart启动服务器成功..");
+        logger.debug("服务端启动成功啦...");
+        logger.warn("服务端启动有点慢...");
+        logger.error("服务端启动成功啦拉拉...");
     }
 }
