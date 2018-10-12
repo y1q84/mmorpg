@@ -25,6 +25,10 @@ public class ClientHandler extends SimpleChannelInboundHandler {
 
 			if(message.getCmd() == 1){
 
+				//服务端返回的信息
+				byte[] bytes=message.getData();
+				System.out.println(new String(bytes));
+
 			}else if(message.getCmd() == 2){
 
 				PlayerLoginResponse playerLoginResponse=new PlayerLoginResponse();
