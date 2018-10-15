@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import io.netty.buffer.ByteBuf;
 import org.jboss.netty.buffer.ChannelBuffer;
+
 /**
  * 自定义序列化接口
  */
@@ -16,9 +19,9 @@ public abstract class Serializer {
 	
 	public static final Charset CHARSET = Charset.forName("UTF-8");
 	
-	protected ChannelBuffer writeBuffer;
+	protected ByteBuf writeBuffer;
 	
-	protected ChannelBuffer readBuffer;
+	protected ByteBuf readBuffer;
 	
 	/**
 	 * 反序列化具体实现
@@ -45,7 +48,7 @@ public abstract class Serializer {
 	 * 从buff获取数据
 	 * @param readBuffer
 	 */
-	public void readFromBuffer(ChannelBuffer readBuffer) {
+	public void readFromBuffer(ByteBuf readBuffer) {
 		this.readBuffer = readBuffer;
 		read();
 	}
@@ -54,7 +57,7 @@ public abstract class Serializer {
 	 * 写入本地buff
 	 * @return
 	 */
-	public ChannelBuffer writeToLocalBuff(){
+	public ByteBuf writeToLocalBuff(){
 		writeBuffer = BufferFactory.getBuffer();
 		write();
 		return writeBuffer;
@@ -65,7 +68,7 @@ public abstract class Serializer {
 	 * @param buffer
 	 * @return
 	 */
-	public ChannelBuffer writeToTargetBuff(ChannelBuffer buffer){
+	public ByteBuf writeToTargetBuff(ByteBuf buffer){
 		writeBuffer = buffer;
 		write();
 		return writeBuffer;
