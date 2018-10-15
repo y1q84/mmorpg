@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,NgModule } from '@angular/core';
 import { WebsocketService } from './../shared/websocket.service';
 
 @Component({
@@ -7,6 +7,8 @@ import { WebsocketService } from './../shared/websocket.service';
   styleUrls: ['./web-socket.component.css']
 })
 export class WebSocketComponent implements OnInit {
+
+  content:any="nihao";
 
  // 将刚刚写的客户端的服务WebSocketService通过依赖注入，注入到组件中来
  constructor(private wsService:WebsocketService) { }
@@ -22,6 +24,8 @@ export class WebSocketComponent implements OnInit {
  }
  // 向服务器主动发送消息
  sendMessagegToServer(){
+
+  console.log("content的值为："+this.content);
    let buffer = new ArrayBuffer(6); // 初始化6个Byte的二进制数据缓冲区
    let dataView = new DataView(buffer);
    dataView.setInt16(0, 3); // 从第0个Byte位置开始，放置一个数字为3的Short类型数据(占2 Byte)

@@ -1,1 +1,5 @@
-<button (click)="sendMessagegToServer()">向服务器发消息</button>
+
+<form>
+    <input name="message" [(ngModel)]="content">&nbsp;
+    <input type="submit" (click)="sendMessagegToServer()" value="发送">
+</form>
