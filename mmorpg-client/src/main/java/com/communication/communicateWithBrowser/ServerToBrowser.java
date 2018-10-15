@@ -1,18 +1,22 @@
 package com.communication.communicateWithBrowser;
 
 import com.communication.communicateWithBrowser.handler.ServerToBrowserHandler;
+import com.communication.communicateWithBrowser.handler.WebSocketServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.Delimiters;
-import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,22 +43,27 @@ public class ServerToBrowser {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            ChannelPipeline pipeline =ch.pipeline();
-                            pipeline.addLast("framer", new DelimiterBasedFrameDecoder(2048, Delimiters.lineDelimiter()));
-                            pipeline.addLast("decoder", new io.netty.handler.codec.string.StringDecoder());
-                            pipeline.addLast("encoder", new StringDecoder());
-                            pipeline.addLast("serverHandler", serverToBrowserHandler);
+                            ch.pipeline().addLast("http-codec", new HttpServerCodec());
+                            ch.pipeline().addLast("aggregator", new HttpObjectAggregator(65536));
+                            ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());
+                            ch.pipeline().addLast("protocolHandler",new WebSocketServerProtocolHandler("/ws"));
+                            ch.pipeline().addLast("webSocketServerHandler", serverToBrowserHandler);
                         }
-                    })
-                    .option(ChannelOption.SO_BACKLOG, 128)
-                    .childOption(ChannelOption.SO_KEEPALIVE, true);
+                    });
 
-            ChannelFuture f = bootstrapToClient.bind(11111).sync();
+            ChannelFuture f = bootstrapToClient.bind(8085).sync();
 
             logger.info("communicateWithBrowser端启动成功...");
 
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+
+        ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
+        WebSocketServer server=ac.getBean(WebSocketServer.class);
+        server.start();
     }
 }
