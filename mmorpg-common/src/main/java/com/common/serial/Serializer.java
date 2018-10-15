@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import io.netty.buffer.ByteBuf;
-import org.jboss.netty.buffer.ChannelBuffer;
-
 /**
  * 自定义序列化接口
  */
