@@ -29,7 +29,7 @@ public class GMManager {
             GMType type=entry.getKey();
             AbstractGMCommand command=entry.getValue();
 
-            String[] arr=content.split("\\s");
+            String[] arr=content.split("\\s");//以空格为分隔符
 
             if(arr.length==0){
                 return false;
