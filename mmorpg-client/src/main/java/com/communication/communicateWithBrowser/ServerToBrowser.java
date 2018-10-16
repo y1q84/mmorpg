@@ -1,7 +1,6 @@
 package com.communication.communicateWithBrowser;
 
 import com.communication.communicateWithBrowser.handler.ServerToBrowserHandler;
-import com.communication.communicateWithBrowser.handler.WebSocketServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -63,7 +62,7 @@ public class ServerToBrowser {
     public static void main(String[] args) {
 
         ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
-        WebSocketServer server=ac.getBean(WebSocketServer.class);
+        ServerToBrowser server=ac.getBean(ServerToBrowser.class);
         server.start();
     }
 }

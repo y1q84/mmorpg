@@ -35,13 +35,17 @@ public class ServerToBrowserHandler extends SimpleChannelInboundHandler<WebSocke
 			String message=((TextWebSocketFrame) msg).text();
 			logger.info("接收从浏览器发过来的消息为："+message);
 
+			//WebScoketPacketId+data(命令类型+data)
+			//此处可以获取到有浏览器发送过来的WebSocketPacketId
+			//去掉WebSocketPacketId剩下：命令类型+data
+
 			//如这里传过来的是一种命令则通过命令管理器进行处理
 			gmManager.dealWithCommand(message);
 
 		}else if(msg instanceof BinaryWebSocketFrame){
 			ByteBuf byteBuf=((BinaryWebSocketFrame)msg).content();
-			short packetId= byteBuf.getShort(0);
-			logger.info("获取到packetId为："+packetId);
+			short id= byteBuf.getShort(0);
+			logger.info("获取到packetId为："+id);
 			int data= byteBuf.getInt(2);
 			logger.info("数据内容为："+data);
 		}
@@ -55,7 +59,7 @@ public class ServerToBrowserHandler extends SimpleChannelInboundHandler<WebSocke
 	}
 
 	@Override
-	public void channelInactive(ChannelHandlerContext ctx) throws Exception { // (6)
+	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		Channel incoming = ctx.channel();
 		logger.info("用户:"+incoming.remoteAddress()+"离线...");
 	}
