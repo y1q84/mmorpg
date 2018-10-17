@@ -1,7 +1,7 @@
-package com.commnunication.server;
+package com.framework.commnunication.server;
 
 import com.ServerStart;
-import com.commnunication.server.handler.ServerHandler;
+import com.framework.commnunication.server.handler.ServerHandler;
 import com.common.codc.RequestDecoder;
 import com.common.codc.ResponseEncoder;
 import io.netty.bootstrap.ServerBootstrap;

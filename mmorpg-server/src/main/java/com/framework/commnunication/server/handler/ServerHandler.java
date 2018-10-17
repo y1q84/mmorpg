@@ -1,4 +1,4 @@
-package com.commnunication.server.handler;
+package com.framework.commnunication.server.handler;
 
 import com.common.model.Request;
 import com.common.model.Response;
@@ -10,7 +10,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  * 消息接受处理类
@@ -24,7 +23,7 @@ public class ServerHandler extends SimpleChannelInboundHandler{
 	 */
 
 	@Override
-	protected void channelRead0(io.netty.channel.ChannelHandlerContext ctx, Object msg) throws Exception {
+	protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
 		Request message = (Request)msg;
 
 		if(message.getModule() == 1){
