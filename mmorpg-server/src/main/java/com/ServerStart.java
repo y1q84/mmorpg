@@ -1,6 +1,6 @@
 package com;
 
-import com.commnunication.server.GameServer;
+import com.framework.commnunication.server.GameServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -14,8 +14,5 @@ public class ServerStart {
         GameServer server=applicationContext.getBean(GameServer.class);
         server.start();
         logger.info("ServerStart启动服务器成功..");
-        logger.debug("服务端启动成功啦...");
-        logger.warn("服务端启动有点慢...");
-        logger.error("服务端启动成功啦拉拉...");
     }
 }

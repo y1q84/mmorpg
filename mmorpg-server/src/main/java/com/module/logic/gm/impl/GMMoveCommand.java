@@ -1,15 +1,10 @@
 package com.module.logic.gm.impl;
 
-import com.common.model.Request;
-import com.communication.communicateWithServer.Client;
-import com.module.common.encodeAndDecode.RequestPacket;
-import com.module.common.packetId.socketPacketId.SocketPacketId;
 import com.module.logic.gm.AbstractGMCommand;
 import com.module.logic.gm.GMResultMessage;
 import com.module.logic.gm.GMType;
-import com.module.logic.move.packet.ReqMovePacket;
+import com.common.packetId.impl.ReqMoveCommandPacket;
 import com.module.player.entity.Player;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,11 +14,11 @@ public class GMMoveCommand  extends AbstractGMCommand {
 
     public final static String PATTERN="^move\\s([a-z]+)\\s([a-z]+)$";
 
-    @Autowired
-    Client client;
-
-    @Autowired
-    SocketPacketId socketPacketId;
+//    @Autowired
+//    Client client;
+//
+//    @Autowired
+//    SocketPacketId socketPacketId;
 
     public GMMoveCommand(){
         setType(GMType.MOVE);
@@ -42,13 +37,13 @@ public class GMMoveCommand  extends AbstractGMCommand {
     @Override
     public GMResultMessage execute(Player player, List<String> params) {
 
-        sendPacket(new ReqMovePacket(),params);
+        sendPacket(new ReqMoveCommandPacket(),params);
 
         return null;
     }
 
-    public void sendPacket(ReqMovePacket reqMovePacket,List<String> params){
-        short packetId = socketPacketId.getPacketId2Request().inverse().get(reqMovePacket.getClass());
+    public void sendPacket(ReqMoveCommandPacket reqMovePacket, List<String> params){
+//        short packetId = socketPacketId.getPacketId2Request().inverse().get(reqMovePacket.getClass());
 
 //        String data=params.get(1);
 //        System.out.println("移动到的目标地方为："+data);
@@ -62,12 +57,12 @@ public class GMMoveCommand  extends AbstractGMCommand {
         //获取到数据
         String data=params.get(1);
         //将数据封装成请求对象
-        ReqMovePacket movePacket=new ReqMovePacket();
+        ReqMoveCommandPacket movePacket=new ReqMoveCommandPacket();
         movePacket.setMoveId(Integer.parseInt(data));
         //将movePacket转成字节流传输
-        RequestPacket req=RequestPacket.valueOf(packetId,movePacket.getBytes());
+//        RequestPacket req=RequestPacket.valueOf(packetId, JSON.toJSONBytes(movePacket));
 
         //发送到服务端
-        client.getChannel().writeAndFlush(req);
+//        client.getChannel().writeAndFlush(req);
     }
 }
