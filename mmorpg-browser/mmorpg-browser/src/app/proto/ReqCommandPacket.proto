@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+message ReqCommandPacket {
+    int64 moveId = 1;
+}
