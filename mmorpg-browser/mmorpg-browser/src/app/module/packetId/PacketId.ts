@@ -23,7 +23,7 @@ export class PacketId{
         this.packetId2PacketClassName.set(packetId,classname);
     }
 
-    public static addpacketClassName2PacketId(packetId:number,classname:string){
+    public static addpacketClassName2PacketId(classname:string,packetId:number){
         this.packetClassName2PacketId.set(classname,packetId);
     }
 

@@ -4,14 +4,18 @@ import { PacketId } from "../PacketId";
 
 export class ReqCommandPacket extends AbstractPacket{
 
-    constructor(packetid:PacketId){
-        super();
-        PacketId.addpacketClassName2PacketId(PacketId.COMMAND_REQ,this.constructor.name);
-        PacketId.addPacketId2PacketClassName(PacketId.COMMAND_REQ,this.constructor.name);
+    private moveId:number;
+
+    public getMoveId():number{
+        return this.moveId;
     }
 
-    public getPacketClassName():string{
-        return this.constructor.name;
+    public setMoveId(moveId:number){
+        this.moveId=moveId;
+    }
+
+    public getPacketId():number{
+        return PacketId.COMMAND_REQ;
     }
 
 }

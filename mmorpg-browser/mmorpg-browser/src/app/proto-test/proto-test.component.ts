@@ -9,20 +9,20 @@ import { load } from "protobufjs"; // respectively "./node_modules/protobufjs"
 export class ProtoTestComponent implements OnInit {
 
   constructor() {
-    load("src/app/proto/AwesomeMessage.proto", function(err, root) {
+    load("src/app/proto/ReqCommandPacket.proto", function(err, root) {
       if (err)
         throw err;
     
       // example code
-      const AwesomeMessage = root.lookupType("AwesomeMessage");
+      const ReqCommandPacket = root.lookupType("ReqCommandPacket");
     
-      let message = AwesomeMessage.create({ awesomeField: "hello" });
+      let message = ReqCommandPacket.create({ moveId:123456 });
       console.log(`message = ${JSON.stringify(message)}`);
     
-      let buffer = AwesomeMessage.encode(message).finish();
+      let buffer = ReqCommandPacket.encode(message).finish();
       console.log(`buffer = ${Array.prototype.toString.call(buffer)}`);
     
-      let decoded = AwesomeMessage.decode(buffer);
+      let decoded = ReqCommandPacket.decode(buffer);
       console.log(`decoded = ${JSON.stringify(decoded)}`);
     });
    }
