@@ -9,22 +9,10 @@ import { load } from "protobufjs"; // respectively "./node_modules/protobufjs"
 export class ProtoTestComponent implements OnInit {
 
   constructor() {
-    load("src/app/proto/AwesomeMessage.proto", function(err, root) {
-      if (err)
-        throw err;
+    //找到proto文件并对之进行编解码
+    //编码成RequestPacket可以发包
+    //解码成对象可以拆包
     
-      // example code
-      const AwesomeMessage = root.lookupType("AwesomeMessage");
-    
-      let message = AwesomeMessage.create({ awesomeField: "hello" });
-      console.log(`message = ${JSON.stringify(message)}`);
-    
-      let buffer = AwesomeMessage.encode(message).finish();
-      console.log(`buffer = ${Array.prototype.toString.call(buffer)}`);
-    
-      let decoded = AwesomeMessage.decode(buffer);
-      console.log(`decoded = ${JSON.stringify(decoded)}`);
-    });
    }
 
   ngOnInit() {

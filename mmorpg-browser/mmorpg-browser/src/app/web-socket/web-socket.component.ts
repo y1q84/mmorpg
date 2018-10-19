@@ -1,5 +1,6 @@
 import { Component, OnInit,NgModule } from '@angular/core';
 import { WebsocketService } from './../shared/websocket.service';
+import { ReqCommandPacket } from '../module/packetId/impl/ReqCommandPacket';
 
 @Component({
   selector: 'app-web-socket',
@@ -8,7 +9,7 @@ import { WebsocketService } from './../shared/websocket.service';
 })
 export class WebSocketComponent implements OnInit {
 
-  content:any="nihao";
+  content: number;
   // numberArray: Array<number>;
   // 将字符串格式化为UTF8编码的字节
   writeUTF(str: string, isGetBytes: boolean) {
@@ -45,34 +46,33 @@ export class WebSocketComponent implements OnInit {
     }
 }
 
-
  // 将刚刚写的客户端的服务WebSocketService通过依赖注入，注入到组件中来
- constructor(private wsService:WebsocketService) { }
+ constructor(private wsService:WebsocketService) {
+  }
 
  ngOnInit() {
-   // 订阅服务器发来消息产生的流  
-   this.wsService.creatObservableSocket("ws://localhost:8085/ws")
-   .subscribe(
-     data => console.log(data),
-     err => console.log(err),
-     () => console.log("流已经结束")
-   )
  }
  // 向服务器主动发送消息
  sendMessagegToServer(){
 
-  console.log("content的值为："+this.content);
-   let contentByteArray = this.writeUTF(this.content, true);
-   let buffer = new ArrayBuffer(4+2+contentByteArray.length); // 初始化6个Byte的二进制数据缓冲区
-   let dataView = new DataView(buffer);
-   dataView.setUint32(0,buffer.byteLength);
-   dataView.setUint16(4, 3); // 从第0个Byte位置开始，放置一个数字为3的Short类型数据(占2 Byte)
-   contentByteArray.forEach((value, index ,contentByteArray)=>{
-    console.log(value.toString());
-    dataView.setUint8(6+index, value);
-   });
+  // console.log("content的值为："+this.content);
+  //  let contentByteArray = this.writeUTF(this.content, true);
+  //  let buffer = new ArrayBuffer(4+2+contentByteArray.length); // 初始化6个Byte的二进制数据缓冲区
+  //  let dataView = new DataView(buffer);
+  //  dataView.setUint32(0,buffer.byteLength);
+  //  dataView.setUint16(4, 3); // 从第0个Byte位置开始，放置一个数字为3的Short类型数据(占2 Byte)
+  //  contentByteArray.forEach((value, index ,contentByteArray)=>{
+  //   console.log(value.toString());
+  //   dataView.setUint8(6+index, value);
+  //  });
 
-   this.wsService.sendMess(buffer);
+  //  this.wsService.sendMess(buffer);
+
+
+  //此处应该向service发送一个具体的请求包
+  this.wsService.sendMess(ReqCommandPacket,{moveId: this.content});
+
+
  }
 
 
