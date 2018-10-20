@@ -1,4 +1,4 @@
-package com.module.common.encodeAndDecode;
+package com.common.pack;
 
 /**封装请求数据**/
 public class RequestPacket {

@@ -1,4 +1,4 @@
-package com.module.common.encodeAndDecode;
+package com.common.pack;
 
 /**封装响应数据**/
 public class ResponsePacket {

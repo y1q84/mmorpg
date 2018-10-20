@@ -9,15 +9,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReqCommandPacket extends AbstractPaket {
 
-    @Protobuf
-    private String  commandId;
+//    @Protobuf
+//    private String  commandId;
+//
+//    public String getCommandId() {
+//        return commandId;
+//    }
+//
+//    public void setCommandId(String commandId) {
+//        this.commandId = commandId;
+//    }
 
-    public String getCommandId() {
-        return commandId;
+    @Protobuf
+    private int   moveId;
+
+    public int getmoveId() {
+        return moveId;
     }
 
-    public void setCommandId(String commandId) {
-        this.commandId = commandId;
+    public void setmoveId(int moveId) {
+        this.moveId = moveId;
     }
 
     @Override
