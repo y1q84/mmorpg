@@ -23,7 +23,19 @@ constructor(private wsService:WebsocketService) {
   }
 
   sendLoginMessage(){
-    this.wsService.sendMess(ReqLoginPacket,{username: this.uname, password : this.pass });
+    WebsocketService.observable.subscribe(
+      //data接收的是服务端发送给过来的字符串
+      data => {
+        if (this.loginState === true) return;
+        if (data === "登陆成功"){
+          this.loginState = true;
+          console.log(data);
+        }
+      },
+      err => console.log(err),
+      () => console.log("流已经结束")
+     );
+    this.wsService.sendMess(ReqLoginPacket,{userName: this.uname, password : this.pass });
   }
 
   connect(){

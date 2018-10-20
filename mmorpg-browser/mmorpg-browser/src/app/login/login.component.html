@@ -1,7 +1,7 @@
 <form method="POST" *ngIf="connectState===true">
   <input name="account" placeholder="用户名"  [(ngModel)]="uname" />
   <input name="password" type="password" placeholder="密码" [(ngModel)]="pass" />
-  <input type="submit" value="登录"/>
+  <input type="button" (click)="sendLoginMessage()" value="登录"/>
 
 </form>
 <button *ngIf="connectState!==true" (click)="connect()">连接到服务器</button>

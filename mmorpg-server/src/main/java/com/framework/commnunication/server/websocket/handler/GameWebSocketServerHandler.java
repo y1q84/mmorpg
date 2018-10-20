@@ -3,7 +3,7 @@ package com.framework.commnunication.server.websocket.handler;
 import com.baidu.bjf.remoting.protobuf.Codec;
 import com.common.packetId.AbstractPaket;
 import com.common.packetId.PacketId;
-import com.common.packetId.impl.ReqCommandPacket;
+import com.common.packetId.impl.ReqLoginPacket;
 import com.module.logic.gm.manager.GMManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -90,9 +90,11 @@ public class GameWebSocketServerHandler extends SimpleChannelInboundHandler<WebS
 			/**将数据进行解码**/
 			Object obj=codec.decode(data);
 
-			if(obj instanceof ReqCommandPacket){
-			    channel.writeAndFlush(new TextWebSocketFrame("登陆成功"));
-				logger.info("moveId:"+((ReqCommandPacket) obj).getmoveId());
+			if(obj instanceof ReqLoginPacket){
+			    ReqLoginPacket reqLoginPacket=(ReqLoginPacket) obj;
+			    logger.info("ReqLoginpacket对应的packetId为："+reqLoginPacket.getPacketId());
+				logger.info("具体的请求类为："+reqLoginPacket.getClass().getName()+"\t,用户名:"+reqLoginPacket.getUserName()+",\t密码："+reqLoginPacket.getPassword());
+                channel.writeAndFlush(new TextWebSocketFrame("登陆成功"));
 			}
 
 			//将请求传给下一个handler处理
@@ -115,7 +117,7 @@ public class GameWebSocketServerHandler extends SimpleChannelInboundHandler<WebS
 
 
         }
-        channel.writeAndFlush(new TextWebSocketFrame("服务端推送过来的消息：" +msg ));
+        //channel.writeAndFlush(new TextWebSocketFrame("服务端推送===========>>：" +msg ));
 
     }
 
@@ -123,7 +125,7 @@ public class GameWebSocketServerHandler extends SimpleChannelInboundHandler<WebS
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Channel incoming = ctx.channel();
-//        incoming.writeAndFlush(new TextWebSocketFrame("握手成功..."));
+        //incoming.writeAndFlush(new TextWebSocketFrame("连接成功"));
         logger.info("用户:"+incoming.remoteAddress()+"上线...");
     }
 
@@ -148,7 +150,7 @@ public class GameWebSocketServerHandler extends SimpleChannelInboundHandler<WebS
         super.userEventTriggered(ctx, evt);
         if(evt instanceof WebSocketServerProtocolHandler.HandshakeComplete){
             logger.info("握手成功...");
-            ctx.channel().writeAndFlush("连接成功");
+            //ctx.channel().writeAndFlush("连接成功");
         }
     }
 }

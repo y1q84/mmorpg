@@ -1,6 +1,7 @@
-package com.framework.commnunication.server;
+package com.framework.commnunication.server.websocket;
 
-import com.framework.commnunication.server.handler.GameWebSocketServerHandler;
+import com.framework.commnunication.server.websocket.handler.DispatchHandler;
+import com.framework.commnunication.server.websocket.handler.GameWebSocketServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -28,6 +29,9 @@ public class GameWebSocketServer {
     @Autowired
     private GameWebSocketServerHandler gameWebSocketServerHandler;
 
+    @Autowired
+    private DispatchHandler dispatchHandler;
+
     public  void start(){
         ServerBootstrap bootstrapToClient = new ServerBootstrap();
 
@@ -49,6 +53,7 @@ public class GameWebSocketServer {
                             ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());
                             ch.pipeline().addLast("protocolHandler",new WebSocketServerProtocolHandler("/ws"));//protocolHandler处理使得传递到下一个handler的时候是一个完整的数据包
                             ch.pipeline().addLast("webSocketServerHandler", gameWebSocketServerHandler);
+                            ch.pipeline().addLast("dispatchHandler",dispatchHandler);
                         }
                     });
 

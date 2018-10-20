@@ -24,7 +24,7 @@ export class WebsocketService {
     return new Observable(
       observer => {
         WebsocketService.ws.onopen = (event) => {
-          observer.next("连接成功");
+          observer.next("连接成功");//一旦连接成功则返回这个字符串
         }
         // 发送下一个元素
         WebsocketService.ws.onmessage = (event) => observer.next(event.data);
