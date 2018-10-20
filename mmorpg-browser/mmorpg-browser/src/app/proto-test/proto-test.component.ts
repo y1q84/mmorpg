@@ -9,22 +9,10 @@ import { load } from "protobufjs"; // respectively "./node_modules/protobufjs"
 export class ProtoTestComponent implements OnInit {
 
   constructor() {
-    load("src/app/proto/ReqCommandPacket.proto", function(err, root) {
-      if (err)
-        throw err;
+    //找到proto文件并对之进行编解码
+    //编码成RequestPacket可以发包
+    //解码成对象可以拆包
     
-      // example code
-      const ReqCommandPacket = root.lookupType("ReqCommandPacket");
-    
-      let message = ReqCommandPacket.create({ moveId:123456 });
-      console.log(`message = ${JSON.stringify(message)}`);
-    
-      let buffer = ReqCommandPacket.encode(message).finish();
-      console.log(`buffer = ${Array.prototype.toString.call(buffer)}`);
-    
-      let decoded = ReqCommandPacket.decode(buffer);
-      console.log(`decoded = ${JSON.stringify(decoded)}`);
-    });
    }
 
   ngOnInit() {

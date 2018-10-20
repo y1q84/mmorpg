@@ -46,7 +46,7 @@ export class RequestPacket{
         dataView.setUint16(4, this.packetId); 
         /**数据部分 */
         this.data.forEach((value, index ,data)=>{
-            console.log(value.toString());
+            // console.log(value.toString());
             dataView.setUint8(6+index, value);
            });
 
