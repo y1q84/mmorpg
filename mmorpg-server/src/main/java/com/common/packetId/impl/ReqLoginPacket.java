@@ -2,11 +2,12 @@ package com.common.packetId.impl;
 
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
+import com.common.annotation.WsPacket;
 import com.common.packetId.AbstractPaket;
 import com.common.packetId.PacketId;
-import org.springframework.stereotype.Component;
 
-@Component
+//@Component
+@WsPacket(packetId = PacketId.LOGIN_REQ)
 public class ReqLoginPacket extends AbstractPaket {
 
     @Protobuf

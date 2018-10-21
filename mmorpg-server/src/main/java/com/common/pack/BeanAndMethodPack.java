@@ -36,7 +36,11 @@ public class BeanAndMethodPack {
 
     public Object execute(Channel channel, Object obj){
         try {
-            method.invoke(bean,obj);
+
+            //handler类中的方法XxxMethod(Channel channel,AbstractPacket packet)
+            //BeanAndMethodPack beanAndMethodPack=packetId2BeanAndMethodPack.get(((AbstractPaket)msg).getPacketId());
+            //反射调用方法
+            method.invoke(bean,channel,obj);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

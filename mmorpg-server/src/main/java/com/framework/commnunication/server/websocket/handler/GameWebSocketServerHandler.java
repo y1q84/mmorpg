@@ -97,6 +97,8 @@ public class GameWebSocketServerHandler extends SimpleChannelInboundHandler<WebS
                 channel.writeAndFlush(new TextWebSocketFrame("登陆成功"));
 			}
 
+            channel.writeAndFlush(new TextWebSocketFrame("服务端推送===========>>：" +msg ));
+
 			//将请求传给下一个handler处理
             if(obj instanceof AbstractPaket){
                 ctx.fireChannelRead(obj);
@@ -117,7 +119,6 @@ public class GameWebSocketServerHandler extends SimpleChannelInboundHandler<WebS
 
 
         }
-        //channel.writeAndFlush(new TextWebSocketFrame("服务端推送===========>>：" +msg ));
 
     }
 
