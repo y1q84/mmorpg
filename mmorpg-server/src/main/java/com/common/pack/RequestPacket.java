@@ -13,7 +13,7 @@ public class RequestPacket {
         return rp;
     }
 
-    public int getPacketId() {
+    public short getPacketId() {
         return packetId;
     }
 
