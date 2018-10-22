@@ -18,6 +18,8 @@ public class PacketId {
     /**请求登录**/
     public static final short LOGIN_REQ=10001;
 
+    public static final short LOGIN_AUTH_REQ=10003;
+
 
     /**请求命令**/
     public static final short COMMAND_REQ=10201;
