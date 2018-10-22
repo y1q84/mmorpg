@@ -3,7 +3,7 @@ package com.module.logic.gm.impl;
 import com.module.logic.gm.AbstractGMCommand;
 import com.module.logic.gm.GMResultMessage;
 import com.module.logic.gm.GMType;
-import com.common.packetId.impl.ReqMoveCommandPacket;
+import com.module.logic.move.packet.ReqMoveCommandPacket;
 import com.module.player.entity.Player;
 import org.springframework.stereotype.Component;
 

@@ -2,7 +2,7 @@ package com.module.logic.player.handler;
 
 import com.common.annotation.WsClass;
 import com.common.annotation.WsMethod;
-import com.common.packetId.impl.ReqLoginPacket;
+import com.module.logic.login.packet.ReqLoginPacket;
 import com.module.logic.player.service.PlayerService;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;

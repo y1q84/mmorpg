@@ -3,7 +3,7 @@ package com.framework.commnunication.server.websocket.handler;
 import com.baidu.bjf.remoting.protobuf.Codec;
 import com.common.packetId.AbstractPaket;
 import com.common.packetId.PacketId;
-import com.common.packetId.impl.ReqLoginPacket;
+import com.module.logic.login.packet.ReqLoginPacket;
 import com.module.logic.gm.manager.GMManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -21,13 +21,12 @@ import org.springframework.stereotype.Component;
 
 @ChannelHandler.Sharable
 @Component
-public class GameWebSocketServerHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
+public class GameWebSocketServerHandler extends SimpleChannelInboundHandler<WebSocketFrame> {//MessageToMessageCode
 
     private static Logger logger= LoggerFactory.getLogger(GameWebSocketServerHandler.class);
 
     @Autowired
     private GMManager gmManager;
-
 
 	@Autowired
 	private PacketId packetId;
@@ -84,11 +83,16 @@ public class GameWebSocketServerHandler extends SimpleChannelInboundHandler<WebS
 
             /**发送过来的数据应该是一个封装的RequestPacket对象**/
 
+//            AbstractPaket packet = PacketFactory.create(pacId, data);
+//            packet.excute();
+//            bean = map.get()
+//                    bean.invoke(packet)
             /**根据packetId获取jprotobuf的编解码器**/
 			Codec codec=packetId.getCodec(pacId);
 			logger.info("packeId对应的编解码器："+codec);
 			/**将数据进行解码**/
 			Object obj=codec.decode(data);
+
 
 			if(obj instanceof ReqLoginPacket){
 			    ReqLoginPacket reqLoginPacket=(ReqLoginPacket) obj;

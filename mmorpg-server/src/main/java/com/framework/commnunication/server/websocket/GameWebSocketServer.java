@@ -57,6 +57,9 @@ public class GameWebSocketServer {
                         }
                     });
 
+            //启动时生成proto文件
+            createProtoFile();
+
             ChannelFuture f = bootstrapToClient.bind(8085).sync();
 
             logger.info("服务端启动成功...");
@@ -64,6 +67,19 @@ public class GameWebSocketServer {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+
+    public static void createProtoFile(){
+//        String code = ProtobufIDLGenerator.getIDL(ReqLoginPacket.class,null,null,true);
+//        Annotation descriptePacket=ReqLoginPacket.class.getAnnotation(DescriptePacket.class);
+//        String des=((DescriptePacket) descriptePacket).description();
+//        StringBuilder builder=new StringBuilder();
+//        if(des!=null){
+//            builder.append("//"+des);
+//        }
+//        builder.append("\n"+code);
+//        logger.info("生成的proto文件：\n"+builder);
     }
 
     public static void main(String[] args) {

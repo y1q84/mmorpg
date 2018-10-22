@@ -1,4 +1,4 @@
-package com.common.packetId.impl;
+package com.module.logic.gm.packet;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.common.packetId.AbstractPaket;
