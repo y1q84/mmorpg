@@ -2,7 +2,7 @@ package com.framework.commnunication.server.websocket.handler;
 
 import com.common.annotation.WsClass;
 import com.common.annotation.WsMethod;
-import com.common.packetId.AbstractPaket;
+import com.common.packetId.AbstractPacket;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+/**将消息分发处理器**/
 @ChannelHandler.Sharable
 @Component
 public class DispatchHandler extends SimpleChannelInboundHandler implements BeanPostProcessor {
@@ -26,25 +27,17 @@ public class DispatchHandler extends SimpleChannelInboundHandler implements Bean
 
     //private static Map<Short, BeanAndMethodPack> packetId2BeanAndMethodPack=new HashMap<>();
 
-    private static Map<Class<? extends AbstractPaket>,Object> packet2Bean = new HashMap<>();
-    private static Map<Class<? extends AbstractPaket>,Method> packet2Method = new HashMap<>();
+    private static Map<Class<? extends AbstractPacket>,Object> packet2Bean = new HashMap<>();
+    private static Map<Class<? extends AbstractPacket>,Method> packet2Method = new HashMap<>();
 
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.info("=======进入DispatchHandler的类了=============");
 
-        //AbstractPacket的具体子类有对应的PacketId
         //ctx可以获取到channel
         Channel channel=ctx.channel();
         execMessage(channel,msg);
-
-
-
-//        BeanAndMethodPack beanAndMethodPack=packetId2BeanAndMethodPack.get(((AbstractPaket)msg).getPacketId());
-//        logger.info("对应的bean类为："+beanAndMethodPack.getBean().getClass().getName());
-//        logger.info("对应的方法为："+beanAndMethodPack.getMethod());
-//        beanAndMethodPack.execute(channel,msg);
 
     }
 
@@ -84,16 +77,6 @@ public class DispatchHandler extends SimpleChannelInboundHandler implements Bean
                     logger.info("spring中的bean初始化完成之后调用，bean对象为："+bean.getClass().getName());
                     logger.info("spring中的bean初始化完成之后调用，对应方法为："+method.getName());
 
-//                    Annotation annotat=classes[1].getAnnotation(WsPacket.class);
-//                    if(annotat==null){
-//                        throw new IllegalArgumentException(bean.getClass().getName()+"类中的方法"+method.getName()+"的第二个参数必须有WsMetho的注解");
-//                    }
-//
-//                    Annotation at=classes[1].getAnnotation(WsPacket.class);
-//                    short packetId=((WsPacket) at).packetId();
-                    //将packetId与BeanAndMethod放进集合
-                   // packetId2BeanAndMethodPack.put(packetId,BeanAndMethodPack.valueOf(bean,method));
-
                 }else{
                     continue;
                 }
@@ -110,7 +93,4 @@ public class DispatchHandler extends SimpleChannelInboundHandler implements Bean
         return bean;
     }
 
-//    public static BeanAndMethodPack getBeanAndMethodPack(short packetId) {
-//        return packetId2BeanAndMethodPack.get(packetId);
-//    }
 }

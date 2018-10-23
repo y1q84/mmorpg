@@ -1,6 +1,6 @@
 import { Component, OnInit,NgModule } from '@angular/core';
 import { WebsocketService } from './../shared/websocket.service';
-import { ReqCommandPacket } from '../module/packetId/impl/ReqCommandPacket';
+//import { ReqCommandPacket } from '../module/packetId/impl/ReqCommandPacket';
 
 @Component({
   selector: 'app-web-socket',
@@ -70,7 +70,7 @@ export class WebSocketComponent implements OnInit {
 
 
   //此处应该向service发送一个具体的请求包
-  this.wsService.sendMess(ReqCommandPacket,{moveId: this.content});
+  //this.wsService.sendMess(ReqCommandPacket,{moveId: this.content});
 
 
  }

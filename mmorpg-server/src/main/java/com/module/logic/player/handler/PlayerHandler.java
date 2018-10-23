@@ -2,10 +2,11 @@ package com.module.logic.player.handler;
 
 import com.common.annotation.WsClass;
 import com.common.annotation.WsMethod;
+import com.common.pack.BytePacket;
+import com.common.packetId.PacketId;
 import com.module.logic.login.packet.ReqLoginPacket;
 import com.module.logic.player.service.PlayerService;
 import io.netty.channel.Channel;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,9 @@ public class PlayerHandler {
         String password=reqLoginPacket.getPassword();
         boolean stateCode=playerService.playerLogin(userName,password);
         if(stateCode){
-            channel.writeAndFlush(new TextWebSocketFrame("登录成功！"));
+            //channel.writeAndFlush(new TextWebSocketFrame("登录成功！"));
+            BytePacket bytePacket= BytePacket.valueOf(PacketId.LOGIN_RESP,"恭喜你！登录成功啦！".getBytes());
+            channel.writeAndFlush(bytePacket);
             logger.info("登录成功！");
         }
 

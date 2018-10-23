@@ -1,6 +1,0 @@
-syntax = "proto3";
-
-message ReqLoginPacket {
-    string userName = 1;
-    string password = 2;
-}

@@ -1,5 +1,0 @@
-syntax = "proto3";
-
-message ReqCommandPacket {
-    int32 moveId = 1;
-}

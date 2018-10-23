@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 import { load } from "protobufjs";
 import { PacketId } from '../module/packetId/PacketId';
-import { RequestPacket } from '../module/pack/RequestPacket';
+import { BytePacket } from '../module/pack/BytePacket';
+import { WebSocketComponent } from '../web-socket/web-socket.component';
 
 
 @Injectable(
@@ -22,10 +23,10 @@ export class WebsocketService {
     }
     WebsocketService.ws.binaryType="arraybuffer";
     return new Observable(
-      observer => {
+      (observer) => {
         WebsocketService.ws.onopen = (event) => {
           observer.next("连接成功");//一旦连接成功则返回这个字符串
-        }
+        };
         // 发送下一个元素
         WebsocketService.ws.onmessage = (event) => observer.next(event.data);
         // 抛出异常
@@ -44,38 +45,39 @@ export class WebsocketService {
     //接着通过proto文件进行编码成字节流
     //通过RequestPacket将数据进行封装：包长+packetId+字节流数据 
     //最后通过websocket发送
-    const packet = new packetClass();
-    let classname=packetClass.name;
-    console.log("classname:"+classname);
-    let packetId=PacketId.getPacketClassName2PacketId(classname);
+    let packetId=PacketId.getPacketClass2PacketId(packetClass);
     console.log("packetId为："+packetId);
-
-    load(`src/app/proto/${classname}.proto`, (err, root) => {//此处的proto文件应该名变量
-      if (err)
-        throw err;
-
-
-      //对发送过来的数据进行解析，找到具体的请求
-      //对具体请求对象进行赋值
-      //通过编码将之变成字节数组
-      //对数据进行封装
-    
-      let detailPacket = root.lookupType(`${classname}`);    
-      //将数据进行编码
-      let buffer = detailPacket.encode(message).finish();
-      console.log(`buffer = ${Array.prototype.toString.call(buffer)}`);
-      //将数据封装
-      let requestPacket=RequestPacket.valueOf(packetId,buffer);
-      //将数据转换成Arraybuffer传输
-      let data=requestPacket.encode();
-      console.log(`${Array.prototype.map.call(new Uint8Array(data),x => x.toString(10)).join(',')}`);
-      WebsocketService.ws.send(data);
-    
-      //let message = ReqCommandPacket.create({ moveId:123456 });
-      //console.log(`message = ${JSON.stringify(message)}`);
-      //let decoded = ReqCommandPacket.decode(buffer);
-      //console.log(`decoded = ${JSON.stringify(decoded)}`);
-    });
-
+    let buffer=packetClass.encode(message).finish();
+    console.log(`buffer = ${Array.prototype.toString.call(buffer)}`);
+     //将数据封装
+     let bytePacket=BytePacket.valueOf(packetId,buffer);
+     //将数据转换成Arraybuffer传输
+     let data=bytePacket.encode();
+     console.log(`${Array.prototype.map.call(new Uint8Array(data),x => x.toString(10)).join(',')}`);
+     WebsocketService.ws.send(data); 
   }
+
+  //用一个函数来存放websocket的生命周期
+  websocketLife(subscriber:Subscriber<any>){
+    WebsocketService.ws.onopen=(event)=>{
+
+    };
+    WebsocketService.ws.onmessage=(event)=>{
+      //接收服务端发送过来的消息
+      let message=event.data;
+      let packetLength= (event.data as ArrayBuffer).byteLength;
+    //  let dataView data=new dataView(e)
+
+    }
+    WebsocketService.ws.onerror = (event) => subscriber.error(event);
+    WebsocketService.ws.onclose = (event) => {
+      subscriber.complete();
+    };
+
+  //接收服务端发送的消息
+  // reciveLoginMessage(event: MessageEvent){  
+  //   WebsocketService.ws.onmessage=(event)=>{
+
+  //   }
+  // }
 }

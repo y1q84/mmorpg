@@ -2,12 +2,12 @@ package com.module.logic.gm.packet;
 
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
-import com.common.packetId.AbstractPaket;
+import com.common.packetId.AbstractPacket;
 import com.common.packetId.PacketId;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReqCommandPacket extends AbstractPaket {
+public class ReqCommandPacket extends AbstractPacket {
 
 //    @Protobuf
 //    private String  commandId;

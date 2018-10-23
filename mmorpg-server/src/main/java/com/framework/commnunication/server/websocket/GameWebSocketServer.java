@@ -1,7 +1,8 @@
 package com.framework.commnunication.server.websocket;
 
 import com.framework.commnunication.server.websocket.handler.DispatchHandler;
-import com.framework.commnunication.server.websocket.handler.GameWebSocketServerHandler;
+import com.framework.commnunication.server.websocket.handler.GameWebSocketServerInboundHandler;
+import com.framework.commnunication.server.websocket.handler.WebSocketServerCodecHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -27,10 +28,13 @@ public class GameWebSocketServer {
     private static Logger logger= LoggerFactory.getLogger(GameWebSocketServer.class);
 
     @Autowired
-    private GameWebSocketServerHandler gameWebSocketServerHandler;
+    private GameWebSocketServerInboundHandler gameWebSocketServerInboundHandler;
 
     @Autowired
     private DispatchHandler dispatchHandler;
+
+    @Autowired
+    private WebSocketServerCodecHandler webSocketServerCodecHandler;
 
     public  void start(){
         ServerBootstrap bootstrapToClient = new ServerBootstrap();
@@ -52,13 +56,11 @@ public class GameWebSocketServer {
                             ch.pipeline().addLast("aggregator", new HttpObjectAggregator(65536));
                             ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());
                             ch.pipeline().addLast("protocolHandler",new WebSocketServerProtocolHandler("/ws"));//protocolHandler处理使得传递到下一个handler的时候是一个完整的数据包
-                            ch.pipeline().addLast("webSocketServerHandler", gameWebSocketServerHandler);
+                            ch.pipeline().addLast("webSocketServerCodecHandler", webSocketServerCodecHandler);
+                            ch.pipeline().addLast("webSocketServerHandler", gameWebSocketServerInboundHandler);
                             ch.pipeline().addLast("dispatchHandler",dispatchHandler);
                         }
                     });
-
-            //启动时生成proto文件
-            createProtoFile();
 
             ChannelFuture f = bootstrapToClient.bind(8085).sync();
 
@@ -67,19 +69,6 @@ public class GameWebSocketServer {
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-
-    public static void createProtoFile(){
-//        String code = ProtobufIDLGenerator.getIDL(ReqLoginPacket.class,null,null,true);
-//        Annotation descriptePacket=ReqLoginPacket.class.getAnnotation(DescriptePacket.class);
-//        String des=((DescriptePacket) descriptePacket).description();
-//        StringBuilder builder=new StringBuilder();
-//        if(des!=null){
-//            builder.append("//"+des);
-//        }
-//        builder.append("\n"+code);
-//        logger.info("生成的proto文件：\n"+builder);
     }
 
     public static void main(String[] args) {

@@ -1,28 +1,33 @@
 package com.framework.commnunication.server.websocket.handler;
 
-import com.common.pack.RequestPacket;
+import com.common.pack.BytePacket;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 import static io.netty.buffer.Unpooled.buffer;
 
 /**
+ * 编解码器
  * author:ydx
  * create 2018\10\23 0023
  */
-public class WebSocketServerCodecHandler extends MessageToMessageCodec<WebSocketFrame,RequestPacket> {
+@ChannelHandler.Sharable
+@Component
+public class WebSocketServerCodecHandler extends MessageToMessageCodec<WebSocketFrame, BytePacket> {
 
     Logger logger=LoggerFactory.getLogger(WebSocketServerCodecHandler.class);
 
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, RequestPacket requestPacket, List<Object> list) throws Exception {
+    protected void encode(ChannelHandlerContext channelHandlerContext, BytePacket requestPacket, List<Object> list) throws Exception {
 
         short packetId=requestPacket.getPacketId();
         byte[] data=requestPacket.getData();
@@ -69,7 +74,7 @@ public class WebSocketServerCodecHandler extends MessageToMessageCodec<WebSocket
         }
         logger.info(String.format("字节数组内容为:[%s]",stringBuilder.toString()));
 
-        RequestPacket packet=RequestPacket.valueOf(packetId,data);
+        BytePacket packet= BytePacket.valueOf(packetId,data);
         list.add(packet);
 
 

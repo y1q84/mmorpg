@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WebsocketService } from '../shared/websocket.service';
-import { ReqLoginPacket } from '../module/packetId/impl/ReqLoginPacket';
+import { ReqLoginPacket } from '../proto/bundle';
 
 @Component({
   selector: 'app-login',
@@ -15,9 +15,11 @@ export class LoginComponent implements OnInit {
   uname:string;
   pass:string;
 
+  //显示服务端发过来的信息
+  reciveMessage : any;
+
 constructor(private wsService:WebsocketService) {
  }
-
 
   ngOnInit() {
   }
@@ -26,10 +28,12 @@ constructor(private wsService:WebsocketService) {
     WebsocketService.observable.subscribe(
       //data接收的是服务端发送给过来的字符串
       data => {
+        console.log("服务端发送的消息："+data);
+        this.reciveMessage=data;
         if (this.loginState === true) return;
         if (data === "登陆成功"){
           this.loginState = true;
-          console.log(data);
+          console.log("第一次："+data);
         }
       },
       err => console.log(err),
@@ -38,19 +42,11 @@ constructor(private wsService:WebsocketService) {
     this.wsService.sendMess(ReqLoginPacket,{userName: this.uname, password : this.pass });
   }
 
+  // reciveLoginMessage(event: MessageEvent){  
+  //   this.wsService.
+  // }
+
   connect(){
-  // 订阅服务器发来消息产生的流
-  // WebsocketService.observable.subscribe(
-  //   data => {
-  //     if (this.loginState === true) return;
-  //     if (data === "登陆成功"){
-  //       this.loginState = true;
-  //       console.log(data);
-  //     }
-  //   },
-  //   err => console.log(err),
-  //   () => console.log("流已经结束")
-  //  );
   WebsocketService.observable = this.wsService.creatObservableSocket("ws://localhost:8085/ws");
   WebsocketService.observable.subscribe(
     data => {

@@ -1,17 +1,17 @@
 package com.common.pack;
 
-/**封装响应数据**/
-public class ResponsePacket {
-   private short packetId;
-   private byte[] data;
+/**封装数据**/
+public class BytePacket {
 
+    private short packetId;
+    private byte[] data;
 
-   public static ResponsePacket valueOf(short packetId,byte[] data){
-       ResponsePacket resp=new ResponsePacket();
-       resp.setPacketId(packetId);
-       resp.setData(data);
-       return resp;
-   }
+    public static BytePacket valueOf(short packetId, byte[] data){
+        BytePacket rp=new BytePacket();
+        rp.setPacketId(packetId);
+        rp.setData(data);
+        return rp;
+    }
 
     public short getPacketId() {
         return packetId;

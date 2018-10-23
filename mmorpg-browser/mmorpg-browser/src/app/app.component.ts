@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from './shared/websocket.service';
+import { PacketId } from './module/packetId/PacketId';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
   
 
   constructor(private wsService: WebsocketService){
-        
+        new PacketId();
   }
 
   ngOnInit(){

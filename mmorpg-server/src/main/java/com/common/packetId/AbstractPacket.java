@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-public abstract class AbstractPaket {
+public abstract class AbstractPacket {
 
     @Autowired
     private PacketId packetId;

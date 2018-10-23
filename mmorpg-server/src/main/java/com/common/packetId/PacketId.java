@@ -12,11 +12,13 @@ import java.util.Map;
 @Component
 public class PacketId {
 
-    private static BiMap<Short ,AbstractPaket> packetId2AbstractPacket= HashBiMap.create();
+    private static BiMap<Short , AbstractPacket> packetId2AbstractPacket= HashBiMap.create();
     private static Map<Short, Codec> packetId2Codec=new HashMap<>();
 
     /**请求登录**/
     public static final short LOGIN_REQ=10001;
+    /**响应登录*/
+    public static final short LOGIN_RESP=1002;
 
     public static final short LOGIN_AUTH_REQ=10003;
 
@@ -32,19 +34,19 @@ public class PacketId {
     public static final short MOVE_COMMAND_RESP=10302;
 
     //添加packetId————>请求包的映射
-    public void registerpacketId2AbstractPacket(AbstractPaket abstractPaket){
+    public void registerpacketId2AbstractPacket(AbstractPacket abstractPacket){
 
-        packetId2AbstractPacket.put(abstractPaket.getPacketId(),abstractPaket);
+        packetId2AbstractPacket.put(abstractPacket.getPacketId(), abstractPacket);
     }
 
     //添加packetId—————>Jprotobuf的编解码器
-    public void registerPacketId2Codec(AbstractPaket abstractPaket){
+    public void registerPacketId2Codec(AbstractPacket abstractPacket){
 
-        packetId2Codec.put(abstractPaket.getPacketId(), ProtobufProxy.create(abstractPaket.getClass()));
+        packetId2Codec.put(abstractPacket.getPacketId(), ProtobufProxy.create(abstractPacket.getClass()));
 
     }
 
-    public static AbstractPaket getAbstractPacket(short packetId){
+    public static AbstractPacket getAbstractPacket(short packetId){
         return packetId2AbstractPacket.get(packetId);
     }
 

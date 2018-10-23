@@ -1,6 +1,6 @@
 package com;
 
-import com.framework.commnunication.server.GameServer;
+import com.framework.commnunication.server.handler.GameServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;

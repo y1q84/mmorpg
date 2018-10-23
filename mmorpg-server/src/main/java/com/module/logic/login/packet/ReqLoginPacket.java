@@ -3,13 +3,13 @@ package com.module.logic.login.packet;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.common.annotation.DescriptePacket;
-import com.common.packetId.AbstractPaket;
+import com.common.packetId.AbstractPacket;
 import com.common.packetId.PacketId;
 import org.springframework.stereotype.Component;
 
 @Component
 @DescriptePacket(description = "用户登录")
-public class ReqLoginPacket extends AbstractPaket {
+public class ReqLoginPacket extends AbstractPacket {
 
     @Protobuf(description = "用户名")
     private String userName;
