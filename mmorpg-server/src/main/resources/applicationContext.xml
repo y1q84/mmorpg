@@ -7,8 +7,11 @@
 
     <context:annotation-config/>
 
-    <context:component-scan base-package="com" >
-        <context:include-filter type="annotation" expression="com.module"/>
+    <context:component-scan base-package="com" />
+
+    <!--规定自定义注解在特定的路径下，它所修饰的类才能成为一个bean-->
+    <context:component-scan base-package="com.module.logic.**.handler" >
+        <context:include-filter type="annotation" expression="com.common.annotation.WsClass"/>
     </context:component-scan>
 
 </beans>
