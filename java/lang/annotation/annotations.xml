@@ -1,0 +1,5 @@
+<root>
+    <item name='java.lang.annotation.RetentionPolicy'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

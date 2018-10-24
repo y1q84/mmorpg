@@ -1,6 +1,10 @@
 package com.framework.commnunication.server.websocket.handler;
 
+import com.baidu.bjf.remoting.protobuf.Codec;
 import com.common.pack.BytePacket;
+import com.common.packetId.AbstractPacket;
+import com.common.packetId.PacketId;
+import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,21 +26,36 @@ import static io.netty.buffer.Unpooled.buffer;
  */
 @ChannelHandler.Sharable
 @Component
-public class WebSocketServerCodecHandler extends MessageToMessageCodec<WebSocketFrame, BytePacket> {
+public class WebSocketServerCodecHandler extends MessageToMessageCodec<WebSocketFrame, AbstractPacket> {
+
 
     Logger logger=LoggerFactory.getLogger(WebSocketServerCodecHandler.class);
 
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, BytePacket requestPacket, List<Object> list) throws Exception {
+    protected void encode(ChannelHandlerContext channelHandlerContext, AbstractPacket requestPacket, List<Object> list) throws Exception {
 
         short packetId=requestPacket.getPacketId();
-        byte[] data=requestPacket.getData();
-        int packetLength=4+2+data.length;
+        //Codec codec = ProtobufProxy.create(requestPacket.getClass());
+        //byte[] encode = codec.encode(requestPacket);
+        //byte[] data=requestPacket.getData();
+        Codec codec = PacketId.getCodec(packetId);
+        Preconditions.checkNotNull(codec, "packetId对应的解码器为空...");
+        byte[] encode=codec.encode(requestPacket);
+        int packetLength=4+2+encode.length;
         ByteBuf byteBuf=buffer(packetLength);
         byteBuf.writeInt(packetLength);
         byteBuf.writeShort(packetId);
-        byteBuf.writeBytes(data);
+        byteBuf.writeBytes(encode);
         WebSocketFrame webSocketFrame=new BinaryWebSocketFrame(byteBuf);
+
+        StringBuilder stringBuilder=new StringBuilder();
+        for (byte b : encode) {
+            //stringBuilder.append(new Integer(b & 0xFF)+",");
+            //将byte转为无复数的byte
+            stringBuilder.append(Byte.toUnsignedInt(b)+",");
+        }
+        logger.info(String.format("字节数组内容为:[%s]",stringBuilder.toString()));
+
         list.add(webSocketFrame);
 
     }

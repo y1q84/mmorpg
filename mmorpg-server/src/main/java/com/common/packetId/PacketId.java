@@ -18,7 +18,7 @@ public class PacketId {
     /**请求登录**/
     public static final short LOGIN_REQ=10001;
     /**响应登录*/
-    public static final short LOGIN_RESP=1002;
+    public static final short LOGIN_RESP=10002;
 
     public static final short LOGIN_AUTH_REQ=10003;
 

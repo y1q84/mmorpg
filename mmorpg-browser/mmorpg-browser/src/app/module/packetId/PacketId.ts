@@ -9,7 +9,7 @@ export class PacketId{
 
     /**请求登录**/
     public static readonly LOGIN_REQ :number =10001;
-    public static readonly LOGIN_RESP :number=1002;
+    public static readonly LOGIN_RESP :number=10002;
 
     /**请求命令**/
     public static readonly COMMAND_REQ:number =10201;

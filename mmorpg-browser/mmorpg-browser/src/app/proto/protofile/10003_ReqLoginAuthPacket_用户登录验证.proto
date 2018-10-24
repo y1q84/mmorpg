@@ -1,0 +1,9 @@
+//用户登录验证
+message ReqLoginAuthPacket {  
+// 用户名
+optional string userName=1;
+// 密码
+optional string password=2;
+// 密钥
+optional string key=3;
+}

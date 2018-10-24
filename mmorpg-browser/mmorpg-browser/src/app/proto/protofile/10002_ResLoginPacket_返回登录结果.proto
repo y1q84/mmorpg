@@ -1,0 +1,5 @@
+//返回登录结果
+message ResLoginPacket {  
+// 登录结果
+optional string result=1;
+}
