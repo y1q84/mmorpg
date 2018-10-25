@@ -32,7 +32,7 @@ public class PlayerHandler {
 
             //channel.writeAndFlush(new TextWebSocketFrame("登录成功！"));
             ResLoginPacket resLoginPacket = new ResLoginPacket();
-            resLoginPacket.setResult("xxxxx");
+            resLoginPacket.setResult("恭喜你，登录成功啦...");
             channel.writeAndFlush(resLoginPacket);
             logger.info("登录成功！");
         }

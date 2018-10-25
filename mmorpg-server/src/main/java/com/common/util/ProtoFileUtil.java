@@ -30,7 +30,8 @@ public class ProtoFileUtil {
                 builder.append("\n"+code);
 
                 //将文件生成到指定位置
-                File file=new File("C:\\mmorpg\\mmorpg\\mmorpg-browser\\mmorpg-browser\\src\\app\\proto\\protofile\\"+ abstractPacket.getPacketId()+"_"+ abstractPacket.getClass().getSimpleName()+"_"+des+".proto");
+                String path="C:\\mmorpg\\mmorpg\\mmorpg-browser\\mmorpg-browser\\src\\app\\proto\\protofile\\"+ abstractPacket.getPacketId()+"_"+ abstractPacket.getClass().getSimpleName()+"_"+des+".proto";
+                File file=new File(path);
                 //File file=new File("C:\\proto2packet\\protobuf-egret\\egret-project\\protobuf\\protofile\\"+AbstractPacket.getPacketId()+"_"+AbstractPacket.getClass().getSimpleName()+"_"+des+".proto");
                 try{
 
@@ -51,6 +52,5 @@ public class ProtoFileUtil {
             }
         }
        // logger.info("生成的proto文件：\n"+builder);
-
     }
 }

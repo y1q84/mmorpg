@@ -1,5 +1,6 @@
 package com.framework.commnunication.server.websocket;
 
+import com.common.util.FileUtil;
 import com.framework.commnunication.server.websocket.handler.DispatchHandler;
 import com.framework.commnunication.server.websocket.handler.GameWebSocketServerInboundHandler;
 import com.framework.commnunication.server.websocket.handler.WebSocketServerCodecHandler;
@@ -21,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
 
 @Component
 public class GameWebSocketServer {
@@ -44,7 +47,9 @@ public class GameWebSocketServer {
 
         try{
 
+            //相当于生产者线程，用来抛出事件
             boss=new NioEventLoopGroup();
+            //相当于消费者线程，处理事件
             worker=new NioEventLoopGroup();
 
             bootstrapToClient.group(boss, worker).channel(NioServerSocketChannel.class)
@@ -72,6 +77,8 @@ public class GameWebSocketServer {
     }
 
     public static void main(String[] args) {
+        //在容器启动之前删除指定目录下的.proto文件
+        FileUtil.deleteAllFiles(new File("C:\\mmorpg\\mmorpg\\mmorpg-browser\\mmorpg-browser\\src\\app\\proto\\protofile\\"));
         ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
         GameWebSocketServer gwss=ac.getBean(GameWebSocketServer.class);
         gwss.start();
