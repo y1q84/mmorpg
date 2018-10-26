@@ -3,13 +3,19 @@ package com.framework.commnunication.server.websocket.handler;
 import com.common.annotation.WsClass;
 import com.common.annotation.WsMethod;
 import com.common.packetId.AbstractPacket;
+import com.common.session.Constants;
+import com.common.session.Session;
+import com.common.thread.DispatchHandlerExecutor;
+import com.common.thread.DispatchTask;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.Attribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
@@ -25,10 +31,11 @@ public class DispatchHandler extends SimpleChannelInboundHandler implements Bean
 
     Logger logger=LoggerFactory.getLogger(DispatchHandler.class);
 
-    //private static Map<Short, BeanAndMethodPack> packetId2BeanAndMethodPack=new HashMap<>();
-
     private static Map<Class<? extends AbstractPacket>,Object> packet2Bean = new HashMap<>();
     private static Map<Class<? extends AbstractPacket>,Method> packet2Method = new HashMap<>();
+
+    @Autowired
+    private DispatchHandlerExecutor dispatchHandlerExecutor;
 
 
     @Override
@@ -45,14 +52,29 @@ public class DispatchHandler extends SimpleChannelInboundHandler implements Bean
     public void execMessage(Channel channel,Object msg){
         Object bean=packet2Bean.get(msg.getClass());
         Method method=packet2Method.get(msg.getClass());
-        try{
 
-            method.invoke(bean,channel,msg);
+        dispatchHandlerExecutor.submit(new DispatchTask() {
+            //取出session
+            Attribute<Session> sessionAttribute=channel.attr(Constants.SESSION_ATTRIBUTE_KEY);
+            Session session=sessionAttribute.get();
+            @Override
+            public String getHashString() {
+                return String.valueOf(session.getId());
+            }
 
-        }catch (Exception e){
-            e.printStackTrace();
-            logger.error("消息处理失败...");
-        }
+            @Override
+            public void run() {
+                try{
+
+                    method.invoke(bean,session,msg);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    logger.error("消息处理失败...");
+                }
+            }
+        });
+
     }
 
     @Override

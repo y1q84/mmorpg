@@ -32,15 +32,12 @@ public class WebSocketServerCodecHandler extends MessageToMessageCodec<WebSocket
     Logger logger=LoggerFactory.getLogger(WebSocketServerCodecHandler.class);
 
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, AbstractPacket requestPacket, List<Object> list) throws Exception {
+    protected void encode(ChannelHandlerContext channelHandlerContext, AbstractPacket abstractPacket, List<Object> list) throws Exception {
 
-        short packetId=requestPacket.getPacketId();
-        //Codec codec = ProtobufProxy.create(requestPacket.getClass());
-        //byte[] encode = codec.encode(requestPacket);
-        //byte[] data=requestPacket.getData();
+        short packetId=abstractPacket.getPacketId();
         Codec codec = PacketId.getCodec(packetId);
         Preconditions.checkNotNull(codec, "packetId对应的解码器为空...");
-        byte[] encode=codec.encode(requestPacket);
+        byte[] encode=codec.encode(abstractPacket);
         int packetLength=4+2+encode.length;
         ByteBuf byteBuf=buffer(packetLength);
         byteBuf.writeInt(packetLength);

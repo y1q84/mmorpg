@@ -4,6 +4,8 @@ import com.baidu.bjf.remoting.protobuf.Codec;
 import com.common.pack.BytePacket;
 import com.common.packetId.AbstractPacket;
 import com.common.packetId.PacketId;
+import com.common.session.Constants;
+import com.common.session.Session;
 import com.module.logic.gm.manager.GMManager;
 import com.module.logic.login.packet.ReqLoginPacket;
 import io.netty.channel.Channel;
@@ -12,6 +14,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.util.Attribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,9 @@ public class GameWebSocketServerInboundHandler extends SimpleChannelInboundHandl
         //bean = map.get()
         //bean.invoke(packet)
 
+        /**
+         *  TODO 此段代码抽出放到编解码会更好
+         */
         /**发送过来的数据应该是一个封装的RequestPacket对象**/
         Channel channel=ctx.channel();
         short pack=msg.getPacketId();
@@ -69,15 +75,20 @@ public class GameWebSocketServerInboundHandler extends SimpleChannelInboundHandl
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        Channel incoming = ctx.channel();
-        //incoming.writeAndFlush(new TextWebSocketFrame("连接成功"));
-        logger.info("用户:"+incoming.remoteAddress()+"上线...");
+        //将session放进channel
+        Channel channel = ctx.channel();
+        Attribute<Session> sessionAttribute=channel.attr(Constants.SESSION_ATTRIBUTE_KEY);
+        sessionAttribute.compareAndSet(null,Session.valueOf(channel));
+        logger.info("用户:"+channel.remoteAddress()+"上线...");
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        Channel incoming = ctx.channel();
-        logger.info("用户:"+incoming.remoteAddress()+"离线...");
+        //将session从channel中移除
+        Channel channel = ctx.channel();
+        Attribute<Session> sessionAttribute=channel.attr(Constants.SESSION_ATTRIBUTE_KEY);
+        sessionAttribute.compareAndSet(sessionAttribute.get(),null);
+        logger.info("用户:"+channel.remoteAddress()+"离线...");
     }
 
     @Override

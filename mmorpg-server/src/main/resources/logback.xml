@@ -16,7 +16,7 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- 一是把日志信息转换成字节数组,二是把字节数组写入到输出流 -->
         <encoder>
-            <pattern>%cn %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%cn %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M:%line  - %msg%n</pattern>
         </encoder>
     </appender>
 

@@ -1,8 +1,10 @@
 package com.communication.communicateWithBrowser;
 
-import com.communication.communicateWithBrowser.handler.ServerToBrowserHandler;
+//import com.communication.communicateWithBrowser.handler.ServerToBrowserHandler;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -13,7 +15,6 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,8 @@ public class ServerToBrowser {
 
     private static Logger logger= LoggerFactory.getLogger(ServerToBrowser.class);
 
-    @Autowired
-    private ServerToBrowserHandler serverToBrowserHandler;
+//    @Autowired
+//    private ServerToBrowserHandler serverToBrowserHandler;
 
     public  void start(){
         ServerBootstrap bootstrapToClient = new ServerBootstrap();
@@ -46,7 +47,7 @@ public class ServerToBrowser {
                             ch.pipeline().addLast("aggregator", new HttpObjectAggregator(65536));
                             ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());
                             ch.pipeline().addLast("protocolHandler",new WebSocketServerProtocolHandler("/ws"));
-                            ch.pipeline().addLast("webSocketServerHandler", serverToBrowserHandler);
+//                            ch.pipeline().addLast("webSocketServerHandler", serverToBrowserHandler);
                         }
                     });
 

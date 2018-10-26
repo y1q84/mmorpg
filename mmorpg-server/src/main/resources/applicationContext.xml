@@ -14,4 +14,8 @@
         <context:include-filter type="annotation" expression="com.common.annotation.WsClass"/>
     </context:component-scan>
 
+    <bean name="dispatchHandlerExecutor" class="com.common.thread.DispatchHandlerExecutor">
+        <constructor-arg value="5"/>
+    </bean>
+
 </beans>
