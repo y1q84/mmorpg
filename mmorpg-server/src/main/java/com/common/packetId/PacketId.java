@@ -22,6 +22,12 @@ public class PacketId {
 
     public static final short LOGIN_AUTH_REQ=10003;
 
+    /**请求进入场景**/
+    public static final short ENTER_WORLD_REQ=10010;
+    /**响应进入场景**/
+    public static final short ENTER_WORLD_RESP=10011;
+
+
 
     /**请求命令**/
     public static final short COMMAND_REQ=10201;

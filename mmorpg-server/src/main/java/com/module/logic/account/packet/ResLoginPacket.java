@@ -1,4 +1,4 @@
-package com.module.logic.login.packet;
+package com.module.logic.account.packet;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.common.annotation.DescriptePacket;

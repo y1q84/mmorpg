@@ -1,4 +1,4 @@
-package com.module.logic.login.packet;
+package com.module.logic.account.packet;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.common.annotation.DescriptePacket;
@@ -10,18 +10,18 @@ import org.springframework.stereotype.Component;
 @DescriptePacket(description = "用户登录验证")
 public class ReqLoginAuthPacket extends AbstractPacket {
     @Protobuf(description = "用户名")
-    private String userName;
+    private String account;
     @Protobuf(description = "密码")
     private String password;
     @Protobuf(description = "密钥")
     private String key;
 
-    public String getUserName() {
-        return userName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {
