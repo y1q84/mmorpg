@@ -18,4 +18,15 @@
         <constructor-arg value="5"/>
     </bean>
 
+    <!-- 数据配置 -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:server.properties</value>
+            </list>
+        </property>
+    </bean>
+
+
+
 </beans>
