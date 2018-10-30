@@ -1,7 +1,7 @@
 package com.module.logic.gm;
 
 import com.module.logic.gm.manager.GMManager;
-import com.module.player.entity.Player;
+import com.module.logic.player.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;

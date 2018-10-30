@@ -4,7 +4,7 @@ import com.common.packetId.impl.ReqMoveCommandPacket;
 import com.module.logic.gm.AbstractGMCommand;
 import com.module.logic.gm.GMResultMessage;
 import com.module.logic.gm.GMType;
-import com.module.player.entity.Player;
+import com.module.logic.player.Player;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

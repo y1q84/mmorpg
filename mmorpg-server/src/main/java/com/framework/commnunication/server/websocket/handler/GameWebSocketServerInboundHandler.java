@@ -6,8 +6,8 @@ import com.common.packetId.AbstractPacket;
 import com.common.packetId.PacketId;
 import com.common.session.Constants;
 import com.common.session.Session;
+import com.module.logic.account.packet.ReqLoginPacket;
 import com.module.logic.gm.manager.GMManager;
-import com.module.logic.login.packet.ReqLoginPacket;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -58,7 +58,7 @@ public class GameWebSocketServerInboundHandler extends SimpleChannelInboundHandl
         if(obj instanceof ReqLoginPacket){
             ReqLoginPacket reqLoginPacket=(ReqLoginPacket) obj;
             logger.info("ReqLoginpacket对应的packetId为："+reqLoginPacket.getPacketId());
-            logger.info("具体的请求类为："+reqLoginPacket.getClass().getName()+"\t,用户名:"+reqLoginPacket.getUserName()+",\t密码："+reqLoginPacket.getPassword());
+            logger.info("具体的请求类为："+reqLoginPacket.getClass().getName()+"\t,账号:"+reqLoginPacket.getAccount()+",\t密码："+reqLoginPacket.getPassword());
             channel.writeAndFlush(new TextWebSocketFrame("登陆成功"));
         }
 
@@ -78,6 +78,7 @@ public class GameWebSocketServerInboundHandler extends SimpleChannelInboundHandl
         //将session放进channel
         Channel channel = ctx.channel();
         Attribute<Session> sessionAttribute=channel.attr(Constants.SESSION_ATTRIBUTE_KEY);
+        //同时将改channel赋值给session中channel字段
         sessionAttribute.compareAndSet(null,Session.valueOf(channel));
         logger.info("用户:"+channel.remoteAddress()+"上线...");
     }

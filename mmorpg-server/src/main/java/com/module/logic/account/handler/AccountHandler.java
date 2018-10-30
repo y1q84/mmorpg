@@ -2,6 +2,7 @@ package com.module.logic.account.handler;
 
 import com.common.annotation.WsClass;
 import com.common.annotation.WsMethod;
+import com.common.session.Constants;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
 import com.module.logic.account.packet.ReqLoginPacket;
@@ -29,10 +30,16 @@ public class AccountHandler {
         String password=reqLoginPacket.getPassword();
         boolean stateCode= accountService.login(account,password);
         if(stateCode){
+            //登录成功，将account添加进session
+            addAccountToSession(session,reqLoginPacket);
             ResLoginPacket resLoginPacket = new ResLoginPacket();
-            resLoginPacket.setResult("恭喜你，登录成功啦...");
+            resLoginPacket.setResult("登录成功");
             PacketUtil.sendPacket(session,resLoginPacket);
             logger.info("登录成功！");
         }
+    }
+
+    public void addAccountToSession(Session session,ReqLoginPacket reqLoginPacket){
+        session.add(Constants.SESSION_ID,reqLoginPacket.getAccount());
     }
 }

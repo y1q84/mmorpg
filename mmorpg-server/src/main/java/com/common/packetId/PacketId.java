@@ -19,13 +19,16 @@ public class PacketId {
     public static final short LOGIN_REQ=10001;
     /**响应登录*/
     public static final short LOGIN_RESP=10002;
-
+    /**登录验证**/
     public static final short LOGIN_AUTH_REQ=10003;
-
+    /**请求创建角色**/
+    public static final short CREATE_ROLE_REQ=10010;
+    /**响应创建角色**/
+    public static final short CREATE_ROLE_RESP=10011;
     /**请求进入场景**/
-    public static final short ENTER_WORLD_REQ=10010;
+    public static final short ENTER_WORLD_REQ=10020;
     /**响应进入场景**/
-    public static final short ENTER_WORLD_RESP=10011;
+    public static final short ENTER_WORLD_RESP=10021;
 
 
 

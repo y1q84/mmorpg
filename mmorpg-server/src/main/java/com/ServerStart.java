@@ -1,6 +1,5 @@
 package com;
 
-import com.framework.commnunication.server.handler.GameServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -11,8 +10,8 @@ public class ServerStart {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext=new ClassPathXmlApplicationContext("applicationContext.xml");
-        GameServer server=applicationContext.getBean(GameServer.class);
-        server.start();
+       // GameServer server=applicationContext.getBean(GameServer.class);
+       // server.start();
         logger.info("ServerStart启动服务器成功..");
     }
 }
