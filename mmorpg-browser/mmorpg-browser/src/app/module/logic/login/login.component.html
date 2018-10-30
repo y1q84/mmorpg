@@ -1,8 +1,36 @@
-<form method="POST" *ngIf="connectState===true">
-  <input name="account" placeholder="用户名"  [(ngModel)]="uname" />
-  <input name="password" type="password" placeholder="密码" [(ngModel)]="pass" />
-  <input type="button" (click)="sendLoginMessage()" value="登录"/>
-
-</form>
-<button *ngIf="connectState!==true" (click)="connect()">连接到服务器</button>
-<h3>{{reciveMessage}}</h3>
+<html>
+  <head>
+    <title>myworld</title>
+    <style>
+      div{ margin:0 auto; width:400px; height:100px; border:0px solid #F00} 
+    </style>
+  </head>
+  <body>
+    <div class="d1">
+      <form method="POST" *ngIf="connectState===true && loginState!==true">
+        <h3>{{reciveMessage}}</h3>
+        <input name="account" placeholder="账号"  [(ngModel)]="uname" /><br/>
+        <input name="password" type="password" placeholder="密码" [(ngModel)]="pass" /><br/>
+        <input type="button" (click)="sendLoginMessage()" value="登录"/>
+      </form>
+      <button *ngIf="connectState!==true" (click)="connect()">连接到服务器</button>
+    </div>
+    <div>
+        <form method="POST" *ngIf="connectState===true && loginState===true">
+            <h3>角色创建</h3>
+            角色：<input name="playerName" placeholder="角色名"  [(ngModel)]="playerName" /><br/>
+            <!-- <input name="roleType" placeholder="职业" [(ngModel)]="roleType" /><br/> -->
+            性别：<select [ngModel]="selectedSex" (ngModelChange)="onChange2($event)" name="sel1">
+                     <option [value]="i" *ngFor="let i of sex">{{i}}</option>
+                  </select><br/>
+            职业：<select [ngModel]="selectedRole" (ngModelChange)="onChange($event)" name="sel2">
+                      <option [value]="i" *ngFor="let i of roleType">{{i}}</option>
+                  </select><br/>
+            <!-- <input name="sex" placeholder="性别" [(ngModel)]="sex"/><br/> -->
+            <input type="button" (click)="createRole()" value="创建角色"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" (click)="enterscene()" value="进入场景"/>
+            <h3>{{respCreateRoleMessage}}</h3>
+          </form>
+    </div>
+  </body>
+</html>

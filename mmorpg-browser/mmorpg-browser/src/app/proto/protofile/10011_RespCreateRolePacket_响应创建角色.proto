@@ -1,0 +1,7 @@
+//响应创建角色
+message RespCreateRolePacket {  
+// 返回结果
+optional string result=1;
+// 角色id
+optional int32 playerId=2;
+}

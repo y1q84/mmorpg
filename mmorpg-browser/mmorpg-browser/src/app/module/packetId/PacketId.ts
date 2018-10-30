@@ -1,4 +1,6 @@
-import { ReqLoginPacket, ResLoginPacket } from 'src/app/proto/bundle';
+import { ReqLoginPacket, ResLoginPacket, ReqCreateRolePacket, RespCreateRolePacket } from 'src/app/proto/bundle';
+
+
 
 export class PacketId {
 
@@ -9,8 +11,13 @@ export class PacketId {
 
     /**请求登录**/
     public static readonly LOGIN_REQ: number = 10001;
+    /**响应登录**/
     public static readonly LOGIN_RESP: number = 10002;
     public static readonly LOGIN_AUTH_REQ: number = 10003;
+    /**请求创建角色**/
+    public static readonly CREATE_ROLE_REQ: number = 10010;
+    /**响应创建角色**/
+    public static readonly CREATE_ROLE_RESP: number = 10011;
 
     /**请求命令**/
     public static readonly COMMAND_REQ: number = 10201;
@@ -20,6 +27,8 @@ export class PacketId {
     constructor() {
         PacketId.add(PacketId.LOGIN_REQ, ReqLoginPacket);
         PacketId.add(PacketId.LOGIN_RESP, ResLoginPacket);
+        PacketId.add(PacketId.CREATE_ROLE_REQ, ReqCreateRolePacket);
+        PacketId.add(PacketId.CREATE_ROLE_RESP, RespCreateRolePacket);
     }
 
 
