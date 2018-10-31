@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from './shared/websocket.service';
 import { PacketId } from './module/packetId/PacketId';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,9 @@ export class AppComponent implements OnInit {
   title = 'mmorpg-browser';
   connectState: boolean;
 
-  constructor(private wsService: WebsocketService) {
+  constructor(private wsService: WebsocketService,
+    private location: Location
+    ) {
         const packetId = new PacketId();
   }
 
@@ -32,6 +35,7 @@ export class AppComponent implements OnInit {
             // 如果发送过来的内容为'连接成功'，则修改连接状态为true,且输出一下数据进行验证
             if (data === '连接成功') {
               this.connectState = true;
+              this.wsService.$connectState = true;
               console.log(data);
             }
           },
@@ -39,6 +43,7 @@ export class AppComponent implements OnInit {
           err => console.log(err),
           () => console.log('流已经结束')
        );
-
+        // this.wsService.goto(`login`);
   }
+
 }

@@ -6,17 +6,21 @@ import { AppComponent } from './app.component';
 import { WebSocketComponent } from './web-socket/web-socket.component';
 import {WebsocketService} from './shared/websocket.service';
 import { LoginComponent } from './module/logic/login/login.component';
+import { MapComponent } from './module/logic/map/map.component';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     WebSocketComponent,
-    LoginComponent
+    LoginComponent,
+    MapComponent
   ],
   imports: [
     FormsModule,
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [WebsocketService],
   bootstrap: [AppComponent]

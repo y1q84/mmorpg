@@ -18,6 +18,10 @@ export class PacketId {
     public static readonly CREATE_ROLE_REQ: number = 10010;
     /**响应创建角色**/
     public static readonly CREATE_ROLE_RESP: number = 10011;
+    /**请求进入场景**/
+    public static readonly ENTER_WORLD_REQ: number = 10020;
+    /**响应进入场景**/
+    public static readonly ENTER_WORLD_RESP: number = 10021;
 
     /**请求命令**/
     public static readonly COMMAND_REQ: number = 10201;

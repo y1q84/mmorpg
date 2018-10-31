@@ -4,6 +4,7 @@ import { load } from 'protobufjs';
 import { PacketId } from '../module/packetId/PacketId';
 import { BytePacket } from '../module/pack/BytePacket';
 import { WebSocketComponent } from '../web-socket/web-socket.component';
+import { Location } from '@angular/common';
 
 
 @Injectable(
@@ -14,11 +15,24 @@ export class WebsocketService {
   // 客户端的服务
   static ws: WebSocket;
   static observable: Observable<any>;
-
+  syncConnectState$: Observable<any>;
+  subscriber: Subscriber<any>;
+  private connectState: boolean;
   // 定义一个观察者列表
   subscribers: Array<Subscriber<any>> = [];
 
-  constructor() { }
+  getConnectState() {
+    return this.connectState;
+  }
+  set $connectState(connectState: boolean) {
+    this.subscriber.next(connectState);
+  }
+
+  constructor(private location: Location) {
+    this.syncConnectState$ = new Observable((observer) => {
+      this.subscriber = observer;
+    });
+   }
 
   // 连接服务器，并返回一个Observable，传进一个观察者
   creatObservableSocket(url: string): Observable<any> {
@@ -121,5 +135,10 @@ export class WebsocketService {
      const data = bytePacket.encode();
      console.log(`${Array.prototype.map.call(new Uint8Array(data), x => x.toString(10)).join(',')}`);
      WebsocketService.ws.send(data);
+  }
+
+  goto(uri: string) {
+    // ${this.location.host}/
+    this.location.go(`${uri}`);
   }
 }

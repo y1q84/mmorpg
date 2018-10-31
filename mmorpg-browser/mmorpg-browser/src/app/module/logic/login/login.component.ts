@@ -3,6 +3,7 @@ import { Subscriber } from 'rxjs';
 import { WebsocketService } from 'src/app/shared/websocket.service';
 import { ReqLoginPacket, ReqCreateRolePacket, RoleType } from 'src/app/proto/bundle';
 import { PacketId } from '../../packetId/PacketId';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,6 @@ import { PacketId } from '../../packetId/PacketId';
 export class LoginComponent implements OnInit {
   // loginState = true;
   loginState: boolean;
-  @Input()
   connectState: boolean;
   // 显示服务端发过来的信息
   reciveMessage: any;
@@ -23,21 +23,30 @@ export class LoginComponent implements OnInit {
   playerName: string;
   // sex: string;
   sex = '男 女'.split('');
-  selectedSex = '男';
+  sSex = '男';
   roleType: string[] = [];
   selectedRole = 'WARRIOR';
 
-  onChange2(newValue) {
+  onChange(newValue) {
     console.log(newValue);
-    this.selectedSex = newValue;
+    this.sSex = newValue;
   }
 
-  onChange(newValue) {
+  onChange2(newValue) {
     console.log(newValue);
     this.selectedRole = newValue;
   }
 
-  constructor(private wsService: WebsocketService) {
+  constructor(private wsService: WebsocketService,
+    private location: Location
+    ) {
+      this.connectState = this.wsService.getConnectState();
+      this.wsService.syncConnectState$.subscribe({
+        next: (value) => {
+          this.connectState = value;
+        }
+      });
+
     for (const pro in RoleType) {
       if (pro !== null) {
         const type = RoleType[pro];
@@ -110,8 +119,8 @@ export class LoginComponent implements OnInit {
     // const type = RoleType['MASTER'];
     // console.log(`${RoleType['MASTER']}`);
     if (RoleType[this.selectedRole] !== undefined) {
-      console.log(`进来吗输错的话：？${RoleType[this.selectedRole]}`);
-      this.wsService.sendMess(ReqCreateRolePacket, {playerName: this.playerName, roleType: RoleType[this.selectedRole], sex: this.sex});
+     // console.log(`进来吗输错的话：？${RoleType[this.selectedRole]}`);
+      this.wsService.sendMess(ReqCreateRolePacket, {playerName: this.playerName, roleType: RoleType[this.selectedRole], sex: this.sSex});
     }
   }
 
@@ -129,5 +138,8 @@ export class LoginComponent implements OnInit {
   respCreateRole(data: any) {
     this.respCreateRoleMessage = data.respObj.result;
     console.log('角色创建：' + this.respCreateRoleMessage);
+  }
+  enterscene() {
+      this.wsService.goto(`map`);
   }
 }
