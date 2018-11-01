@@ -1,7 +1,6 @@
 package com.module.logic.map.obj;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 
 /**
  * 地图上的对象
@@ -9,13 +8,15 @@ import java.util.Map;
 public class MapObject {
 
     //地图上对象id
+    @Protobuf
     private long id;
+    @Protobuf
     private long mapId;
     //是否可见
+    @Protobuf
     private boolean isVisible;
+    @Protobuf
     private ObjectType objectType;
-
-    private Map<Long,Object> objInMap=new HashMap<>();
 
     public long getId() {
         return id;
@@ -49,11 +50,4 @@ public class MapObject {
         this.objectType = objectType;
     }
 
-    public void addObjInMap(long objectId,Object obj){
-        this.objInMap.put(objectId,obj);
-    }
-
-    public Object getObjInMap(long objectId){
-        return this.objInMap.get(objectId);
-    }
 }

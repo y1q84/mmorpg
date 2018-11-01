@@ -2,15 +2,15 @@ package com.module.logic.map;
 
 import com.module.logic.map.obj.MapObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Scene {
 
     private int sceneId;
     private int mapId;
     private String name;
-    private Map<Integer, MapObject> objectInMap=new HashMap<>();
+    private List<MapObject> objectInMap=new ArrayList<>();
 
     public int getSceneId() {
         return sceneId;
@@ -36,11 +36,11 @@ public class Scene {
         this.name = name;
     }
 
-    public Map<Integer,MapObject> getObjectInMap() {
+    public List<MapObject> getObjectInMap() {
         return objectInMap;
     }
 
-    public void addObjectToMap(int id,MapObject mapObject) {
-        objectInMap.put(id,mapObject);
+    public void addObjectToMap(MapObject mapObject) {
+        objectInMap.add(mapObject);
     }
 }

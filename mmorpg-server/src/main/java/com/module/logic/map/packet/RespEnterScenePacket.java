@@ -4,11 +4,11 @@ import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.common.annotation.DescriptePacket;
 import com.common.packetId.AbstractPacket;
 import com.common.packetId.PacketId;
-import com.module.logic.map.obj.MapObject;
+import com.module.logic.map.packet.vo.PlayerInfo;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @DescriptePacket(description = "响应进入场景")
@@ -18,7 +18,8 @@ public class RespEnterScenePacket extends AbstractPacket {
     private int mapId;
     @Protobuf(description = "场景id")
     private int sceneId;
-    private Map<Integer,MapObject> mapObjectMap=new HashMap<>();
+    @Protobuf(description = "场景内所有物体内容")
+    private List<PlayerInfo> mapObject=new ArrayList<>();
 
     public int getMapId() {
         return mapId;
@@ -36,12 +37,12 @@ public class RespEnterScenePacket extends AbstractPacket {
         this.sceneId = sceneId;
     }
 
-    public Map<Integer, MapObject> getMapObjectMap() {
-        return mapObjectMap;
+    public List<PlayerInfo> getMapObjectMap() {
+        return mapObject;
     }
 
-    public void setMapObjectMap(Map<Integer, MapObject> mapObjectMap) {
-        this.mapObjectMap = mapObjectMap;
+    public void addMapObject(List<PlayerInfo> list) {
+        this.mapObject=list;
     }
 
     @Override
