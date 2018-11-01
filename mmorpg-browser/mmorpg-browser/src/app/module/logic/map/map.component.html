@@ -1,1 +1,11 @@
-<h3>哈哈哈</h3>
+<div>
+    <form>
+        <input name="content" placeholder="输入内容" [(ngModel)]="inputContent" />
+        <input type="button" (click)="sendCommandMessage()" value="发送"/><br/><br/>
+        选择场景：<select [ngModel]="selectedScene" (ngModelChange)="onChange($event)" name="sel">
+                    <option [value]="i" *ngFor="let i of scene">{{i}}</option>
+                </select>
+        <input type="button" (click)="sendEnterSceneMessage()" value="进入场景"/><br/><br/>
+        <textarea name="message" [(ngModel)]="receviceMessage"></textarea>
+    </form>
+</div>

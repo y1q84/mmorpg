@@ -1,4 +1,5 @@
-import { ReqLoginPacket, ResLoginPacket, ReqCreateRolePacket, RespCreateRolePacket } from 'src/app/proto/bundle';
+import { ReqLoginPacket, ResLoginPacket, ReqCreateRolePacket, RespCreateRolePacket,
+    ReqEnterScenePacket, RespEnterScenePacket } from 'src/app/proto/bundle';
 
 
 
@@ -33,6 +34,8 @@ export class PacketId {
         PacketId.add(PacketId.LOGIN_RESP, ResLoginPacket);
         PacketId.add(PacketId.CREATE_ROLE_REQ, ReqCreateRolePacket);
         PacketId.add(PacketId.CREATE_ROLE_RESP, RespCreateRolePacket);
+        PacketId.add(PacketId.ENTER_WORLD_REQ, ReqEnterScenePacket);
+        PacketId.add(PacketId.ENTER_WORLD_RESP, RespEnterScenePacket);
     }
 
 
