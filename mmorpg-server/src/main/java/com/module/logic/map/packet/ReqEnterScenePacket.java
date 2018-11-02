@@ -13,8 +13,6 @@ public class ReqEnterScenePacket extends AbstractPacket {
     private int playerId;
     @Protobuf(description = "场景id")
     private int sceneId;
-    @Protobuf(description = "地图id")
-    private int mapId;
 
     public int getPlayerId() {
         return playerId;
@@ -30,14 +28,6 @@ public class ReqEnterScenePacket extends AbstractPacket {
 
     public void setSceneId(int sceneId) {
         this.sceneId = sceneId;
-    }
-
-    public int getMapId() {
-        return mapId;
-    }
-
-    public void setMapId(int mapId) {
-        this.mapId = mapId;
     }
 
     @Override

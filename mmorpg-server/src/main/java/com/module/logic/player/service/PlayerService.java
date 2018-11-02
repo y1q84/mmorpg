@@ -3,6 +3,7 @@ package com.module.logic.player.service;
 import com.common.session.Constants;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
+import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
 import com.module.logic.player.manager.PlayerManager;
 import com.module.logic.player.packet.ReqCreateRolePacket;
@@ -43,5 +44,9 @@ public class PlayerService {
             PacketUtil.sendPacket(session,respCreateRolePacket);
             logger.info("角色创建成功...");
         }
+    }
+
+    public void doLogin(Session session, Player player){
+
     }
 }

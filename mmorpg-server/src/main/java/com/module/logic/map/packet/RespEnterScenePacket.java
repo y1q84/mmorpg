@@ -4,7 +4,7 @@ import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.common.annotation.DescriptePacket;
 import com.common.packetId.AbstractPacket;
 import com.common.packetId.PacketId;
-import com.module.logic.map.packet.vo.PlayerInfo;
+import com.module.logic.map.packet.vo.ObjectInMapInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,20 +14,10 @@ import java.util.List;
 @DescriptePacket(description = "响应进入场景")
 public class RespEnterScenePacket extends AbstractPacket {
 
-    @Protobuf(description = "地图id")
-    private int mapId;
     @Protobuf(description = "场景id")
     private int sceneId;
     @Protobuf(description = "场景内所有物体内容")
-    private List<PlayerInfo> mapObject=new ArrayList<>();
-
-    public int getMapId() {
-        return mapId;
-    }
-
-    public void setMapId(int mapId) {
-        this.mapId = mapId;
-    }
+    private List<ObjectInMapInfo> mapObject=new ArrayList<>();
 
     public int getSceneId() {
         return sceneId;
@@ -37,12 +27,16 @@ public class RespEnterScenePacket extends AbstractPacket {
         this.sceneId = sceneId;
     }
 
-    public List<PlayerInfo> getMapObjectMap() {
+    public List<ObjectInMapInfo> getMapObjectMap() {
         return mapObject;
     }
 
-    public void addMapObject(List<PlayerInfo> list) {
-        this.mapObject=list;
+    public void addMapObject(ObjectInMapInfo object) {
+        this.mapObject.add(object);
+    }
+
+    public void setMapObject(List<ObjectInMapInfo> objectInfo){
+        this.mapObject=objectInfo;
     }
 
     @Override
