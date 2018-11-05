@@ -1,0 +1,14 @@
+[
+  {
+    "name":"JohnSmith",
+    "age":18,
+    "sex":"男",
+    "address":"广东"
+  },
+  {
+    "name":"Zhaoxi",
+    "age":23,
+    "sex":"男",
+    "address":"上海"
+  }
+]
