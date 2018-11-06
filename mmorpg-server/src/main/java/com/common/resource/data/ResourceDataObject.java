@@ -5,6 +5,8 @@ import com.common.resource.annotation.Id;
 import com.common.resource.annotation.Resources;
 import com.common.resource.type.ResourceType;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -16,6 +18,7 @@ import java.lang.reflect.Field;
  * 根据资源类拼凑资源路径及获取对应路径下的资源
  */
 public class ResourceDataObject {
+    static Logger logger=LoggerFactory.getLogger(ResourceDataObject.class);
 
     //"classpath*":用于加载类路径（包括jar包）中的所有匹配的资源
     private static final String CLASSPATH="classpath*:";
@@ -109,13 +112,13 @@ public class ResourceDataObject {
             builder.append(path).append(File.separator);
         }
         //在这里要考虑一个问题就是文件名时候有.后缀
-        if(fileName.lastIndexOf(".")!=-1){
+        if(fileName.lastIndexOf(".")==-1){
             builder.append(fileName).append(".").append(suffix);
         }else{
             builder.append(fileName);
         }
         String totalPath=builder.toString();
-
+        System.out.println("ResourceDataObject---->拼凑的完整路径为："+totalPath);
         return new ResourceDataObject(path,suffix,resourceType,fileName,totalPath,resourceClass);
     }
 
