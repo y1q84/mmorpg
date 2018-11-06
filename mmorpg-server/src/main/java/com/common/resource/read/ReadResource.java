@@ -2,10 +2,9 @@ package com.common.resource.read;
 
 import com.common.resource.data.ResourceDataObject;
 
-import java.util.Map;
+import java.util.List;
 
 public interface ReadResource {
-    String getSuffix();
 
-    Map read(ResourceDataObject resourceDataObject);
+    <T> List<T> read(ResourceDataObject resourceDataObject);
 }
