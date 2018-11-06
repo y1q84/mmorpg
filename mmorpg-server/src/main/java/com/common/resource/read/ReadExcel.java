@@ -1,5 +1,6 @@
 package com.common.resource.read;
 
+import com.common.resource.converter.Converter;
 import com.common.resource.data.ResourceDataObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -14,7 +15,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -23,13 +27,8 @@ public class ReadExcel implements ReadResource {
     Logger logger=LoggerFactory.getLogger(ReadExcel.class);
 
     @Override
-    public String getSuffix() {
-        return null;
-    }
-
-    @Override
-    public Map read(ResourceDataObject resourceDataObject) {
-        Map<Object,Object> map=new HashMap<>();
+    public <E> List<E> read(ResourceDataObject resourceDataObject) {
+        List list=new ArrayList<>();
         //读取资源数组
         Resource[] resources=resourceDataObject.getResources();
         //获取资源类
@@ -46,7 +45,7 @@ public class ReadExcel implements ReadResource {
                 e.printStackTrace();
             }
             //用来保存表中每一项与资源类属性字段的映射
-            Map<Integer, Field> keys=null;
+            Map<Integer, Field> keys=new HashMap<>();
             //判断是否可以读取数据
             boolean isReadData=false;
             //存放主键
@@ -61,7 +60,7 @@ public class ReadExcel implements ReadResource {
                 int rowNum=sheet.getLastRowNum();
                 //遍历所有行
                 //注：第一行不是数据，只是与资源类的属性对应
-                for(int j=0;j<rowNum;j++){
+                for(int j=0;j<=rowNum;j++){
                     Row row=sheet.getRow(j);
                     if(row==null){
                         continue;
@@ -70,6 +69,8 @@ public class ReadExcel implements ReadResource {
                     Cell cell=row.getCell(0);
                     //照理来说第一行的第一个单元格就是服务端的标识
                     if(cell!=null&&"SERVER".equalsIgnoreCase(cell.getStringCellValue())){
+                        //判断主键是否存在
+                        boolean isKey=false;
                         //将表头的每一项与资源类的属性字段对应起来
                         for(int k=1;k<=row.getLastCellNum();k++){
                             cell=row.getCell(k);
@@ -95,19 +96,14 @@ public class ReadExcel implements ReadResource {
                                     logger.error(String.format("该属性字段%s不存在...",field.getName()));
                                 }
                             }
-
-                            //判断主键是否存在
-                            boolean isKey=false;
                             if(resourceDataObject.getKeyName().equalsIgnoreCase(value)){
                                 key=field;
                                 isKey=true;
                             }
-                            if(!isKey){
-                                throw new RuntimeException(String.format("配置文件%s缺少主键%s",resourceDataObject.getTotalPath(),resourceDataObject.getFileName()));
-                            }
-
                         }
-
+                        if(!isKey){
+                            throw new RuntimeException(String.format("配置文件%s缺少主键%s",resourceDataObject.getTotalPath(),resourceDataObject.getKeyName()));
+                        }
                         isReadData=true;
                         //不再往下执行开始第二行
                         continue;
@@ -115,6 +111,7 @@ public class ReadExcel implements ReadResource {
 
                     //读取数据
                     if((isReadData) && (keys!=null) && (keys.size()>0)){
+                        Converter converter=new Converter();
                         Object object=null;
                         try{
                             object=resourceClass.newInstance();
@@ -131,7 +128,10 @@ public class ReadExcel implements ReadResource {
                                 Field f=entry.getValue();
                                 //将指定对象变量上此Field 对象表示的字段设置为指定的新值
                                 //将key转为字段的返回类型
-                                f.set(object,v);
+                                //单元格里面读取的值为字符串，故给资源类的属性赋值时要进行类型转换
+                                //System.out.println("对应字段的返回类型："+f.getType());
+//                                f.set(object,convertType(f.getType(),v));
+                                f.set(object,converter.convert(f.getType(),f.getGenericType(),v));
                             }
                             //判断主键是否存在
                             Object keyObj=key.get(object);
@@ -139,7 +139,8 @@ public class ReadExcel implements ReadResource {
                                 throw new FileFormatException(String.format("配置文件%s，第%s行，缺少主键%s",resourceDataObject.getTotalPath(),j+1,resourceDataObject.getKeyName()));
                             }
                             //建立 “主键对象” 与 “资源类对象” 的映射
-                            map.put(keyObj,object);
+                            //map.put(keyObj,object);
+                            list.add(object);
                         }catch (Exception e){
                             e.printStackTrace();
                             logger.error("对象创建失败...");
@@ -149,7 +150,45 @@ public class ReadExcel implements ReadResource {
                 }
             }
         }
-        return map;
+        return list;
+    }
+
+    /**
+     * 类型转换
+     *
+     * @param classzz:字段返回值类型
+     * @param value：字段值
+     * @return
+     */
+    private static Object convertType(Class classzz, String value) {
+        if (Integer.class == classzz || int.class == classzz) {
+            return Integer.valueOf(value);
+        }
+        if (Short.class == classzz || short.class == classzz) {
+            return Short.valueOf(value);
+        }
+        if (Byte.class == classzz || byte.class == classzz) {
+            return Byte.valueOf(value);
+        }
+        if (Character.class == classzz || char.class == classzz) {
+            return value.charAt(0);
+        }
+        if (Long.class == classzz || long.class == classzz) {
+            return Long.valueOf(value);
+        }
+        if (Float.class == classzz || float.class == classzz) {
+            return Float.valueOf(value);
+        }
+        if (Double.class == classzz || double.class == classzz) {
+            return Double.valueOf(value);
+        }
+        if (Boolean.class == classzz || boolean.class == classzz) {
+            return Boolean.valueOf(value.toLowerCase());
+        }
+        if (BigDecimal.class == classzz) {
+            return new BigDecimal(value);
+        }
+        return value;
     }
 
 }
