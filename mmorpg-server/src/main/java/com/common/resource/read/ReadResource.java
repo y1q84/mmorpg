@@ -8,6 +8,5 @@ import java.util.List;
 public interface ReadResource {
 
     <T> List<T> read(ResourceDataObject resourceDataObject);
-
     ResourceType getResourceType();
 }

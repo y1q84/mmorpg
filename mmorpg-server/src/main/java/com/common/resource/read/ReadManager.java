@@ -13,10 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * author:ydx
- * create 2018\11\6 0006
- */
 @Component
 public class ReadManager implements ApplicationContextAware {
 
