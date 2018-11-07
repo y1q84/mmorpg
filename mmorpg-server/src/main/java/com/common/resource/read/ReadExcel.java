@@ -2,6 +2,7 @@ package com.common.resource.read;
 
 import com.common.resource.converter.Converter;
 import com.common.resource.data.ResourceDataObject;
+import com.common.resource.type.ResourceType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -151,6 +152,11 @@ public class ReadExcel implements ReadResource {
             }
         }
         return list;
+    }
+
+    @Override
+    public ResourceType getResourceType() {
+        return ResourceType.EXCEL;
     }
 
     /**

@@ -11,6 +11,16 @@ public class ResourceDefaultFormat {
     private String suffix;
     private ResourceType type;
 
+    public ResourceDefaultFormat(){
+
+    }
+
+    public ResourceDefaultFormat(String path,String suffix,ResourceType type){
+        this.path=path;
+        this.suffix=suffix;
+        this.type=type;
+    }
+
     public String getPath() {
         return path;
     }
