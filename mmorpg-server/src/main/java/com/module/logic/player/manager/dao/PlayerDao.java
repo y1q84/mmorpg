@@ -6,5 +6,5 @@ public interface PlayerDao {
 
     PlayerEntity save(PlayerEntity playerEntity);
     boolean update(PlayerEntity playerEntity);
-    PlayerEntity queryById(long playerId);
+    PlayerEntity queryById(int playerId);
 }

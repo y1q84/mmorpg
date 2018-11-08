@@ -1,4 +1,4 @@
-package excelTest;
+package com.module.logic.monster.resource;
 
 import com.common.resource.ResourceDefaultFormat;
 import com.common.resource.annotation.Id;
@@ -14,7 +14,6 @@ public class Monster {
     private long id;
     private String name;
     private int hp;
-//    private Map<Integer,Integer> follows;
     private List<Follower> follows;
 
     public long getId() {
@@ -40,14 +39,6 @@ public class Monster {
     public void setHp(int hp) {
         this.hp = hp;
     }
-
-//    public Map<Integer, Integer> getFollows() {
-//        return follows;
-//    }
-//
-//    public void setFollows(Map<Integer, Integer> follows) {
-//        this.follows = follows;
-//    }
 
     public List<Follower> getFollows() {
         return follows;

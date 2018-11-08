@@ -70,7 +70,7 @@
         </filter>
     </appender>
 
-    <logger name="logbackTest.LogbackDemo" level="debug"  additivity="false">
+    <logger name="com.logbackTest.LogbackDemo" level="debug" additivity="false">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
         <appender-ref ref="ERROR_FILE" />

@@ -18,6 +18,13 @@
         <constructor-arg value="5"/>
     </bean>
 
+    <bean id="staticResourceProviderManager" class="com.common.resource.provider.StaticResourceProviderManager">
+        <property name="suffix" value="xlsx"></property>
+        <property name="path" value="resource"></property>
+        <property name="resourceType" value="EXCEL"></property>
+        <property name="scanPackage" value="com.module.logic.**.resource"></property>
+    </bean>
+
     <!-- 数据配置 -->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
