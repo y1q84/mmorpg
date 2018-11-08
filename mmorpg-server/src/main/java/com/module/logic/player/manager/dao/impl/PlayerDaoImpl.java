@@ -20,7 +20,12 @@ public class PlayerDaoImpl implements PlayerDao {
     }
 
     @Override
-    public PlayerEntity queryById(long playerId) {
-        return null;
+    public PlayerEntity queryById(int playerId) {
+        PlayerEntity entity=new PlayerEntity();
+        entity.setPlayerName("王二");
+        entity.setSex("男");
+        entity.setExp(1000);
+        entity.setHp(1000);
+        return entity;
     }
 }

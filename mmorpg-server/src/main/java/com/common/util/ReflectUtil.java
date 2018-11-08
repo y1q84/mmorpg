@@ -1,8 +1,11 @@
 package com.common.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ResolvableType;
 
 public class ReflectUtil {
+    Logger logger=LoggerFactory.getLogger(ReflectUtil.class);
     /**
      * ResolvableType为所有的java类型提供了统一的数据结构以及API
      *      ，换句话说，一个ResolvableType对象就对应着一种java类型。
@@ -38,7 +41,9 @@ public class ReflectUtil {
 
     public static Class<?> getInterfaceGenericType(Class clazz){
         ResolvableType resolvableType=ResolvableType.forClass(clazz);
+        System.out.println("接口数量："+resolvableType.getInterfaces().length);
         //获取一个接口的泛型类型
         return resolvableType.getInterfaces()[0].getGeneric(0).resolve();
     }
+
 }

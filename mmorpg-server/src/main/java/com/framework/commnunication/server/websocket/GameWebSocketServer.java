@@ -7,6 +7,7 @@ import com.framework.commnunication.server.websocket.handler.WebSocketServerCode
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -52,7 +53,8 @@ public class GameWebSocketServer {
             //相当于消费者线程，处理事件
             worker=new NioEventLoopGroup();
 
-            bootstrapToClient.group(boss, worker).channel(NioServerSocketChannel.class)
+            bootstrapToClient.group(boss, worker)
+                    .channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler())
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
@@ -65,7 +67,13 @@ public class GameWebSocketServer {
                             ch.pipeline().addLast("webSocketServerHandler", gameWebSocketServerInboundHandler);
                             ch.pipeline().addLast("dispatchHandler",dispatchHandler);
                         }
-                    });
+                    })
+                    /**
+                     * Channeloption.SO_KEEPALIVE参数对应于套接字选项中的SO_KEEPALIVE，该参数用于设置TCP连接，
+                     * 当设置该选项以后，连接会测试链接的状态，这个选项用于可能长时间没有数据交流的连接。
+                     * 当设置该选项以后，如果在两小时内没有数据的通信时，TCP会自动发送一个活动探测数据报文
+                     */
+                    .childOption(ChannelOption.SO_KEEPALIVE,true);
 
             ChannelFuture f = bootstrapToClient.bind(8085).sync();
 

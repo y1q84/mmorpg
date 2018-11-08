@@ -1,4 +1,4 @@
-package excelTest;
+package com.module.logic.monster.resource;
 
 public class Follower {
     private long id;
