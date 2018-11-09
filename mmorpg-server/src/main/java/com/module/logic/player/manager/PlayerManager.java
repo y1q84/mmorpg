@@ -25,6 +25,7 @@ public class PlayerManager {
 
     public PlayerEntity createPlayerEntity(String account, String name, RoleType roleType,String sex){
         PlayerEntity playerEntity=new PlayerEntity();
+        //通过雪花算法生成全局唯一的id
         int playerId=(int)uniqueIdentifyKey.createUniqueId();
         playerEntity.setPlayerId(playerId);
         System.out.println("生成的playerId为："+playerId);
@@ -41,9 +42,11 @@ public class PlayerManager {
     //在登录的时候添加
     public void addSession2Player(Session session,Player player){
         //TODO 这里需要考虑一个问题就是判断玩家是否已经登录，如果已经登录则需要将之踢下线
-        Session oldSession=account2Session.get(player.getPlayerEntity().getAccount());
-        if(oldSession!=null){
-            //将之踢下线
+        if(account2Session.size()>0){
+            Session oldSession=account2Session.get(player.getPlayerEntity().getAccount());
+            if(oldSession!=null){
+                //将之踢下线
+            }
         }
         //设置新的session
         account2Session.put(player.getPlayerEntity().getAccount(),session);

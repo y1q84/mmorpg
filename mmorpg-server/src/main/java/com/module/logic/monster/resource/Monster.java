@@ -5,11 +5,12 @@ import com.common.resource.annotation.Id;
 import com.common.resource.annotation.Resources;
 import com.common.resource.data.ResourceDataObject;
 import com.common.resource.read.ReadExcel;
+import com.module.logic.map.obj.CreatureObject;
 
 import java.util.List;
 
-@Resources(suffix = "xlsx",path = "resource")
-public class Monster {
+@Resources
+public class Monster extends CreatureObject {
     @Id
     private long id;
     private String name;

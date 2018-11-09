@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Subscriber } from 'rxjs';
 import { WebsocketService } from 'src/app/shared/websocket.service';
-import { ReqLoginPacket, ReqCreateRolePacket, RoleType } from 'src/app/proto/bundle';
+import { ReqLoginPacket, ReqCreateRolePacket, RoleType, ReqRoleLoginPacket } from 'src/app/proto/bundle';
 import { PacketId } from '../../packetId/PacketId';
 import { Location } from '@angular/common';
 
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   // 显示服务端发过来的信息
   reciveMessage: any;
   respCreateRoleMessage: string;
-
+  playerId: number;
   uname: string;
   pass: string;
   playerName: string;
@@ -64,11 +64,13 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  connect() {
+  }
+
   /**
    * 发送登录消息
    */
   sendLoginMessage() {
-    WebsocketService.observable = this.wsService.creatObservableSocket('ws://localhost:8085/ws');
         // 等价于下面subscribe括号里面的代码
         // const myObserver = {
         //   next:data =>{
@@ -95,6 +97,9 @@ export class LoginComponent implements OnInit {
              case PacketId.CREATE_ROLE_RESP:
                   this.respCreateRole(data);
                   break;
+            case PacketId.ROLE_LOGIN_RESP:
+                  this.respRoleLogin(data);
+                  break;
              default:
                   console.log('该请求不存在...');
 
@@ -114,7 +119,8 @@ export class LoginComponent implements OnInit {
          this.wsService.sendMess(ReqLoginPacket, {account: this.uname, password : this.pass });
   //  setInterval(this.wsService.sendMess, 500, ReqLoginPacket, {userName: this.uname, password : this.pass }) ;
   }
-
+  // ** 请求方法 **
+  // 创建角色
   createRole() {
     // const type = RoleType['MASTER'];
     // console.log(`${RoleType['MASTER']}`);
@@ -123,10 +129,13 @@ export class LoginComponent implements OnInit {
       this.wsService.sendMess(ReqCreateRolePacket, {playerName: this.playerName, roleType: RoleType[this.selectedRole], sex: this.sSex});
     }
   }
-
-  connect() {
+  // 角色登录
+  roleLogin() {
+    console.log(`palyerId为${this.playerId}`);
+     this.wsService.sendMess(ReqRoleLoginPacket, {playerId: this.playerId});
   }
 
+  // ** 响应方法 **
   respMessage(data: any) {
     this.reciveMessage = data.respObj.result;
     if (data.respObj.result === '登录成功') {
@@ -134,11 +143,16 @@ export class LoginComponent implements OnInit {
         console.log(' 登录成功 ');
     }
   }
-
   respCreateRole(data: any) {
     this.respCreateRoleMessage = data.respObj.result;
+    this.playerId = data.respObj.playerId;
     console.log('角色创建：' + this.respCreateRoleMessage);
   }
+  respRoleLogin(data) {
+    this.respCreateRoleMessage = data.respObj.result;
+    console.log('角色登录成功');
+  }
+
   enterscene() {
       this.wsService.goto(`map`);
   }

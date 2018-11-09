@@ -404,7 +404,7 @@ export interface IRespCreateRolePacket {
     result?: (string|null);
 
     /** RespCreateRolePacket playerId */
-    playerId?: (number|null);
+    playerId?: (number|Long|null);
 }
 
 /** Represents a RespCreateRolePacket. */
@@ -420,7 +420,7 @@ export class RespCreateRolePacket implements IRespCreateRolePacket {
     public result: string;
 
     /** RespCreateRolePacket playerId. */
-    public playerId: number;
+    public playerId: (number|Long);
 
     /**
      * Creates a new RespCreateRolePacket instance using the specified properties.
@@ -493,6 +493,192 @@ export class RespCreateRolePacket implements IRespCreateRolePacket {
     public toJSON(): { [k: string]: any };
 }
 
+/** Properties of a RespRoleLoginPacket. */
+export interface IRespRoleLoginPacket {
+
+    /** RespRoleLoginPacket playerId */
+    playerId?: (number|Long|null);
+
+    /** RespRoleLoginPacket result */
+    result?: (string|null);
+}
+
+/** Represents a RespRoleLoginPacket. */
+export class RespRoleLoginPacket implements IRespRoleLoginPacket {
+
+    /**
+     * Constructs a new RespRoleLoginPacket.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IRespRoleLoginPacket);
+
+    /** RespRoleLoginPacket playerId. */
+    public playerId: (number|Long);
+
+    /** RespRoleLoginPacket result. */
+    public result: string;
+
+    /**
+     * Creates a new RespRoleLoginPacket instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns RespRoleLoginPacket instance
+     */
+    public static create(properties?: IRespRoleLoginPacket): RespRoleLoginPacket;
+
+    /**
+     * Encodes the specified RespRoleLoginPacket message. Does not implicitly {@link RespRoleLoginPacket.verify|verify} messages.
+     * @param message RespRoleLoginPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IRespRoleLoginPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified RespRoleLoginPacket message, length delimited. Does not implicitly {@link RespRoleLoginPacket.verify|verify} messages.
+     * @param message RespRoleLoginPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IRespRoleLoginPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a RespRoleLoginPacket message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns RespRoleLoginPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RespRoleLoginPacket;
+
+    /**
+     * Decodes a RespRoleLoginPacket message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns RespRoleLoginPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RespRoleLoginPacket;
+
+    /**
+     * Verifies a RespRoleLoginPacket message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a RespRoleLoginPacket message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns RespRoleLoginPacket
+     */
+    public static fromObject(object: { [k: string]: any }): RespRoleLoginPacket;
+
+    /**
+     * Creates a plain object from a RespRoleLoginPacket message. Also converts values to other types if specified.
+     * @param message RespRoleLoginPacket
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: RespRoleLoginPacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this RespRoleLoginPacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a ReqRoleLoginPacket. */
+export interface IReqRoleLoginPacket {
+
+    /** ReqRoleLoginPacket playerId */
+    playerId?: (number|Long|null);
+}
+
+/** Represents a ReqRoleLoginPacket. */
+export class ReqRoleLoginPacket implements IReqRoleLoginPacket {
+
+    /**
+     * Constructs a new ReqRoleLoginPacket.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IReqRoleLoginPacket);
+
+    /** ReqRoleLoginPacket playerId. */
+    public playerId: (number|Long);
+
+    /**
+     * Creates a new ReqRoleLoginPacket instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ReqRoleLoginPacket instance
+     */
+    public static create(properties?: IReqRoleLoginPacket): ReqRoleLoginPacket;
+
+    /**
+     * Encodes the specified ReqRoleLoginPacket message. Does not implicitly {@link ReqRoleLoginPacket.verify|verify} messages.
+     * @param message ReqRoleLoginPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IReqRoleLoginPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ReqRoleLoginPacket message, length delimited. Does not implicitly {@link ReqRoleLoginPacket.verify|verify} messages.
+     * @param message ReqRoleLoginPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IReqRoleLoginPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a ReqRoleLoginPacket message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ReqRoleLoginPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ReqRoleLoginPacket;
+
+    /**
+     * Decodes a ReqRoleLoginPacket message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ReqRoleLoginPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ReqRoleLoginPacket;
+
+    /**
+     * Verifies a ReqRoleLoginPacket message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a ReqRoleLoginPacket message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ReqRoleLoginPacket
+     */
+    public static fromObject(object: { [k: string]: any }): ReqRoleLoginPacket;
+
+    /**
+     * Creates a plain object from a ReqRoleLoginPacket message. Also converts values to other types if specified.
+     * @param message ReqRoleLoginPacket
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ReqRoleLoginPacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ReqRoleLoginPacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Properties of a ReqEnterScenePacket. */
 export interface IReqEnterScenePacket {
 
@@ -501,9 +687,6 @@ export interface IReqEnterScenePacket {
 
     /** ReqEnterScenePacket sceneId */
     sceneId?: (number|null);
-
-    /** ReqEnterScenePacket mapId */
-    mapId?: (number|null);
 }
 
 /** Represents a ReqEnterScenePacket. */
@@ -520,9 +703,6 @@ export class ReqEnterScenePacket implements IReqEnterScenePacket {
 
     /** ReqEnterScenePacket sceneId. */
     public sceneId: number;
-
-    /** ReqEnterScenePacket mapId. */
-    public mapId: number;
 
     /**
      * Creates a new ReqEnterScenePacket instance using the specified properties.
@@ -598,14 +778,11 @@ export class ReqEnterScenePacket implements IReqEnterScenePacket {
 /** Properties of a RespEnterScenePacket. */
 export interface IRespEnterScenePacket {
 
-    /** RespEnterScenePacket mapId */
-    mapId?: (number|null);
-
     /** RespEnterScenePacket sceneId */
     sceneId?: (number|null);
 
     /** RespEnterScenePacket mapObject */
-    mapObject?: (IPlayerInfo[]|null);
+    mapObject?: (IObjectInMapInfo[]|null);
 }
 
 /** Represents a RespEnterScenePacket. */
@@ -617,14 +794,11 @@ export class RespEnterScenePacket implements IRespEnterScenePacket {
      */
     constructor(properties?: IRespEnterScenePacket);
 
-    /** RespEnterScenePacket mapId. */
-    public mapId: number;
-
     /** RespEnterScenePacket sceneId. */
     public sceneId: number;
 
     /** RespEnterScenePacket mapObject. */
-    public mapObject: IPlayerInfo[];
+    public mapObject: IObjectInMapInfo[];
 
     /**
      * Creates a new RespEnterScenePacket instance using the specified properties.
@@ -697,103 +871,109 @@ export class RespEnterScenePacket implements IRespEnterScenePacket {
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of a PlayerInfo. */
-export interface IPlayerInfo {
+/** Properties of an ObjectInMapInfo. */
+export interface IObjectInMapInfo {
 
-    /** PlayerInfo playerId */
-    playerId?: (number|Long|null);
+    /** ObjectInMapInfo objectId */
+    objectId?: (number|Long|null);
 
-    /** PlayerInfo playerName */
-    playerName?: (string|null);
+    /** ObjectInMapInfo objectName */
+    objectName?: (string|null);
 
-    /** PlayerInfo role */
-    role?: (string|null);
+    /** ObjectInMapInfo hp */
+    hp?: (number|null);
+
+    /** ObjectInMapInfo level */
+    level?: (number|null);
 }
 
-/** Represents a PlayerInfo. */
-export class PlayerInfo implements IPlayerInfo {
+/** Represents an ObjectInMapInfo. */
+export class ObjectInMapInfo implements IObjectInMapInfo {
 
     /**
-     * Constructs a new PlayerInfo.
+     * Constructs a new ObjectInMapInfo.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IPlayerInfo);
+    constructor(properties?: IObjectInMapInfo);
 
-    /** PlayerInfo playerId. */
-    public playerId: (number|Long);
+    /** ObjectInMapInfo objectId. */
+    public objectId: (number|Long);
 
-    /** PlayerInfo playerName. */
-    public playerName: string;
+    /** ObjectInMapInfo objectName. */
+    public objectName: string;
 
-    /** PlayerInfo role. */
-    public role: string;
+    /** ObjectInMapInfo hp. */
+    public hp: number;
+
+    /** ObjectInMapInfo level. */
+    public level: number;
 
     /**
-     * Creates a new PlayerInfo instance using the specified properties.
+     * Creates a new ObjectInMapInfo instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns PlayerInfo instance
+     * @returns ObjectInMapInfo instance
      */
-    public static create(properties?: IPlayerInfo): PlayerInfo;
+    public static create(properties?: IObjectInMapInfo): ObjectInMapInfo;
 
     /**
-     * Encodes the specified PlayerInfo message. Does not implicitly {@link PlayerInfo.verify|verify} messages.
-     * @param message PlayerInfo message or plain object to encode
+     * Encodes the specified ObjectInMapInfo message. Does not implicitly {@link ObjectInMapInfo.verify|verify} messages.
+     * @param message ObjectInMapInfo message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IPlayerInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: IObjectInMapInfo, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified PlayerInfo message, length delimited. Does not implicitly {@link PlayerInfo.verify|verify} messages.
-     * @param message PlayerInfo message or plain object to encode
+     * Encodes the specified ObjectInMapInfo message, length delimited. Does not implicitly {@link ObjectInMapInfo.verify|verify} messages.
+     * @param message ObjectInMapInfo message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IPlayerInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: IObjectInMapInfo, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a PlayerInfo message from the specified reader or buffer.
+     * Decodes an ObjectInMapInfo message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns PlayerInfo
+     * @returns ObjectInMapInfo
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): PlayerInfo;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ObjectInMapInfo;
 
     /**
-     * Decodes a PlayerInfo message from the specified reader or buffer, length delimited.
+     * Decodes an ObjectInMapInfo message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns PlayerInfo
+     * @returns ObjectInMapInfo
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): PlayerInfo;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ObjectInMapInfo;
 
     /**
-     * Verifies a PlayerInfo message.
+     * Verifies an ObjectInMapInfo message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a PlayerInfo message from a plain object. Also converts values to their respective internal types.
+     * Creates an ObjectInMapInfo message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns PlayerInfo
+     * @returns ObjectInMapInfo
      */
-    public static fromObject(object: { [k: string]: any }): PlayerInfo;
+    public static fromObject(object: { [k: string]: any }): ObjectInMapInfo;
 
     /**
-     * Creates a plain object from a PlayerInfo message. Also converts values to other types if specified.
-     * @param message PlayerInfo
+     * Creates a plain object from an ObjectInMapInfo message. Also converts values to other types if specified.
+     * @param message ObjectInMapInfo
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: PlayerInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: ObjectInMapInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this PlayerInfo to JSON.
+     * Converts this ObjectInMapInfo to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };

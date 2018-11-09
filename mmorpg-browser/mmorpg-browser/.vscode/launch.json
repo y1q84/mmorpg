@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "浏览器方式启动调试",
-            "url": "http://localhost:4200",
+            "url": "http://localhost:4200/login",
             "webRoot": "${workspaceFolder}"
         }
     ]

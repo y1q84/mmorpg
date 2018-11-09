@@ -1,5 +1,6 @@
 package com.module.logic.map.service;
 
+import com.common.resource.provider.StaticResourceProvider;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
 import com.module.logic.map.manager.SceneManager;
@@ -7,6 +8,8 @@ import com.module.logic.map.obj.MapObject;
 import com.module.logic.map.packet.ReqEnterScenePacket;
 import com.module.logic.map.packet.RespEnterScenePacket;
 import com.module.logic.map.packet.vo.ObjectInMapInfo;
+import com.module.logic.monster.manager.MonsterManager;
+import com.module.logic.monster.resource.Monster;
 import com.module.logic.player.Player;
 import com.module.logic.player.manager.PlayerManager;
 import org.slf4j.Logger;
@@ -28,6 +31,9 @@ public class SceneService {
     @Autowired
     PlayerManager playerManager;
 
+    @Autowired
+    MonsterManager monsterManager;
+
 
     public void enter(){
 
@@ -37,6 +43,16 @@ public class SceneService {
     public void enterScene(Session session, ReqEnterScenePacket reqEnterScenePacket){
 
         int sceneId=reqEnterScenePacket.getSceneId();
+        //当客户端发送进入场景请求的时候，服务端接收到改请求后
+        //应该将对应场景的生物添加进集合
+        //此时要先从表中读取场景里面对应的生物
+        StaticResourceProvider staticResourceProvider=(StaticResourceProvider)monsterManager.getResourceProvider();
+        List<Monster>list=staticResourceProvider.getList();
+        //将Monster遍历进sceneManager
+        list.forEach((m)->{
+            sceneManager.addObjectInScene(sceneId,m);
+        });
+
         //根据场景id获取到场景里所有物体
         Map<Long, Player> palyerInScene=sceneManager.getPlayerInScene(sceneId);
         Map<Long, MapObject> objectInMap=sceneManager.getObjectInScene(sceneId);
@@ -49,7 +65,9 @@ public class SceneService {
 
         });
         //将MapObject转为ObjectInfo放进响应包
-
+        objectInMap.forEach((k,p)->{
+            objects.add(ObjectInMapInfo.valueOf(p));
+        });
 
         //发送响应进入场景的包
         RespEnterScenePacket respEnterScenePacket=new RespEnterScenePacket();
@@ -70,25 +88,4 @@ public class SceneService {
 
     }
 
-//    public List<ObjectInMapInfo> getObjectInMap(){
-//        List<ObjectInMapInfo> playerInfos=new ArrayList<>();
-//        ObjectInMapInfo playerInfo1=new ObjectInMapInfo();
-//        playerInfo1.setPlayerId(1001);
-//        playerInfo1.setPlayerName("彰化");
-//        playerInfo1.setRole("战士");
-//        playerInfos.add(playerInfo1);
-//
-//        ObjectInMapInfo playerInfo2=new ObjectInMapInfo();
-//        playerInfo2.setPlayerId(1002);
-//        playerInfo2.setPlayerName("城隍澄空");
-//        playerInfo2.setRole("道士");
-//        playerInfos.add(playerInfo2);
-//
-//        ObjectInMapInfo playerInfo3=new ObjectInMapInfo();
-//        playerInfo3.setPlayerId(10013);
-//        playerInfo3.setPlayerName("孙悟空");
-//        playerInfo3.setRole("法师");
-//        playerInfos.add(playerInfo3);
-//        return playerInfos;
-//    }
 }

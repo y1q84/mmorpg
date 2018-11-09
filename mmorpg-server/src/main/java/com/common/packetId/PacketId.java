@@ -25,6 +25,10 @@ public class PacketId {
     public static final short CREATE_ROLE_REQ=10010;
     /**响应创建角色**/
     public static final short CREATE_ROLE_RESP=10011;
+    /**请求角色登录**/
+    public static final short ROLE_LOGIN_REQ=10012;
+    /**响应角色登录**/
+    public static final short ROLE_LOGIN_RESP=10013;
     /**请求进入场景**/
     public static final short ENTER_WORLD_REQ=10020;
     /**响应进入场景**/
