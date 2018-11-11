@@ -1,5 +1,6 @@
 package com.module.logic.player.entity;
 
+import com.module.logic.player.Player;
 import com.module.logic.player.type.RoleType;
 
 /**
@@ -21,6 +22,8 @@ public class PlayerEntity {
     private long gold=100;
 
     private int mapId;
+
+    private Player player;
 
     public int getPlayerId() {
         return playerId;
@@ -108,5 +111,13 @@ public class PlayerEntity {
 
     public void setMapId(int mapId) {
         this.mapId = mapId;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

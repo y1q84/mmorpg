@@ -3,6 +3,7 @@ package com.module.logic.monster.manager;
 import com.common.resource.provider.ResourceProvider;
 import com.common.resource.provider.StaticResourceProvider;
 import com.common.resource.provider.StaticResourceProviderManager;
+import com.module.logic.monster.resource.Follower;
 import com.module.logic.monster.resource.Monster;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -18,6 +19,10 @@ public class MonsterManager {
     @Autowired
     private ResourceProvider<Monster> resourceProvider;
 
+    public ResourceProvider<Monster> getResourceProvider() {
+        return resourceProvider;
+    }
+
     @PostConstruct
     public void init(){
         System.out.println("staticResourceProvider为空否？"+resourceProvider);
@@ -31,7 +36,15 @@ public class MonsterManager {
         StaticResourceProvider staticResourceProvider=(StaticResourceProvider)monsterManager.resourceProvider;
         List<Monster> list=staticResourceProvider.getList();
         for(int i=0;i<list.size();i++){
-            System.out.println(list.get(i));
+            System.out.println("id:"+list.get(i).getId()+"\t\t,name:"+list.get(i).getName());
+            List<Follower> follows=list.get(i).getFollows();
+            if(follows!=null){
+                for(int j=0;j<follows.size();j++){
+                    long id=(follows.get(j)).getId();
+                    int num=follows.get(j).getNumber();
+                    System.out.println("\t\t小兵id:"+id+"\t\t数量:"+num);
+                }
+            }
         }
     }
 }

@@ -30,8 +30,6 @@ export class MapComponent implements OnInit {
   }
 
   sendEnterSceneMessage() {
-    WebsocketService.observable = this.wsService.creatObservableSocket('ws://localhost:8085/ws');
-
         WebsocketService.observable.subscribe(
           // data接收的是服务端发送给过来的消息
           data => {
@@ -57,11 +55,17 @@ export class MapComponent implements OnInit {
 
   respMessage(data: any) {
     data.respObj.mapObject.forEach((val, index, array) => {
-        console.log('玩家id' + val.playerId + '\n玩家姓名：' + val.playerName);
+        // console.log('玩家id' + val.playerId + '\n玩家姓名：' + val.playerName);
+        // if (index === 0) {
+        //   this.receviceMessage = '玩家id:' + val.playerId + '\n玩家姓名：' + val.playerName + '\n玩家角色：' + val.role;
+        // } else {
+        //   this.receviceMessage += '\n玩家id:' + val.playerId + '\n玩家姓名：' + val.playerName + '\n玩家角色：' + val.role;
+        // }
+        console.log('玩家id' + val.objectId + '\n玩家姓名：' + val.objectName);
         if (index === 0) {
-          this.receviceMessage = '玩家id:' + val.playerId + '\n玩家姓名：' + val.playerName + '\n玩家角色：' + val.role;
+          this.receviceMessage = '怪物id:' + val.objectId + '\n怪物姓名：' + val.objectName;
         } else {
-          this.receviceMessage += '\n玩家id:' + val.playerId + '\n玩家姓名：' + val.playerName + '\n玩家角色：' + val.role;
+          this.receviceMessage += `\n怪物id:${val.objectId}\n怪物姓名:${val.objectName}`;
         }
     });
   }

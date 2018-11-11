@@ -1,5 +1,5 @@
 import { ReqLoginPacket, ResLoginPacket, ReqCreateRolePacket, RespCreateRolePacket,
-    ReqEnterScenePacket, RespEnterScenePacket } from 'src/app/proto/bundle';
+    ReqEnterScenePacket, RespEnterScenePacket, ReqRoleLoginPacket, RespRoleLoginPacket } from 'src/app/proto/bundle';
 
 
 
@@ -19,6 +19,10 @@ export class PacketId {
     public static readonly CREATE_ROLE_REQ: number = 10010;
     /**响应创建角色**/
     public static readonly CREATE_ROLE_RESP: number = 10011;
+    /**请求角色登录**/
+    public static readonly ROLE_LOGIN_REQ: number = 10012;
+    /**响应角色登录**/
+    public static readonly ROLE_LOGIN_RESP: number = 10013;
     /**请求进入场景**/
     public static readonly ENTER_WORLD_REQ: number = 10020;
     /**响应进入场景**/
@@ -36,6 +40,8 @@ export class PacketId {
         PacketId.add(PacketId.CREATE_ROLE_RESP, RespCreateRolePacket);
         PacketId.add(PacketId.ENTER_WORLD_REQ, ReqEnterScenePacket);
         PacketId.add(PacketId.ENTER_WORLD_RESP, RespEnterScenePacket);
+        PacketId.add(PacketId.ROLE_LOGIN_REQ, ReqRoleLoginPacket);
+        PacketId.add(PacketId.ROLE_LOGIN_RESP, RespRoleLoginPacket);
     }
 
 

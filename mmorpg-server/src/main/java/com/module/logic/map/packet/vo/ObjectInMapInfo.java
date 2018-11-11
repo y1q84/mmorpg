@@ -2,6 +2,7 @@ package com.module.logic.map.packet.vo;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.module.logic.map.obj.MapObject;
+import com.module.logic.monster.resource.Monster;
 import com.module.logic.player.Player;
 
 public class ObjectInMapInfo {
@@ -22,6 +23,12 @@ public class ObjectInMapInfo {
             objectInMapInfo.setObjectName(player.getPlayerEntity().getPlayerName());
             objectInMapInfo.setLevel(player.getLevel());
             objectInMapInfo.setHp(player.getHp());
+            return objectInMapInfo;
+        }else if(mapObject instanceof Monster){
+            Monster monster=(Monster)mapObject;
+            objectInMapInfo.setObjectId(monster.getId());
+            objectInMapInfo.setObjectName(monster.getName());
+            objectInMapInfo.setLevel(monster.getLevel());
             return objectInMapInfo;
         }
         //TODO 怪物、NPC转为改对象存储发送

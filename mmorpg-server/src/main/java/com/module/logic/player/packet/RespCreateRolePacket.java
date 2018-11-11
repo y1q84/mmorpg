@@ -13,7 +13,7 @@ public class RespCreateRolePacket extends AbstractPacket {
     @Protobuf(description = "返回结果")
     private String result;
     @Protobuf(description = "角色id")
-    private int playerId;
+    private long playerId;
 
     public String getResult() {
         return result;
@@ -23,11 +23,11 @@ public class RespCreateRolePacket extends AbstractPacket {
         this.result = result;
     }
 
-    public int getPlayerId() {
+    public long getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(int playerId) {
+    public void setPlayerId(long playerId) {
         this.playerId = playerId;
     }
 

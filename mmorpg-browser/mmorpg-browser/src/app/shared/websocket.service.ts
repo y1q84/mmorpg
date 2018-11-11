@@ -29,6 +29,7 @@ export class WebsocketService {
   }
 
   constructor(private location: Location) {
+    WebsocketService.observable = this.creatObservableSocket('ws://localhost:8085/ws');
     this.syncConnectState$ = new Observable((observer) => {
       this.subscriber = observer;
     });
