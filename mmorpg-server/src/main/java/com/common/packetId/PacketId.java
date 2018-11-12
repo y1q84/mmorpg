@@ -33,6 +33,8 @@ public class PacketId {
     public static final short ENTER_WORLD_REQ=10020;
     /**响应进入场景**/
     public static final short ENTER_WORLD_RESP=10021;
+    /**广播玩家进入场景**/
+    public static final short BROADCAST_ENTER_WORLD_RESP=10022;
 
 
 

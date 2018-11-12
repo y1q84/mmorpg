@@ -14,6 +14,8 @@ public class ObjectInMapInfo {
     private int hp;
     @Protobuf
     private int level;
+    @Protobuf
+    private String objectType;
 
     public static ObjectInMapInfo valueOf(MapObject mapObject){
         ObjectInMapInfo objectInMapInfo=new ObjectInMapInfo();
@@ -23,12 +25,14 @@ public class ObjectInMapInfo {
             objectInMapInfo.setObjectName(player.getPlayerEntity().getPlayerName());
             objectInMapInfo.setLevel(player.getLevel());
             objectInMapInfo.setHp(player.getHp());
+            objectInMapInfo.setObjectType("PLAYER");
             return objectInMapInfo;
         }else if(mapObject instanceof Monster){
             Monster monster=(Monster)mapObject;
             objectInMapInfo.setObjectId(monster.getId());
             objectInMapInfo.setObjectName(monster.getName());
             objectInMapInfo.setLevel(monster.getLevel());
+            objectInMapInfo.setObjectType("MONSTER");
             return objectInMapInfo;
         }
         //TODO 怪物、NPC转为改对象存储发送
@@ -65,5 +69,13 @@ public class ObjectInMapInfo {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public String getObjectType() {
+        return objectType;
+    }
+
+    public void setObjectType(String objectType) {
+        this.objectType = objectType;
     }
 }

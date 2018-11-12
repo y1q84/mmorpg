@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit {
                   this.respRoleLogin(data);
                   break;
              default:
-                  console.log('该请求不存在...');
+                  console.log(`longinComponent该请求${data.packetId}不存在...`);
 
            }
 
@@ -132,6 +132,7 @@ export class LoginComponent implements OnInit {
   // 角色登录
   roleLogin() {
     console.log(`palyerId为${this.playerId}`);
+    console.log(`请求角色登录获得的玩家id为：${this.playerId}`);
      this.wsService.sendMess(ReqRoleLoginPacket, {playerId: this.playerId});
   }
 

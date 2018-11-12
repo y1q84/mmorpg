@@ -41,6 +41,10 @@ export class MapComponent implements OnInit {
              case PacketId.ENTER_WORLD_RESP:
                   this.respMessage(data);
                   break;
+             case PacketId.BROADCAST_ENTER_WORLD_RESP:
+                  console.log('广播玩家进入场景。。');
+                  this.broadcastEnterworld(data);
+                  break;
              default:
                   console.log(data.packetId + '对应请求为。。');
                   console.log('该请求' + data.packetId + '不存在...');
@@ -61,12 +65,27 @@ export class MapComponent implements OnInit {
         // } else {
         //   this.receviceMessage += '\n玩家id:' + val.playerId + '\n玩家姓名：' + val.playerName + '\n玩家角色：' + val.role;
         // }
-        console.log('玩家id' + val.objectId + '\n玩家姓名：' + val.objectName);
-        if (index === 0) {
-          this.receviceMessage = '怪物id:' + val.objectId + '\n怪物姓名：' + val.objectName;
-        } else {
-          this.receviceMessage += `\n怪物id:${val.objectId}\n怪物姓名:${val.objectName}`;
+        console.log('枚举类型为：' + val.objectType);
+        if (val.objectType === 'MONSTER') {
+          if (index === 0) {
+            this.receviceMessage = '怪物id:' + val.objectId + '\n怪物姓名：' + val.objectName;
+          } else {
+            this.receviceMessage += `\n怪物id:${val.objectId}\n怪物姓名:${val.objectName}`;
+          }
+        } else if (val.objectType === 'PLAYER') {
+          if (index === 0) {
+            this.receviceMessage = '玩家id:' + val.objectId + '\n玩家姓名：' + val.objectName;
+          } else {
+            this.receviceMessage += `\n玩家id:${val.objectId}\n玩家姓名:${val.objectName}`;
+          }
         }
+
+        console.log('玩家id' + val.objectId + '\n玩家姓名：' + val.objectName);
     });
+  }
+
+  broadcastEnterworld(data: any) {
+    console.log('显示进入场景结果:' + data.respObj.result);
+    this.receviceMessage += `\nid为${data.respObj.playerId}的玩家${data.respObj.result}`;
   }
 }
