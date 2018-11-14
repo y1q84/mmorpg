@@ -11,6 +11,7 @@ import com.module.logic.player.type.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,16 @@ public class PlayerManager {
 
     private BiMap<Player,Session> player2session= HashBiMap.create();
     private Map<String,Session> account2Session=new HashMap<>();
+
+    private static PlayerManager self;
+
+    @PostConstruct
+    public void init(){
+        self=this;
+    }
+    public static PlayerManager getInstance(){
+        return self;
+    }
 
     @Autowired
     UniqueIdentifyKey uniqueIdentifyKey;

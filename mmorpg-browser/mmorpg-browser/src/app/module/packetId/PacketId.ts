@@ -1,5 +1,6 @@
 import { ReqLoginPacket, ResLoginPacket, ReqCreateRolePacket, RespCreateRolePacket,
-    ReqEnterScenePacket, RespEnterScenePacket, ReqRoleLoginPacket, RespRoleLoginPacket } from 'src/app/proto/bundle';
+    ReqEnterScenePacket, RespEnterScenePacket, ReqRoleLoginPacket, RespRoleLoginPacket,
+    RespBroadcastEnterWorldPacket } from 'src/app/proto/bundle';
 
 
 
@@ -27,6 +28,8 @@ export class PacketId {
     public static readonly ENTER_WORLD_REQ: number = 10020;
     /**响应进入场景**/
     public static readonly ENTER_WORLD_RESP: number = 10021;
+    /**广播玩家进入场景**/
+    public static readonly BROADCAST_ENTER_WORLD_RESP: number = 10022;
 
     /**请求命令**/
     public static readonly COMMAND_REQ: number = 10201;
@@ -42,6 +45,7 @@ export class PacketId {
         PacketId.add(PacketId.ENTER_WORLD_RESP, RespEnterScenePacket);
         PacketId.add(PacketId.ROLE_LOGIN_REQ, ReqRoleLoginPacket);
         PacketId.add(PacketId.ROLE_LOGIN_RESP, RespRoleLoginPacket);
+        PacketId.add(PacketId.BROADCAST_ENTER_WORLD_RESP, RespBroadcastEnterWorldPacket);
     }
 
 

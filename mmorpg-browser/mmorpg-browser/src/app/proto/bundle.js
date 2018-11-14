@@ -1128,6 +1128,207 @@ $root.RespCreateRolePacket = (function() {
     return RespCreateRolePacket;
 })();
 
+$root.ReqRoleLoginPacket = (function() {
+
+    /**
+     * Properties of a ReqRoleLoginPacket.
+     * @exports IReqRoleLoginPacket
+     * @interface IReqRoleLoginPacket
+     * @property {number|Long|null} [playerId] ReqRoleLoginPacket playerId
+     */
+
+    /**
+     * Constructs a new ReqRoleLoginPacket.
+     * @exports ReqRoleLoginPacket
+     * @classdesc Represents a ReqRoleLoginPacket.
+     * @implements IReqRoleLoginPacket
+     * @constructor
+     * @param {IReqRoleLoginPacket=} [properties] Properties to set
+     */
+    function ReqRoleLoginPacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ReqRoleLoginPacket playerId.
+     * @member {number|Long} playerId
+     * @memberof ReqRoleLoginPacket
+     * @instance
+     */
+    ReqRoleLoginPacket.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * Creates a new ReqRoleLoginPacket instance using the specified properties.
+     * @function create
+     * @memberof ReqRoleLoginPacket
+     * @static
+     * @param {IReqRoleLoginPacket=} [properties] Properties to set
+     * @returns {ReqRoleLoginPacket} ReqRoleLoginPacket instance
+     */
+    ReqRoleLoginPacket.create = function create(properties) {
+        return new ReqRoleLoginPacket(properties);
+    };
+
+    /**
+     * Encodes the specified ReqRoleLoginPacket message. Does not implicitly {@link ReqRoleLoginPacket.verify|verify} messages.
+     * @function encode
+     * @memberof ReqRoleLoginPacket
+     * @static
+     * @param {IReqRoleLoginPacket} message ReqRoleLoginPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqRoleLoginPacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.playerId);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ReqRoleLoginPacket message, length delimited. Does not implicitly {@link ReqRoleLoginPacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ReqRoleLoginPacket
+     * @static
+     * @param {IReqRoleLoginPacket} message ReqRoleLoginPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqRoleLoginPacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ReqRoleLoginPacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof ReqRoleLoginPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ReqRoleLoginPacket} ReqRoleLoginPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqRoleLoginPacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ReqRoleLoginPacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.playerId = reader.int64();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ReqRoleLoginPacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ReqRoleLoginPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ReqRoleLoginPacket} ReqRoleLoginPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqRoleLoginPacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ReqRoleLoginPacket message.
+     * @function verify
+     * @memberof ReqRoleLoginPacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ReqRoleLoginPacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                return "playerId: integer|Long expected";
+        return null;
+    };
+
+    /**
+     * Creates a ReqRoleLoginPacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ReqRoleLoginPacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ReqRoleLoginPacket} ReqRoleLoginPacket
+     */
+    ReqRoleLoginPacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.ReqRoleLoginPacket)
+            return object;
+        var message = new $root.ReqRoleLoginPacket();
+        if (object.playerId != null)
+            if ($util.Long)
+                (message.playerId = $util.Long.fromValue(object.playerId)).unsigned = false;
+            else if (typeof object.playerId === "string")
+                message.playerId = parseInt(object.playerId, 10);
+            else if (typeof object.playerId === "number")
+                message.playerId = object.playerId;
+            else if (typeof object.playerId === "object")
+                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber();
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ReqRoleLoginPacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ReqRoleLoginPacket
+     * @static
+     * @param {ReqRoleLoginPacket} message ReqRoleLoginPacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ReqRoleLoginPacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.playerId = options.longs === String ? "0" : 0;
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            if (typeof message.playerId === "number")
+                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+            else
+                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber() : message.playerId;
+        return object;
+    };
+
+    /**
+     * Converts this ReqRoleLoginPacket to JSON.
+     * @function toJSON
+     * @memberof ReqRoleLoginPacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ReqRoleLoginPacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ReqRoleLoginPacket;
+})();
+
 $root.RespRoleLoginPacket = (function() {
 
     /**
@@ -1350,207 +1551,6 @@ $root.RespRoleLoginPacket = (function() {
     };
 
     return RespRoleLoginPacket;
-})();
-
-$root.ReqRoleLoginPacket = (function() {
-
-    /**
-     * Properties of a ReqRoleLoginPacket.
-     * @exports IReqRoleLoginPacket
-     * @interface IReqRoleLoginPacket
-     * @property {number|Long|null} [playerId] ReqRoleLoginPacket playerId
-     */
-
-    /**
-     * Constructs a new ReqRoleLoginPacket.
-     * @exports ReqRoleLoginPacket
-     * @classdesc Represents a ReqRoleLoginPacket.
-     * @implements IReqRoleLoginPacket
-     * @constructor
-     * @param {IReqRoleLoginPacket=} [properties] Properties to set
-     */
-    function ReqRoleLoginPacket(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * ReqRoleLoginPacket playerId.
-     * @member {number|Long} playerId
-     * @memberof ReqRoleLoginPacket
-     * @instance
-     */
-    ReqRoleLoginPacket.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-    /**
-     * Creates a new ReqRoleLoginPacket instance using the specified properties.
-     * @function create
-     * @memberof ReqRoleLoginPacket
-     * @static
-     * @param {IReqRoleLoginPacket=} [properties] Properties to set
-     * @returns {ReqRoleLoginPacket} ReqRoleLoginPacket instance
-     */
-    ReqRoleLoginPacket.create = function create(properties) {
-        return new ReqRoleLoginPacket(properties);
-    };
-
-    /**
-     * Encodes the specified ReqRoleLoginPacket message. Does not implicitly {@link ReqRoleLoginPacket.verify|verify} messages.
-     * @function encode
-     * @memberof ReqRoleLoginPacket
-     * @static
-     * @param {IReqRoleLoginPacket} message ReqRoleLoginPacket message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    ReqRoleLoginPacket.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.playerId != null && message.hasOwnProperty("playerId"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.playerId);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified ReqRoleLoginPacket message, length delimited. Does not implicitly {@link ReqRoleLoginPacket.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof ReqRoleLoginPacket
-     * @static
-     * @param {IReqRoleLoginPacket} message ReqRoleLoginPacket message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    ReqRoleLoginPacket.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a ReqRoleLoginPacket message from the specified reader or buffer.
-     * @function decode
-     * @memberof ReqRoleLoginPacket
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {ReqRoleLoginPacket} ReqRoleLoginPacket
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    ReqRoleLoginPacket.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ReqRoleLoginPacket();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.playerId = reader.int64();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a ReqRoleLoginPacket message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof ReqRoleLoginPacket
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {ReqRoleLoginPacket} ReqRoleLoginPacket
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    ReqRoleLoginPacket.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a ReqRoleLoginPacket message.
-     * @function verify
-     * @memberof ReqRoleLoginPacket
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    ReqRoleLoginPacket.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.playerId != null && message.hasOwnProperty("playerId"))
-            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
-                return "playerId: integer|Long expected";
-        return null;
-    };
-
-    /**
-     * Creates a ReqRoleLoginPacket message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof ReqRoleLoginPacket
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {ReqRoleLoginPacket} ReqRoleLoginPacket
-     */
-    ReqRoleLoginPacket.fromObject = function fromObject(object) {
-        if (object instanceof $root.ReqRoleLoginPacket)
-            return object;
-        var message = new $root.ReqRoleLoginPacket();
-        if (object.playerId != null)
-            if ($util.Long)
-                (message.playerId = $util.Long.fromValue(object.playerId)).unsigned = false;
-            else if (typeof object.playerId === "string")
-                message.playerId = parseInt(object.playerId, 10);
-            else if (typeof object.playerId === "number")
-                message.playerId = object.playerId;
-            else if (typeof object.playerId === "object")
-                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber();
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a ReqRoleLoginPacket message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof ReqRoleLoginPacket
-     * @static
-     * @param {ReqRoleLoginPacket} message ReqRoleLoginPacket
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    ReqRoleLoginPacket.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults)
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, false);
-                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-            } else
-                object.playerId = options.longs === String ? "0" : 0;
-        if (message.playerId != null && message.hasOwnProperty("playerId"))
-            if (typeof message.playerId === "number")
-                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
-            else
-                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber() : message.playerId;
-        return object;
-    };
-
-    /**
-     * Converts this ReqRoleLoginPacket to JSON.
-     * @function toJSON
-     * @memberof ReqRoleLoginPacket
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    ReqRoleLoginPacket.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return ReqRoleLoginPacket;
 })();
 
 $root.ReqEnterScenePacket = (function() {
@@ -2004,6 +2004,7 @@ $root.ObjectInMapInfo = (function() {
      * @property {string|null} [objectName] ObjectInMapInfo objectName
      * @property {number|null} [hp] ObjectInMapInfo hp
      * @property {number|null} [level] ObjectInMapInfo level
+     * @property {string|null} [objectType] ObjectInMapInfo objectType
      */
 
     /**
@@ -2054,6 +2055,14 @@ $root.ObjectInMapInfo = (function() {
     ObjectInMapInfo.prototype.level = 0;
 
     /**
+     * ObjectInMapInfo objectType.
+     * @member {string} objectType
+     * @memberof ObjectInMapInfo
+     * @instance
+     */
+    ObjectInMapInfo.prototype.objectType = "";
+
+    /**
      * Creates a new ObjectInMapInfo instance using the specified properties.
      * @function create
      * @memberof ObjectInMapInfo
@@ -2085,6 +2094,8 @@ $root.ObjectInMapInfo = (function() {
             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.hp);
         if (message.level != null && message.hasOwnProperty("level"))
             writer.uint32(/* id 4, wireType 0 =*/32).int32(message.level);
+        if (message.objectType != null && message.hasOwnProperty("objectType"))
+            writer.uint32(/* id 5, wireType 2 =*/42).string(message.objectType);
         return writer;
     };
 
@@ -2130,6 +2141,9 @@ $root.ObjectInMapInfo = (function() {
                 break;
             case 4:
                 message.level = reader.int32();
+                break;
+            case 5:
+                message.objectType = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -2178,6 +2192,9 @@ $root.ObjectInMapInfo = (function() {
         if (message.level != null && message.hasOwnProperty("level"))
             if (!$util.isInteger(message.level))
                 return "level: integer expected";
+        if (message.objectType != null && message.hasOwnProperty("objectType"))
+            if (!$util.isString(message.objectType))
+                return "objectType: string expected";
         return null;
     };
 
@@ -2208,6 +2225,8 @@ $root.ObjectInMapInfo = (function() {
             message.hp = object.hp | 0;
         if (object.level != null)
             message.level = object.level | 0;
+        if (object.objectType != null)
+            message.objectType = String(object.objectType);
         return message;
     };
 
@@ -2233,6 +2252,7 @@ $root.ObjectInMapInfo = (function() {
             object.objectName = "";
             object.hp = 0;
             object.level = 0;
+            object.objectType = "";
         }
         if (message.objectId != null && message.hasOwnProperty("objectId"))
             if (typeof message.objectId === "number")
@@ -2245,6 +2265,8 @@ $root.ObjectInMapInfo = (function() {
             object.hp = message.hp;
         if (message.level != null && message.hasOwnProperty("level"))
             object.level = message.level;
+        if (message.objectType != null && message.hasOwnProperty("objectType"))
+            object.objectType = message.objectType;
         return object;
     };
 
@@ -2260,6 +2282,230 @@ $root.ObjectInMapInfo = (function() {
     };
 
     return ObjectInMapInfo;
+})();
+
+$root.RespBroadcastEnterWorldPacket = (function() {
+
+    /**
+     * Properties of a RespBroadcastEnterWorldPacket.
+     * @exports IRespBroadcastEnterWorldPacket
+     * @interface IRespBroadcastEnterWorldPacket
+     * @property {number|Long|null} [playerId] RespBroadcastEnterWorldPacket playerId
+     * @property {string|null} [result] RespBroadcastEnterWorldPacket result
+     */
+
+    /**
+     * Constructs a new RespBroadcastEnterWorldPacket.
+     * @exports RespBroadcastEnterWorldPacket
+     * @classdesc Represents a RespBroadcastEnterWorldPacket.
+     * @implements IRespBroadcastEnterWorldPacket
+     * @constructor
+     * @param {IRespBroadcastEnterWorldPacket=} [properties] Properties to set
+     */
+    function RespBroadcastEnterWorldPacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * RespBroadcastEnterWorldPacket playerId.
+     * @member {number|Long} playerId
+     * @memberof RespBroadcastEnterWorldPacket
+     * @instance
+     */
+    RespBroadcastEnterWorldPacket.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * RespBroadcastEnterWorldPacket result.
+     * @member {string} result
+     * @memberof RespBroadcastEnterWorldPacket
+     * @instance
+     */
+    RespBroadcastEnterWorldPacket.prototype.result = "";
+
+    /**
+     * Creates a new RespBroadcastEnterWorldPacket instance using the specified properties.
+     * @function create
+     * @memberof RespBroadcastEnterWorldPacket
+     * @static
+     * @param {IRespBroadcastEnterWorldPacket=} [properties] Properties to set
+     * @returns {RespBroadcastEnterWorldPacket} RespBroadcastEnterWorldPacket instance
+     */
+    RespBroadcastEnterWorldPacket.create = function create(properties) {
+        return new RespBroadcastEnterWorldPacket(properties);
+    };
+
+    /**
+     * Encodes the specified RespBroadcastEnterWorldPacket message. Does not implicitly {@link RespBroadcastEnterWorldPacket.verify|verify} messages.
+     * @function encode
+     * @memberof RespBroadcastEnterWorldPacket
+     * @static
+     * @param {IRespBroadcastEnterWorldPacket} message RespBroadcastEnterWorldPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespBroadcastEnterWorldPacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.playerId);
+        if (message.result != null && message.hasOwnProperty("result"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.result);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified RespBroadcastEnterWorldPacket message, length delimited. Does not implicitly {@link RespBroadcastEnterWorldPacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof RespBroadcastEnterWorldPacket
+     * @static
+     * @param {IRespBroadcastEnterWorldPacket} message RespBroadcastEnterWorldPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespBroadcastEnterWorldPacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a RespBroadcastEnterWorldPacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof RespBroadcastEnterWorldPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {RespBroadcastEnterWorldPacket} RespBroadcastEnterWorldPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespBroadcastEnterWorldPacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RespBroadcastEnterWorldPacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.playerId = reader.int64();
+                break;
+            case 2:
+                message.result = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a RespBroadcastEnterWorldPacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof RespBroadcastEnterWorldPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {RespBroadcastEnterWorldPacket} RespBroadcastEnterWorldPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespBroadcastEnterWorldPacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a RespBroadcastEnterWorldPacket message.
+     * @function verify
+     * @memberof RespBroadcastEnterWorldPacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    RespBroadcastEnterWorldPacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                return "playerId: integer|Long expected";
+        if (message.result != null && message.hasOwnProperty("result"))
+            if (!$util.isString(message.result))
+                return "result: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a RespBroadcastEnterWorldPacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof RespBroadcastEnterWorldPacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {RespBroadcastEnterWorldPacket} RespBroadcastEnterWorldPacket
+     */
+    RespBroadcastEnterWorldPacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.RespBroadcastEnterWorldPacket)
+            return object;
+        var message = new $root.RespBroadcastEnterWorldPacket();
+        if (object.playerId != null)
+            if ($util.Long)
+                (message.playerId = $util.Long.fromValue(object.playerId)).unsigned = false;
+            else if (typeof object.playerId === "string")
+                message.playerId = parseInt(object.playerId, 10);
+            else if (typeof object.playerId === "number")
+                message.playerId = object.playerId;
+            else if (typeof object.playerId === "object")
+                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber();
+        if (object.result != null)
+            message.result = String(object.result);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a RespBroadcastEnterWorldPacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof RespBroadcastEnterWorldPacket
+     * @static
+     * @param {RespBroadcastEnterWorldPacket} message RespBroadcastEnterWorldPacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    RespBroadcastEnterWorldPacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.playerId = options.longs === String ? "0" : 0;
+            object.result = "";
+        }
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            if (typeof message.playerId === "number")
+                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+            else
+                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber() : message.playerId;
+        if (message.result != null && message.hasOwnProperty("result"))
+            object.result = message.result;
+        return object;
+    };
+
+    /**
+     * Converts this RespBroadcastEnterWorldPacket to JSON.
+     * @function toJSON
+     * @memberof RespBroadcastEnterWorldPacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    RespBroadcastEnterWorldPacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return RespBroadcastEnterWorldPacket;
 })();
 
 module.exports = $root;

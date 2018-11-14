@@ -6,6 +6,7 @@ import com.common.util.PacketUtil;
 import com.module.logic.map.manager.SceneManager;
 import com.module.logic.map.obj.MapObject;
 import com.module.logic.map.packet.ReqEnterScenePacket;
+import com.module.logic.map.packet.RespBroadcastEnterWorldPacket;
 import com.module.logic.map.packet.RespEnterScenePacket;
 import com.module.logic.map.packet.vo.ObjectInMapInfo;
 import com.module.logic.monster.manager.MonsterManager;
@@ -75,7 +76,7 @@ public class SceneService {
         //将场景里面所有的物体加载到响应包里面
         respEnterScenePacket.setMapObject(objects);
 
-        //发包
+        //发送进入场景的包
         PacketUtil.sendPacket(session,respEnterScenePacket);
         logger.info("ScenenService处理了...");
 
@@ -83,6 +84,12 @@ public class SceneService {
         //如果是第一个进入的话场景内应该时没有玩家的
         //将自己添加到id到Player的Map集合中
         Player player=playerManager.getPlayer2session().inverse().get(session);
+        RespBroadcastEnterWorldPacket respBroadcastEnterWorldPacket=new RespBroadcastEnterWorldPacket();
+       // respBroadcastEnterWorldPacket.setObjectInMapInfo(ObjectInMapInfo.valueOf(player));
+        respBroadcastEnterWorldPacket.setPlayerId(player.getPlayerEntity().getPlayerId());
+        respBroadcastEnterWorldPacket.setResult("成功进入场景");
+        //发送广播的包
+        PacketUtil.broatcastEnterWorldPacket(session,respBroadcastEnterWorldPacket,palyerInScene);
         sceneManager.getPlayerInScene(sceneId).put(player.getId(),player);
         //此外此处应该还要发送通知给其他玩家，当前玩家进入场景了
 
