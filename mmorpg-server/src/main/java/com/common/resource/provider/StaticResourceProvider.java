@@ -16,16 +16,16 @@ public class StaticResourceProvider<T> extends AbstractResourceProvider<T> {
         list=ReadManager.valueOf().read(resourceDataObject);
     }
 
-    @Override
-    public T get(int id) {
-        return null;
-    }
-
     public List<T> getList() {
         return list;
     }
 
     public void setList(List<T> list) {
         this.list = list;
+    }
+
+    @Override
+    public T get(Object o) {
+        return null;
     }
 }

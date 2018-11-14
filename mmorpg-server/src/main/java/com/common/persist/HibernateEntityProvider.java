@@ -6,9 +6,15 @@ import org.hibernate.query.Query;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class HibernateEntityProvider<T> extends HibernateDaoSupport implements EntityProvider<T> {
+/**
+ * ID继承Serializable是因为session.get(..)的第二个参数为Serializable
+ * @param <T>
+ * @param <ID>
+ */
+public class HibernateEntityProvider<T extends IEntity,ID extends Serializable> extends HibernateDaoSupport implements EntityProvider<T,ID> {
     private Class<T> entityClass;
 
 
@@ -17,9 +23,10 @@ public class HibernateEntityProvider<T> extends HibernateDaoSupport implements E
     }
 
     @Override
-    public T get(long id) {
+    public T get(ID id) {
         return this.getHibernateTemplate().execute(session -> {
             Transaction transaction=session.beginTransaction();
+            //由于get的第二个参数类型为Serializable故该泛型类的第二个参数要继承它
             T t=session.get(entityClass,id);
             transaction.commit();
             return t;
@@ -76,7 +83,7 @@ public class HibernateEntityProvider<T> extends HibernateDaoSupport implements E
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(ID id) {
         this.getHibernateTemplate().execute(session -> {
             Transaction transaction=session.getTransaction();
             session.delete(id);

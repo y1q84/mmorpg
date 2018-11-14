@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
  * 唯一、有一定顺序的 ID ，且支持分布式生成
  */
 @Component
-public class UniqueIdentifyKey {
+public class UniqueIdentifyKey implements GeneratorStrategy<Long>{
     //用当前时间的时间戳作为
     private final long twepoch=1540797390510L;
     // 服务id位数
@@ -36,6 +36,11 @@ public class UniqueIdentifyKey {
     private long serverId;
     private static long lastTimestamp = -1L;
 
+    private static UniqueIdentifyKey self;
+
+    public static UniqueIdentifyKey getInstance(){
+        return self;
+    }
 
     @PostConstruct
     public void init() {
@@ -43,9 +48,10 @@ public class UniqueIdentifyKey {
         if (serverId > maxServerId || serverId < 0) {
             throw new IllegalArgumentException(String.format("服务id超出范围:%d",serverId));
         }
+        self=this;
     }
 
-    public synchronized long createUniqueId() {
+    public synchronized Long createUniqueId() {
 
         long timestamp = System.currentTimeMillis();
         if (timestamp < lastTimestamp) {
