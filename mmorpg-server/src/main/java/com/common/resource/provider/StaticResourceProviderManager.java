@@ -135,7 +135,7 @@ public class StaticResourceProviderManager implements ApplicationContextAware,  
                     //往ResourceProvider注入ResourceDataObject字段
                     //由于资源类产生器的泛型参数为空，所有不能够完成resourceDataObject字段注入,而需重新创造一个provider
                     //以下通过动态创建类来获取
-                    ResourceProvider resourceProviderProxy=ResourceProviderProxyFactory.getInstance().createResourceProviderProxy(StaticResourceProvider.class.getName(),resourceClass);
+                    ResourceProvider resourceProviderProxy=ResourceProviderProxyFactory.getInstance().createResourceProviderProxy(StaticResourceProvider.class.getName(),resourceClass,ReflectUtil.convertType(keyClass));
                     injectResourceDataObject(resourceProviderProxy,resourceDataObjectField,resourceClass,resourceDefaultFormat);
                     //将创建的类注册进sprig容器中
                     DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory)applicationContext.getAutowireCapableBeanFactory();

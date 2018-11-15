@@ -46,4 +46,33 @@ public class ReflectUtil {
         return resolvableType.getInterfaces()[0].getGeneric(0).resolve();
     }
 
+    public static Class convertType(Class classzz) {
+        if (int.class == classzz) {
+            return Integer.class;
+        }
+        if ( short.class == classzz) {
+            return Short.class;
+        }
+        if (byte.class == classzz) {
+            return Byte.class;
+        }
+        if (char.class == classzz) {
+            return Character.class;
+        }
+        if (long.class == classzz) {
+            return Long.class;
+        }
+        if (float.class == classzz) {
+            return Float.class;
+        }
+        if (double.class == classzz) {
+            return Double.class;
+        }
+        if (boolean.class == classzz) {
+            return Boolean.class;
+        }
+
+        return classzz;
+    }
+
 }
