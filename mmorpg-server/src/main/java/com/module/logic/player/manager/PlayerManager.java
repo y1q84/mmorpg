@@ -37,7 +37,7 @@ public class PlayerManager {
     public PlayerEntity createPlayerEntity(String account, String name, RoleType roleType,String sex){
         PlayerEntity playerEntity=new PlayerEntity();
         //通过雪花算法生成全局唯一的id
-        int playerId=(int)uniqueIdentifyKey.createUniqueId();
+        long playerId=uniqueIdentifyKey.createUniqueId();
         playerEntity.setPlayerId(playerId);
         System.out.println("生成的playerId为："+playerId);
         playerEntity.setAccount(account);

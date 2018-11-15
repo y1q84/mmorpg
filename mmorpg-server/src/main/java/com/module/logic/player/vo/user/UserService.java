@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -12,7 +11,7 @@ import java.util.Date;
 public class UserService extends UserDao{
     @Autowired
     private UserDao userDao;
-    @Transactional
+//    @Transactional
     public void save(Person person){
         userDao.save(person);
     }

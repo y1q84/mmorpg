@@ -25,6 +25,17 @@ public class CacheEntityProvider<T extends IEntity<ID>,ID extends Serializable> 
     }
 
     @Override
+    public T loadOrCreate(ID id, ICreator<ID, T> creator) {
+        T t=get(id);
+        if(t!=null){
+            return t;
+        }
+        t=creator.create(id);
+        save(t);
+        return t;
+    }
+
+    @Override
     public void save(T entity) {
         ID id=(ID)(UniqueIdentifyKey.getInstance().createUniqueId());
         entity.setId(id);

@@ -14,7 +14,17 @@ import java.util.List;
  * @param <T>
  * @param <ID>
  */
+//@Component
 public class HibernateEntityProvider<T extends IEntity,ID extends Serializable> extends HibernateDaoSupport implements EntityProvider<T,ID> {
+
+//    @Autowired
+//    private SessionFactory sessionFactory;
+//    @PostConstruct
+//    public void setSessionFactoryOverride()
+//    {
+//        super.setSessionFactory(sessionFactory);
+//    }
+
     private Class<T> entityClass;
 
 
@@ -36,7 +46,7 @@ public class HibernateEntityProvider<T extends IEntity,ID extends Serializable> 
     @Override
     public List<T> load() {
         return this.getHibernateTemplate().execute(session -> {
-            Transaction transaction=session.getTransaction();
+            Transaction transaction=session.beginTransaction();
             //通过hql语句进行查询
             List<T> list= (List<T>) session.createQuery("from"+entityClass.getSimpleName());
             return list;
@@ -44,13 +54,19 @@ public class HibernateEntityProvider<T extends IEntity,ID extends Serializable> 
     }
 
     @Override
-    public void loadOrCreate(T entity) {
+    public T loadOrCreate(ID id,ICreator<ID,T> creator) {
+            T t= get(id);
+            if(t!=null){
+                return t;
+            }
+            t=creator.create(id);
+            return t;
     }
 
     @Override
     public void save(T entity) {
         this.getHibernateTemplate().execute(session -> {
-            Transaction transaction=session.getTransaction();
+            Transaction transaction=session.beginTransaction();
             session.save(entity);
             session.flush();
             transaction.commit();

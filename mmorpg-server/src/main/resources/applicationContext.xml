@@ -51,17 +51,18 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <!--<bean id="userDao" class="com.module.logic.player.vo.user.UserDao">-->
-        <!--<property name="sessionFactory" ref="sessionFactory"/>-->
-    <!--</bean>-->
+    <bean id="hibernateEntityProvider" class="com.common.persist.HibernateEntityProvider">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
     <!-- SessionFactory配置 -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+
         <!--引用数据源，进行连接数据库的相关操作-->
         <property name="dataSource" ref="dataSource"></property>
         <!--<property name="configLocation" value="classpath:hibernate.cfg.xml"></property>-->
@@ -70,6 +71,7 @@
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.current_session_context_class">thread</prop>
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>

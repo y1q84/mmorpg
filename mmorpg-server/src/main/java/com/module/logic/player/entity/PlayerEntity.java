@@ -3,33 +3,51 @@ package com.module.logic.player.entity;
 import com.module.logic.player.Player;
 import com.module.logic.player.type.RoleType;
 
+import javax.persistence.*;
+
 /**
  * author:ydx
  * create 2018\10\21 0021
  */
+@Entity
+@NamedQueries({
+        @NamedQuery(name="findPlayerByAccount", query="select p from PlayerEntity p where p.account=:account")
+})
 public class PlayerEntity {
 
-    private int playerId;
+    @Id
+    @Column
+    private long playerId;
+    @Column
     private String account;
+    @Column
     private String playerName;
+    @Column
     private RoleType roleType;
+    @Column
     private String sex;
+    @Column
     private int level=1;
+    @Column
     private int hp=100;//血量
+    @Column
     private int mp=100;//蓝量
+    @Column
     private long exp=1000;//经验
 
+    @Column
     private long gold=100;
 
+    @Column
     private int mapId;
 
     private Player player;
 
-    public int getPlayerId() {
+    public long getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(int playerId) {
+    public void setPlayerId(long playerId) {
         this.playerId = playerId;
     }
 

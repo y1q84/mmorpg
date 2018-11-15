@@ -1,6 +1,8 @@
 package com.common.resource.provider;
 
-public interface ResourceProvider<T> extends DataProvider<T>{
+import java.util.List;
 
+public interface ResourceProvider<T,ID> extends DataProvider<T, ID>{
+    List<T> readList();
     void reload();
 }
