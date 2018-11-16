@@ -33,7 +33,7 @@ public abstract class AbstractResourceProvider<T,ID> implements ResourceProvider
         return null;
     }
 
-    protected abstract List<T> loadAll(ResourceDataObject resourceDataObject);
+    public abstract List<T> loadAll(ResourceDataObject resourceDataObject);
 
     public List<T> getList() {
         return list;

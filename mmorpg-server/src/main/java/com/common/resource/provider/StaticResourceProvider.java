@@ -17,7 +17,7 @@ public class StaticResourceProvider<T,ID> extends AbstractResourceProvider<T, ID
 //    }
 
     @Override
-    protected List<T> loadAll(ResourceDataObject resourceDataObject) {
+    public List<T> loadAll(ResourceDataObject resourceDataObject) {
         List<T> list=null;
         ReadResource readResource=ReadManager.valueOf().getReadResource(resourceDataObject.getResourceType());
         list=(List<T>)readResource.read(resourceDataObject);

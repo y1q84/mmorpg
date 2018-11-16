@@ -33,15 +33,15 @@
     </bean>
 
     <!-- 配置.properties文件路径 -->
-    <!--<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
-        <!--<property name="locations">-->
-            <!--<list>-->
-                <!--<value>classpath:server.properties</value>-->
-                <!--<value>classpath:jdbc.properties</value>-->
-            <!--</list>-->
-        <!--</property>-->
-    <!--</bean>-->
-    <context:property-placeholder location="classpath:*.properties" ignore-unresolvable="true"/>
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:server.properties</value>
+                <value>classpath:jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!--<context:property-placeholder location="classpath:*.properties" ignore-unresolvable="true"/>-->
 
     <!--数据源-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
@@ -76,11 +76,11 @@
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>
-        <!--设置映射文件-->
+        <!--扫描所有entity包下的实体类-->
         <property name="packagesToScan">
             <list>
                 <value>com.module.logic.player.vo.user</value>
-                <!--<value>com.entity.User</value>-->
+                <value>com.module.logic.**.entity</value>
             </list>
         </property>
     </bean>

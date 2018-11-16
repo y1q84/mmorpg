@@ -1,5 +1,6 @@
 package com.module.logic.player.entity;
 
+import com.common.persist.IEntity;
 import com.module.logic.player.Player;
 import com.module.logic.player.type.RoleType;
 
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name="findPlayerByAccount", query="select p from PlayerEntity p where p.account=:account")
 })
-public class PlayerEntity {
+public class PlayerEntity implements IEntity {
 
     @Id
     @Column
@@ -41,6 +42,8 @@ public class PlayerEntity {
     @Column
     private int mapId;
 
+    //如果不加，会创建改字段对应的列
+    @Transient
     private Player player;
 
     public long getPlayerId() {
@@ -137,5 +140,15 @@ public class PlayerEntity {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    @Override
+    public Object getId() {
+        return null;
+    }
+
+    @Override
+    public void setId(Object o) {
+
     }
 }
