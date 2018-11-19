@@ -158,13 +158,11 @@
             <version>${caffeine.version}</version>
         </dependency>
         <!--持久层配置-->
-        <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
         <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>3.6.1</version>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-5</artifactId>
+            <version>1.2.0</version>
         </dependency>
-
 
     </dependencies>
 
