@@ -6,4 +6,6 @@ package com.common.identify;
  */
 public interface GeneratorStrategy<T> {
     T createUniqueId();
+
+    String getType();
 }

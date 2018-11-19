@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
  * 唯一、有一定顺序的 ID ，且支持分布式生成
  */
 @Component
-public class UniqueIdentifyKey implements GeneratorStrategy<Long>{
+public class SnowflakeGeneratorStrategy implements GeneratorStrategy<Long>{
     //用当前时间的时间戳作为
     private final long twepoch=1540797390510L;
     // 服务id位数
@@ -36,9 +36,9 @@ public class UniqueIdentifyKey implements GeneratorStrategy<Long>{
     private long serverId;
     private static long lastTimestamp = -1L;
 
-    private static UniqueIdentifyKey self;
+    private static SnowflakeGeneratorStrategy self;
 
-    public static UniqueIdentifyKey getInstance(){
+    public static SnowflakeGeneratorStrategy getInstance(){
         return self;
     }
 
@@ -90,10 +90,15 @@ public class UniqueIdentifyKey implements GeneratorStrategy<Long>{
         return timestamp;
     }
 
+    @Override
+    public String getType() {
+        return "snowflakeid";
+    }
+
     public static void main(String[] args) {
 
         ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
-        UniqueIdentifyKey uk=ac.getBean(UniqueIdentifyKey.class);
+        SnowflakeGeneratorStrategy uk=ac.getBean(SnowflakeGeneratorStrategy.class);
         System.out.println("ukid:"+uk.serverId);
         for(int i=0;i<2;i++){
             new Thread(new Runnable() {
