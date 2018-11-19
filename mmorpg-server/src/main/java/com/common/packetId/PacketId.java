@@ -21,6 +21,10 @@ public class PacketId {
     public static final short LOGIN_RESP=10002;
     /**登录验证**/
     public static final short LOGIN_AUTH_REQ=10003;
+    /**请求注册账号**/
+    public static final short REGISTER_REQ=10004;
+    /**响应注册账号**/
+    public static final short REGISTER_RESP=10005;
     /**请求创建角色**/
     public static final short CREATE_ROLE_REQ=10010;
     /**响应创建角色**/

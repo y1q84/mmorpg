@@ -1,18 +1,24 @@
 package com.module.logic.account.entity;
 
+import com.common.annotation.IdCreateStrategy;
 import com.common.persist.IEntity;
+import com.common.util.JsonStringType;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.List;
 
 @Entity
+@TypeDef(name = "json", typeClass = JsonStringType.class)
 public class AccountEntity implements IEntity<String> {
 
     @Id
     @Column
+    @IdCreateStrategy
     private String playerId;
 
     @Column
@@ -31,7 +37,7 @@ public class AccountEntity implements IEntity<String> {
 
     @Override
     public void setId(String s) {
-
+        this.playerId=s;
     }
 
     public String getPlayerId() {

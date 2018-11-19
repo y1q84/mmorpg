@@ -1,6 +1,7 @@
 package com.common.resource.provider;
 
 
+import com.common.persist.EntityProvider;
 import jdk.internal.org.objectweb.asm.Opcodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,18 @@ public class ResourceProviderProxyFactory extends ClassLoader {
             e.printStackTrace();
         }
         return resourceProvider;
+    }
+
+    public EntityProvider createEntityProviderProxy(String superProviderName, Class genericType1,Class genericType2){
+        Class<?> clazz=createGenericClass(superProviderName,genericType1,genericType2);
+        EntityProvider entityProvider=null;
+        try {
+            entityProvider=(EntityProvider)(clazz.newInstance());
+        }catch (Exception e){
+            logger.error("类%s实例化失败..",entityProvider.getClass().getSimpleName());
+            e.printStackTrace();
+        }
+        return entityProvider;
     }
 
     //创建泛型类，其中第二个参数为泛型参数类型,第三个表示id

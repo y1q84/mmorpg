@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
  * create 2018\11\15 0015
  */
 @MappedSuperclass
-@TypeDef(name = "json", typeClass = JsonStringType.class)
+//@TypeDef(name = "json", typeClass = JsonStringType.class)
 public interface IEntity<ID> {
 
     ID getId();

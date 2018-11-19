@@ -1,6 +1,8 @@
 package com.common.persist;
 
 import com.common.resource.provider.DataProvider;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

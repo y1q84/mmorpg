@@ -1,5 +1,7 @@
 package com.module.logic.account.service;
 
+import com.module.logic.account.manager.AccountManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,7 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountService {
 
+    @Autowired
+    AccountManager accountManager;
+
     public boolean login(String account,String password){
         return true;
+    }
+
+    public boolean register(String account,String password){
+        return accountManager.register(account,password);
     }
 }

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name="findPlayerByAccount", query="select p from PlayerEntity p where p.account=:account")
 })
-public class PlayerEntity implements IEntity {
+public class PlayerEntity implements IEntity<Long> {
 
     @Id
     @Column
@@ -143,12 +143,13 @@ public class PlayerEntity implements IEntity {
     }
 
     @Override
-    public Object getId() {
+    public Long getId() {
         return null;
     }
 
     @Override
-    public void setId(Object o) {
+    public void setId(Long aLong) {
 
     }
+
 }

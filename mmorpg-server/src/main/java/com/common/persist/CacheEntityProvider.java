@@ -1,8 +1,10 @@
 package com.common.persist;
 
-import com.common.identify.UniqueIdentifyKey;
+import com.common.identify.IdCreateStrategyProvider;
+import com.common.identify.SnowflakeGeneratorStrategy;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
@@ -37,9 +39,13 @@ public class CacheEntityProvider<T extends IEntity<ID>,ID extends Serializable> 
 
     @Override
     public void save(T entity) {
-        ID id=(ID)(UniqueIdentifyKey.getInstance().createUniqueId());
+//        ID id=(ID)(SnowflakeGeneratorStrategy.getInstance().createUniqueId());
+        //此处需要获取实体类上面的@IdCreateStrategy的value值以确定采用哪种id生成策略
+        String type=getIdCreateType();
+        ID id=(ID)IdCreateStrategyProvider.getInstance().getGeneratorStrategy(getIdCreateType()).createUniqueId();
         entity.setId(id);
         loadingCache.put(entity.getId(),entity);
+        super.save(entity);
     }
 
     @Override

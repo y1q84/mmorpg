@@ -6,6 +6,7 @@ import com.common.session.Constants;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
 import com.module.logic.account.packet.ReqLoginPacket;
+import com.module.logic.account.packet.ReqRegisterPacket;
 import com.module.logic.account.packet.ResLoginPacket;
 import com.module.logic.account.service.AccountService;
 import org.slf4j.Logger;
@@ -37,6 +38,13 @@ public class AccountHandler {
             PacketUtil.sendPacket(session,resLoginPacket);
             logger.info("登录成功！");
         }
+    }
+
+    @WsMethod
+    public void accountRegister(Session session, ReqRegisterPacket reqRegisterPacket){
+        String account=reqRegisterPacket.getAccount();
+        String password=reqRegisterPacket.getPassword();
+
     }
 
     public void addAccountToSession(Session session,ReqLoginPacket reqLoginPacket){
