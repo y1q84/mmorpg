@@ -15,7 +15,8 @@ public class AccountService {
     AccountManager accountManager;
 
     public boolean login(String account,String password){
-        return true;
+        boolean result=accountManager.login(account,password);
+        return result;
     }
 
     public boolean register(String account,String password){

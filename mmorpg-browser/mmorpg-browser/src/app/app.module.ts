@@ -8,6 +8,7 @@ import {WebsocketService} from './shared/websocket.service';
 import { LoginComponent } from './module/logic/login/login.component';
 import { MapComponent } from './module/logic/map/map.component';
 import { AppRoutingModule } from './app-routing.module';
+import { RegisterComponent } from './module/logic/register/register.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { AppRoutingModule } from './app-routing.module';
     AppComponent,
     WebSocketComponent,
     LoginComponent,
-    MapComponent
+    MapComponent,
+    RegisterComponent
   ],
   imports: [
     FormsModule,

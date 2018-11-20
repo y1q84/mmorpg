@@ -638,6 +638,403 @@ $root.ReqLoginAuthPacket = (function() {
     return ReqLoginAuthPacket;
 })();
 
+$root.ReqRegisterPacket = (function() {
+
+    /**
+     * Properties of a ReqRegisterPacket.
+     * @exports IReqRegisterPacket
+     * @interface IReqRegisterPacket
+     * @property {string|null} [account] ReqRegisterPacket account
+     * @property {string|null} [password] ReqRegisterPacket password
+     */
+
+    /**
+     * Constructs a new ReqRegisterPacket.
+     * @exports ReqRegisterPacket
+     * @classdesc Represents a ReqRegisterPacket.
+     * @implements IReqRegisterPacket
+     * @constructor
+     * @param {IReqRegisterPacket=} [properties] Properties to set
+     */
+    function ReqRegisterPacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ReqRegisterPacket account.
+     * @member {string} account
+     * @memberof ReqRegisterPacket
+     * @instance
+     */
+    ReqRegisterPacket.prototype.account = "";
+
+    /**
+     * ReqRegisterPacket password.
+     * @member {string} password
+     * @memberof ReqRegisterPacket
+     * @instance
+     */
+    ReqRegisterPacket.prototype.password = "";
+
+    /**
+     * Creates a new ReqRegisterPacket instance using the specified properties.
+     * @function create
+     * @memberof ReqRegisterPacket
+     * @static
+     * @param {IReqRegisterPacket=} [properties] Properties to set
+     * @returns {ReqRegisterPacket} ReqRegisterPacket instance
+     */
+    ReqRegisterPacket.create = function create(properties) {
+        return new ReqRegisterPacket(properties);
+    };
+
+    /**
+     * Encodes the specified ReqRegisterPacket message. Does not implicitly {@link ReqRegisterPacket.verify|verify} messages.
+     * @function encode
+     * @memberof ReqRegisterPacket
+     * @static
+     * @param {IReqRegisterPacket} message ReqRegisterPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqRegisterPacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.account != null && message.hasOwnProperty("account"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.account);
+        if (message.password != null && message.hasOwnProperty("password"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.password);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ReqRegisterPacket message, length delimited. Does not implicitly {@link ReqRegisterPacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ReqRegisterPacket
+     * @static
+     * @param {IReqRegisterPacket} message ReqRegisterPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqRegisterPacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ReqRegisterPacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof ReqRegisterPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ReqRegisterPacket} ReqRegisterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqRegisterPacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ReqRegisterPacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.account = reader.string();
+                break;
+            case 2:
+                message.password = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ReqRegisterPacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ReqRegisterPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ReqRegisterPacket} ReqRegisterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqRegisterPacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ReqRegisterPacket message.
+     * @function verify
+     * @memberof ReqRegisterPacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ReqRegisterPacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.account != null && message.hasOwnProperty("account"))
+            if (!$util.isString(message.account))
+                return "account: string expected";
+        if (message.password != null && message.hasOwnProperty("password"))
+            if (!$util.isString(message.password))
+                return "password: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a ReqRegisterPacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ReqRegisterPacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ReqRegisterPacket} ReqRegisterPacket
+     */
+    ReqRegisterPacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.ReqRegisterPacket)
+            return object;
+        var message = new $root.ReqRegisterPacket();
+        if (object.account != null)
+            message.account = String(object.account);
+        if (object.password != null)
+            message.password = String(object.password);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ReqRegisterPacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ReqRegisterPacket
+     * @static
+     * @param {ReqRegisterPacket} message ReqRegisterPacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ReqRegisterPacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.account = "";
+            object.password = "";
+        }
+        if (message.account != null && message.hasOwnProperty("account"))
+            object.account = message.account;
+        if (message.password != null && message.hasOwnProperty("password"))
+            object.password = message.password;
+        return object;
+    };
+
+    /**
+     * Converts this ReqRegisterPacket to JSON.
+     * @function toJSON
+     * @memberof ReqRegisterPacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ReqRegisterPacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ReqRegisterPacket;
+})();
+
+$root.RespRegisterPacket = (function() {
+
+    /**
+     * Properties of a RespRegisterPacket.
+     * @exports IRespRegisterPacket
+     * @interface IRespRegisterPacket
+     * @property {string|null} [result] RespRegisterPacket result
+     */
+
+    /**
+     * Constructs a new RespRegisterPacket.
+     * @exports RespRegisterPacket
+     * @classdesc Represents a RespRegisterPacket.
+     * @implements IRespRegisterPacket
+     * @constructor
+     * @param {IRespRegisterPacket=} [properties] Properties to set
+     */
+    function RespRegisterPacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * RespRegisterPacket result.
+     * @member {string} result
+     * @memberof RespRegisterPacket
+     * @instance
+     */
+    RespRegisterPacket.prototype.result = "";
+
+    /**
+     * Creates a new RespRegisterPacket instance using the specified properties.
+     * @function create
+     * @memberof RespRegisterPacket
+     * @static
+     * @param {IRespRegisterPacket=} [properties] Properties to set
+     * @returns {RespRegisterPacket} RespRegisterPacket instance
+     */
+    RespRegisterPacket.create = function create(properties) {
+        return new RespRegisterPacket(properties);
+    };
+
+    /**
+     * Encodes the specified RespRegisterPacket message. Does not implicitly {@link RespRegisterPacket.verify|verify} messages.
+     * @function encode
+     * @memberof RespRegisterPacket
+     * @static
+     * @param {IRespRegisterPacket} message RespRegisterPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespRegisterPacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.result != null && message.hasOwnProperty("result"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.result);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified RespRegisterPacket message, length delimited. Does not implicitly {@link RespRegisterPacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof RespRegisterPacket
+     * @static
+     * @param {IRespRegisterPacket} message RespRegisterPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespRegisterPacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a RespRegisterPacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof RespRegisterPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {RespRegisterPacket} RespRegisterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespRegisterPacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RespRegisterPacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.result = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a RespRegisterPacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof RespRegisterPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {RespRegisterPacket} RespRegisterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespRegisterPacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a RespRegisterPacket message.
+     * @function verify
+     * @memberof RespRegisterPacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    RespRegisterPacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.result != null && message.hasOwnProperty("result"))
+            if (!$util.isString(message.result))
+                return "result: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a RespRegisterPacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof RespRegisterPacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {RespRegisterPacket} RespRegisterPacket
+     */
+    RespRegisterPacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.RespRegisterPacket)
+            return object;
+        var message = new $root.RespRegisterPacket();
+        if (object.result != null)
+            message.result = String(object.result);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a RespRegisterPacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof RespRegisterPacket
+     * @static
+     * @param {RespRegisterPacket} message RespRegisterPacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    RespRegisterPacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.result = "";
+        if (message.result != null && message.hasOwnProperty("result"))
+            object.result = message.result;
+        return object;
+    };
+
+    /**
+     * Converts this RespRegisterPacket to JSON.
+     * @function toJSON
+     * @memberof RespRegisterPacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    RespRegisterPacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return RespRegisterPacket;
+})();
+
 $root.ReqCreateRolePacket = (function() {
 
     /**

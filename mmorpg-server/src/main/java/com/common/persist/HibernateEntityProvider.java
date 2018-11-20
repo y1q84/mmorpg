@@ -140,11 +140,12 @@ public class HibernateEntityProvider<T extends IEntity,ID extends Serializable> 
 
         return this.getHibernateTemplate().execute((HibernateCallback<List<T>>)session->{
             Transaction transaction=session.beginTransaction();
-            Query query=session.getNamedQuery(sql);
+            //查找实体类上面的@NamedQuery对应的name
+            Query<T> query=session.getNamedQuery(sql);
             for(int i=0;i<params.length;i++){
-                query.setParameter(i,params[i]);
+                query.setParameter(i+1,params[i]);
             }
-            List list=query.list();
+            List<T> list=query.list();
             transaction.commit();
             return list;
         });

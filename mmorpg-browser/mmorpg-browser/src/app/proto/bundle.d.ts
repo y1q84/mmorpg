@@ -288,6 +288,192 @@ export class ReqLoginAuthPacket implements IReqLoginAuthPacket {
     public toJSON(): { [k: string]: any };
 }
 
+/** Properties of a ReqRegisterPacket. */
+export interface IReqRegisterPacket {
+
+    /** ReqRegisterPacket account */
+    account?: (string|null);
+
+    /** ReqRegisterPacket password */
+    password?: (string|null);
+}
+
+/** Represents a ReqRegisterPacket. */
+export class ReqRegisterPacket implements IReqRegisterPacket {
+
+    /**
+     * Constructs a new ReqRegisterPacket.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IReqRegisterPacket);
+
+    /** ReqRegisterPacket account. */
+    public account: string;
+
+    /** ReqRegisterPacket password. */
+    public password: string;
+
+    /**
+     * Creates a new ReqRegisterPacket instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ReqRegisterPacket instance
+     */
+    public static create(properties?: IReqRegisterPacket): ReqRegisterPacket;
+
+    /**
+     * Encodes the specified ReqRegisterPacket message. Does not implicitly {@link ReqRegisterPacket.verify|verify} messages.
+     * @param message ReqRegisterPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IReqRegisterPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ReqRegisterPacket message, length delimited. Does not implicitly {@link ReqRegisterPacket.verify|verify} messages.
+     * @param message ReqRegisterPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IReqRegisterPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a ReqRegisterPacket message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ReqRegisterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ReqRegisterPacket;
+
+    /**
+     * Decodes a ReqRegisterPacket message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ReqRegisterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ReqRegisterPacket;
+
+    /**
+     * Verifies a ReqRegisterPacket message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a ReqRegisterPacket message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ReqRegisterPacket
+     */
+    public static fromObject(object: { [k: string]: any }): ReqRegisterPacket;
+
+    /**
+     * Creates a plain object from a ReqRegisterPacket message. Also converts values to other types if specified.
+     * @param message ReqRegisterPacket
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ReqRegisterPacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ReqRegisterPacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a RespRegisterPacket. */
+export interface IRespRegisterPacket {
+
+    /** RespRegisterPacket result */
+    result?: (string|null);
+}
+
+/** Represents a RespRegisterPacket. */
+export class RespRegisterPacket implements IRespRegisterPacket {
+
+    /**
+     * Constructs a new RespRegisterPacket.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IRespRegisterPacket);
+
+    /** RespRegisterPacket result. */
+    public result: string;
+
+    /**
+     * Creates a new RespRegisterPacket instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns RespRegisterPacket instance
+     */
+    public static create(properties?: IRespRegisterPacket): RespRegisterPacket;
+
+    /**
+     * Encodes the specified RespRegisterPacket message. Does not implicitly {@link RespRegisterPacket.verify|verify} messages.
+     * @param message RespRegisterPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IRespRegisterPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified RespRegisterPacket message, length delimited. Does not implicitly {@link RespRegisterPacket.verify|verify} messages.
+     * @param message RespRegisterPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IRespRegisterPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a RespRegisterPacket message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns RespRegisterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RespRegisterPacket;
+
+    /**
+     * Decodes a RespRegisterPacket message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns RespRegisterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RespRegisterPacket;
+
+    /**
+     * Verifies a RespRegisterPacket message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a RespRegisterPacket message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns RespRegisterPacket
+     */
+    public static fromObject(object: { [k: string]: any }): RespRegisterPacket;
+
+    /**
+     * Creates a plain object from a RespRegisterPacket message. Also converts values to other types if specified.
+     * @param message RespRegisterPacket
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: RespRegisterPacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this RespRegisterPacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Properties of a ReqCreateRolePacket. */
 export interface IReqCreateRolePacket {
 

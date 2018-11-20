@@ -1,6 +1,8 @@
 import { ReqLoginPacket, ResLoginPacket, ReqCreateRolePacket, RespCreateRolePacket,
     ReqEnterScenePacket, RespEnterScenePacket, ReqRoleLoginPacket, RespRoleLoginPacket,
-    RespBroadcastEnterWorldPacket } from 'src/app/proto/bundle';
+    RespBroadcastEnterWorldPacket,
+    ReqRegisterPacket,
+    RespRegisterPacket} from 'src/app/proto/bundle';
 
 
 
@@ -16,6 +18,10 @@ export class PacketId {
     /**响应登录**/
     public static readonly LOGIN_RESP: number = 10002;
     public static readonly LOGIN_AUTH_REQ: number = 10003;
+    /**请求注册账号**/
+    public static readonly REGISTER_REQ: number = 10004;
+    /**响应注册账号**/
+    public static readonly REGISTER_RESP: number = 10005;
     /**请求创建角色**/
     public static readonly CREATE_ROLE_REQ: number = 10010;
     /**响应创建角色**/
@@ -39,6 +45,8 @@ export class PacketId {
     constructor() {
         PacketId.add(PacketId.LOGIN_REQ, ReqLoginPacket);
         PacketId.add(PacketId.LOGIN_RESP, ResLoginPacket);
+        PacketId.add(PacketId.REGISTER_REQ, ReqRegisterPacket);
+        PacketId.add(PacketId.REGISTER_RESP, RespRegisterPacket);
         PacketId.add(PacketId.CREATE_ROLE_REQ, ReqCreateRolePacket);
         PacketId.add(PacketId.CREATE_ROLE_RESP, RespCreateRolePacket);
         PacketId.add(PacketId.ENTER_WORLD_REQ, ReqEnterScenePacket);

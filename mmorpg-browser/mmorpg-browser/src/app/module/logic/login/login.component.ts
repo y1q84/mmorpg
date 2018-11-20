@@ -4,6 +4,7 @@ import { WebsocketService } from 'src/app/shared/websocket.service';
 import { ReqLoginPacket, ReqCreateRolePacket, RoleType, ReqRoleLoginPacket } from 'src/app/proto/bundle';
 import { PacketId } from '../../packetId/PacketId';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  route: ActivatedRoute;
   // loginState = true;
   loginState: boolean;
   connectState: boolean;
@@ -62,6 +64,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    // 通过路由传参过来
+    // this.connectState = this.route.snapshot.params['connectState'];
   }
 
   connect() {
@@ -151,7 +155,11 @@ export class LoginComponent implements OnInit {
   }
   respRoleLogin(data) {
     this.respCreateRoleMessage = data.respObj.result;
-    console.log('角色登录成功');
+    if (this.respCreateRoleMessage === '登录成功') {
+      console.log('角色登录成功');
+    } else {
+      console.log('登录失败');
+    }
   }
 
   enterscene() {

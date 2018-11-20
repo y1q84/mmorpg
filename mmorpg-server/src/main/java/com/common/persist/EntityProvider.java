@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Component
 public interface EntityProvider<T extends IEntity,ID> extends DataProvider<T,ID> {
     T get(ID id);
     List<T> load();

@@ -1,6 +1,6 @@
 package com.module.logic.player.manager;
 
-import com.common.identify.UniqueIdentifyKey;
+import com.common.identify.SnowflakeGeneratorStrategy;
 import com.common.session.Session;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -31,13 +31,14 @@ public class PlayerManager {
         return self;
     }
 
-    @Autowired
-    UniqueIdentifyKey uniqueIdentifyKey;
+//    @Autowired
+//    SnowflakeGeneratorStrategy snowflakeGeneratorStrategy;
 
     public PlayerEntity createPlayerEntity(String account, String name, RoleType roleType,String sex){
         PlayerEntity playerEntity=new PlayerEntity();
         //通过雪花算法生成全局唯一的id
-        long playerId=uniqueIdentifyKey.createUniqueId();
+//        long playerId= snowflakeGeneratorStrategy.createUniqueId();
+        long playerId=SnowflakeGeneratorStrategy.getInstance().createUniqueId();
         playerEntity.setPlayerId(playerId);
         System.out.println("生成的playerId为："+playerId);
         playerEntity.setAccount(account);

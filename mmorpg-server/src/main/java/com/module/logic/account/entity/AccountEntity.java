@@ -6,20 +6,21 @@ import com.common.util.JsonStringType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @TypeDef(name = "json", typeClass = JsonStringType.class)
+@NamedQueries({
+        @NamedQuery(name = "findAccountEntityByAccount", query = "select a from AccountEntity a where a.account=?1"),
+        @NamedQuery(name="findAccountEntityByAccountAndPass", query="select a from AccountEntity a where  a.account=?1 and a.password=?2")
+})
 public class AccountEntity implements IEntity<String> {
 
     @Id
     @Column
     @IdCreateStrategy
-    private String playerId;
+    private String id;
 
     @Column
     private String account;
@@ -32,20 +33,12 @@ public class AccountEntity implements IEntity<String> {
 
     @Override
     public String getId() {
-        return playerId;
+        return id;
     }
 
     @Override
     public void setId(String s) {
-        this.playerId=s;
-    }
-
-    public String getPlayerId() {
-        return playerId;
-    }
-
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+        this.id=s;
     }
 
     public String getAccount() {
