@@ -1,8 +1,6 @@
-package com.module.logic.monster.resource;
+package com.other.excelTest;
 
-//@Resources
 public class Follower {
-//    @Id
     private long id;
     private int number;
 

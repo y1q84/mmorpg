@@ -4,6 +4,7 @@ import com.common.annotation.WsClass;
 import com.common.annotation.WsMethod;
 import com.common.session.Session;
 import com.module.logic.player.packet.ReqCreateRolePacket;
+import com.module.logic.player.packet.ReqEnterScenePacket;
 import com.module.logic.player.packet.ReqRoleLoginPacket;
 import com.module.logic.player.service.PlayerService;
 import org.slf4j.Logger;
@@ -33,4 +34,8 @@ public class PlayerHandler {
         playerService.roleLogin(session,reqRoleLoginPacket);
     }
 
+    @WsMethod
+    public void roleEnterScene(Session session, ReqEnterScenePacket reqEnterScenePacket){
+        playerService.enterScene(session,reqEnterScenePacket);
+    }
 }

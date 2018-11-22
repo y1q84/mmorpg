@@ -56,9 +56,9 @@ public class ReadJson implements ReadResource {
         return ResourceType.JSON;
     }
 
-//    public <T, E> Map<T,E> read2(ResourceDataObject resourceDataObject) {
+//    public <T, E> MapInstance<T,E> read2(ResourceDataObject resourceDataObject) {
 //        Resource[] resources = resourceDataObject.getResources();
-//        Map<T,E> map=new HashMap<>();
+//        MapInstance<T,E> map=new HashMap<>();
 //        for(Resource resource:resources){
 //            String content=null;
 //            try{
@@ -71,7 +71,7 @@ public class ReadJson implements ReadResource {
 //                }
 //                //读取文件内容
 //                content=outputStream.toString();
-//                Type type = new TypeReference<Map<T,E>>(Integer.class,resourceDataObject.getResourceClass()) {}.getType();
+//                Type type = new TypeReference<MapInstance<T,E>>(Integer.class,resourceDataObject.getResourceClass()) {}.getType();
 //                map=JSON.parseObject(content,type);
 //            }catch (Exception e){
 //                logger.error("json文件读取出错...");

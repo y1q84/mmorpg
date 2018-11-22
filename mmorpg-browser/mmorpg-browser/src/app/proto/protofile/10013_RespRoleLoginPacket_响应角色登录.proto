@@ -1,0 +1,7 @@
+//响应角色登录
+message RespRoleLoginPacket {  
+// 玩家id
+optional int64 playerId=1;
+// 登录结果
+optional string result=2;
+}

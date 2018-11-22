@@ -1,16 +1,22 @@
-package com.module.logic.player.vo.user;
+package com.module.logic.player.entity;
 
 import com.common.identify.SnowflakeGeneratorStrategy;
 import com.common.persist.HibernateEntityProvider;
-import com.module.logic.player.entity.PlayerEntity;
 import com.module.logic.player.type.RoleType;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath*:applicationContext.xml"})
 public class PlayerEntityTest {
-    public static void main(String args[]){
-        ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
-        HibernateEntityProvider<PlayerEntity,Long> hibernateEntityProvider=ac.getBean(HibernateEntityProvider.class);
+    @Autowired
+    HibernateEntityProvider<PlayerEntity,Long> hibernateEntityProvider;
+
+    @Test
+    public void test(){
         PlayerEntity playerEntity=new PlayerEntity();
         playerEntity.setPlayerId(SnowflakeGeneratorStrategy.getInstance().createUniqueId());
         playerEntity.setLevel(1);

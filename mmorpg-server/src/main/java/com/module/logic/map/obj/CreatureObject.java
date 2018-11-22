@@ -1,21 +1,34 @@
 package com.module.logic.map.obj;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * 生物对象
  */
 public class CreatureObject extends MapObject {
+
+    protected long objectId;
     //等级
     private int level;
     //血量
     private int hp;
     //经验
     private int exp;
-
+    //判断生物是否已在场景里面
+    private AtomicBoolean isInTheWorld = new AtomicBoolean(false);
     //观察者列表
     KnownList knownList;
 
     public void updateKnownList(CreatureObject creatureObject){
         getKnownList().addKnown(creatureObject);
+    }
+
+    public long getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(long objectId) {
+        this.objectId = objectId;
     }
 
     public int getLevel() {
@@ -40,6 +53,14 @@ public class CreatureObject extends MapObject {
 
     public void setExp(int exp) {
         this.exp = exp;
+    }
+
+    public boolean isInTheWorld() {
+        return isInTheWorld.get();
+    }
+
+    public void setIsInTheWorld(boolean isInTheWorld) {
+        this.isInTheWorld.set(isInTheWorld);
     }
 
     public KnownList getKnownList() {

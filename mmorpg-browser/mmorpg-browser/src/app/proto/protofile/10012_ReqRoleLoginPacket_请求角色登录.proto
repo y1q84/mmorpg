@@ -1,0 +1,5 @@
+//请求角色登录
+message ReqRoleLoginPacket {  
+// 玩家id
+optional int64 playerId=1;
+}

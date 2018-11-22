@@ -1,16 +1,23 @@
 package com.module.logic.map;
 
+import com.module.logic.map.obj.MapObject;
+import com.module.logic.player.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class MapInstance {
 
-    private int mapId;
+    private long mapId;
     private String name;
-    private String mapType;
+    private Map<Long,MapObject> objectInMap=new HashMap<>();
+    private Map<Long, Player> playerInMap=new HashMap<>();
 
-    public int getMapId() {
+    public long getMapId() {
         return mapId;
     }
 
-    public void setMapId(int mapId) {
+    public void setMapId(long mapId) {
         this.mapId = mapId;
     }
 
@@ -22,11 +29,24 @@ public class MapInstance {
         this.name = name;
     }
 
-    public String getMapType() {
-        return mapType;
+    public Map<Long,MapObject> getObjectInMap() {
+        return objectInMap;
     }
 
-    public void setMapType(String mapType) {
-        this.mapType = mapType;
+    public void addObjectInMap(long id,MapObject mapObject) {
+        if(objectInMap.put(id,mapObject)!=null){
+            return;
+        }
+        if(mapObject instanceof Player){
+            addPlayerInMap(id,(Player)mapObject);
+        }
+    }
+
+    public Map<Long, Player> getPlayerInMap() {
+        return playerInMap;
+    }
+
+    public void addPlayerInMap(Long playerId, Player player) {
+        this.playerInMap.put(playerId,player);
     }
 }

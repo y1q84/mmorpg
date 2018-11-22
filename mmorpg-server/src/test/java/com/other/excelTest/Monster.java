@@ -1,20 +1,20 @@
-package com.module.logic.monster.resource;
+package com.other.excelTest;
 
 import com.common.resource.ResourceDefaultFormat;
 import com.common.resource.annotation.Id;
 import com.common.resource.annotation.Resources;
 import com.common.resource.data.ResourceDataObject;
 import com.common.resource.read.ReadExcel;
-import com.module.logic.map.obj.CreatureObject;
 
 import java.util.List;
 
-@Resources
-public class Monster extends CreatureObject {
+@Resources(suffix = "xlsx",path = "resource")
+public class Monster {
     @Id
     private long id;
     private String name;
     private int hp;
+//    private MapInstance<Integer,Integer> follows;
     private List<Follower> follows;
 
     public long getId() {
@@ -40,6 +40,14 @@ public class Monster extends CreatureObject {
     public void setHp(int hp) {
         this.hp = hp;
     }
+
+//    public MapInstance<Integer, Integer> getFollows() {
+//        return follows;
+//    }
+//
+//    public void setFollows(MapInstance<Integer, Integer> follows) {
+//        this.follows = follows;
+//    }
 
     public List<Follower> getFollows() {
         return follows;
