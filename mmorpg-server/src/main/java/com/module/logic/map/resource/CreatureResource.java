@@ -1,7 +1,8 @@
-package com.module.logic.map.born;
+package com.module.logic.map.resource;
 
 import com.common.resource.annotation.Id;
 import com.common.resource.annotation.Resources;
+import com.module.logic.map.obj.ObjectType;
 
 @Resources(suffix = "xlsx",path = "resource/map")
 public class CreatureResource {
@@ -11,6 +12,7 @@ public class CreatureResource {
     private long mapId;
     private int hp;
     private int level;
+    private ObjectType objectType;
 
     public long getCreatureId() {
         return creatureId;
@@ -42,5 +44,10 @@ public class CreatureResource {
     public void setLevel(int level) {
         this.level = level;
     }
-
+    public ObjectType getObjectType() {
+        return objectType;
+    }
+    public void setObjectType(ObjectType objectType) {
+        this.objectType = objectType;
+    }
 }

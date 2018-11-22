@@ -3,7 +3,7 @@ package com.module.logic.map.resource;
 import com.common.resource.annotation.Id;
 import com.common.resource.annotation.Resources;
 
-@Resources(suffix = "xlsx",path = "resource/mapresource")
+@Resources(suffix = "xlsx",path = "resource/map")
 public class MapResource {
     @Id
     private long mapId;

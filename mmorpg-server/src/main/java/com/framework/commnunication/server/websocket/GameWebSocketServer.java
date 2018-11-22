@@ -4,6 +4,7 @@ import com.common.util.FileUtil;
 import com.framework.commnunication.server.websocket.handler.DispatchHandler;
 import com.framework.commnunication.server.websocket.handler.GameWebSocketServerInboundHandler;
 import com.framework.commnunication.server.websocket.handler.WebSocketServerCodecHandler;
+import com.module.logic.map.born.BornManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -88,6 +89,7 @@ public class GameWebSocketServer {
         //在容器启动之前删除指定目录下的.proto文件
         FileUtil.deleteAllFiles(new File("C:\\mmorpg\\mmorpg\\mmorpg-browser\\mmorpg-browser\\src\\app\\proto\\protofile\\"));
         ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
+        BornManager.getInstance().produceAll();
         GameWebSocketServer gwss=ac.getBean(GameWebSocketServer.class);
         gwss.start();
     }

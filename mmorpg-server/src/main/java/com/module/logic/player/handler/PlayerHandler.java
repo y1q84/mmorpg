@@ -36,6 +36,6 @@ public class PlayerHandler {
 
     @WsMethod
     public void roleEnterScene(Session session, ReqEnterScenePacket reqEnterScenePacket){
-        playerService.enterScene(session,reqEnterScenePacket);
+        playerService.enterWorld(session,reqEnterScenePacket);
     }
 }

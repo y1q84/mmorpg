@@ -14,11 +14,19 @@ import org.springframework.stereotype.Component;
 @DescriptePacket(description = "广播玩家进入场景消息")
 public class RespBroadcastEnterWorldPacket extends AbstractPacket {
 
+    @Protobuf(description = "场景id")
+    private long mapId;
     @Protobuf(description = "玩家信息")
     private long playerId;
     @Protobuf(description = "广播内容")
     private String result;
 
+    public long getMapId() {
+        return mapId;
+    }
+    public void setMapId(long mapId) {
+        this.mapId = mapId;
+    }
     public long getPlayerId() {
         return playerId;
     }

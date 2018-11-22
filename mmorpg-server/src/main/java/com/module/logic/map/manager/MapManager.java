@@ -61,7 +61,7 @@ public class MapManager {
     }
 
     //进入场景
-    public void enterWorld(int mapId, CreatureObject creatureObject){
+    public void enterWorld(long mapId, CreatureObject creatureObject){
         //判断角色是否已经在场景里面了
         if(creatureObject.isInTheWorld()){
             return;
@@ -73,11 +73,15 @@ public class MapManager {
         }
         creatureObject.setIsInTheWorld(true);
 
-        mapInstance.addObjectInMap(creatureObject.getObjectId(),creatureObject);
+        mapInstance.addObjectInMap(creatureObject.getId(),creatureObject);
     }
 
-    public void addCreatureInMap(long mapId,CreatureObject creatureObject){
-
+    public void addCreatureToMap(long mapId,CreatureObject creatureObject){
+        MapInstance mapInstance=id2Map.get(mapId);
+        if(mapInstance==null){
+            return ;
+        }
+        mapInstance.addObjectInMap(creatureObject.getId(),creatureObject);
     }
 
 }

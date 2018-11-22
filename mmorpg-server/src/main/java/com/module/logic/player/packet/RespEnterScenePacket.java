@@ -15,15 +15,15 @@ import java.util.List;
 public class RespEnterScenePacket extends AbstractPacket {
 
     @Protobuf(description = "场景id")
-    private int sceneId;
+    private long sceneId;
     @Protobuf(description = "场景内所有物体内容")
     private List<ObjectInMapInfo> mapObject=new ArrayList<>();
 
-    public int getSceneId() {
+    public long getSceneId() {
         return sceneId;
     }
 
-    public void setSceneId(int sceneId) {
+    public void setSceneId(long sceneId) {
         this.sceneId = sceneId;
     }
 

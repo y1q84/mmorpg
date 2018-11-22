@@ -4,6 +4,7 @@ import com.common.resource.provider.StaticResourceProvider;
 import com.common.session.Constants;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
+import com.module.logic.map.MapInstance;
 import com.module.logic.map.manager.MapManager;
 import com.module.logic.map.obj.MapObject;
 import com.module.logic.player.packet.ReqEnterScenePacket;
@@ -43,10 +44,8 @@ public class PlayerService {
 
     @Autowired
     PlayerManager playerManager;
-    @Autowired
-    MapManager mapManager;
-    @Autowired
-    MonsterManager monsterManager;
+//    @Autowired
+//    MonsterManager monsterManager;
 
     public void createRole(Session session, ReqCreateRolePacket reqCreateRolePacket){
 
@@ -151,7 +150,34 @@ public class PlayerService {
 
     public void enterWorld(Session session,ReqEnterScenePacket reqEnterScenePacket){
         Player player=playerManager.getPlayer2session().inverse().get(session);
-        int sceneId=reqEnterScenePacket.getSceneId();
-        mapManager.enterWorld(sceneId,player);
+        long mapId=reqEnterScenePacket.getSceneId();
+        MapManager.getInstance().enterWorld(mapId,player);
+
+        //用来存放场景里所有的生物
+        List<ObjectInMapInfo> objects=new ArrayList<>();
+        //存放场景里面npc
+        Map<Long, MapInstance> mapId2MapInstance=MapManager.getInstance().getId2Map();
+        logger.info("mapId为1001的地图对象为空否？"+mapId2MapInstance.get(mapId));
+        MapInstance mapInstance=mapId2MapInstance.get(mapId);
+        Map<Long,MapObject> id2MapInstance=mapInstance.getObjectInMap();
+        //向场景打印npc信息
+        //将MapObject转为ObjectInfo放进响应包
+        id2MapInstance.forEach((k,p)->{
+            objects.add(ObjectInMapInfo.valueOf(p));
+        });
+        //发送响应进入场景的包
+        RespEnterScenePacket respEnterScenePacket=new RespEnterScenePacket();
+        respEnterScenePacket.setSceneId(mapId);
+        //将场景里面所有的物体加载到响应包里面
+        respEnterScenePacket.setMapObject(objects);
+        PacketUtil.sendPacket(session,respEnterScenePacket);
+
+        RespBroadcastEnterWorldPacket respBroadcastEnterWorldPacket=new RespBroadcastEnterWorldPacket();
+        respBroadcastEnterWorldPacket.setMapId(mapId);
+        respBroadcastEnterWorldPacket.setPlayerId(player.getPlayerEntity().getPlayerId());
+        respBroadcastEnterWorldPacket.setResult("成功进入场景");
+        //封装成一个广播包会比较好
+        PacketUtil.broadcast(session,respBroadcastEnterWorldPacket);
+
     }
 }
