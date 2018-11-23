@@ -4,6 +4,8 @@ import com.common.resource.provider.StaticResourceProvider;
 import com.common.session.Constants;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
+import com.module.logic.account.entity.AccountEntity;
+import com.module.logic.account.manager.AccountManager;
 import com.module.logic.map.MapInstance;
 import com.module.logic.map.manager.MapManager;
 import com.module.logic.map.obj.MapObject;
@@ -44,28 +46,35 @@ public class PlayerService {
 
     @Autowired
     PlayerManager playerManager;
-//    @Autowired
-//    MonsterManager monsterManager;
 
     public void createRole(Session session, ReqCreateRolePacket reqCreateRolePacket){
 
         String name=reqCreateRolePacket.getPlayerName();
-        logger.info("角色名："+name);
         RoleType roleType=reqCreateRolePacket.getRoleType();
-        logger.info("角色类型为："+roleType.name());
         String sex=reqCreateRolePacket.getSex();
-        logger.info("性别:"+sex);
-        PlayerEntity playerEntity=playerManager.createPlayerEntity(session.getAccount(Constants.SESSION_ID),name,roleType,sex);
-        Player player=initPlayer(playerEntity);
-        id2player.put(player.getId(),player);
+        logger.info("角色名："+name+"\t角色类型为："+roleType.name()+"\t性别:"+sex);
+        String account=session.getAccount(Constants.SESSION_ID);
+        PlayerEntity playerEntity=playerManager.createPlayerEntity(account,name,roleType,sex);
         if(playerEntity!=null){
             //添加到数据库成功
+            boolean status=playerManager.createRole(playerEntity);
+            String result=null;
+            if(status){
+                playerManager.updateAccount(playerEntity,account);
+
+                Player player=initPlayer(playerEntity);
+                id2player.put(player.getId(),player);
+                result="角色创建成功..";
+                logger.info("角色创建成功...");
+            }else{
+                result="角色创建失败..";
+                logger.info("角色创建失败...");
+            }
             //返回信息
             RespCreateRolePacket respCreateRolePacket=new RespCreateRolePacket();
             respCreateRolePacket.setPlayerId(playerEntity.getPlayerId());
-            respCreateRolePacket.setResult("角色创建成功..");
+            respCreateRolePacket.setResult(result);
             PacketUtil.sendPacket(session,respCreateRolePacket);
-            logger.info("角色创建成功...");
         }
     }
 
@@ -80,17 +89,24 @@ public class PlayerService {
 
     public void roleLogin(Session session, ReqRoleLoginPacket reqRoleLoginPacket){
         //角色登录逻辑
-
-        //角色登录成功则将session与Player添加进集合
         long playerId=reqRoleLoginPacket.getPlayerId();
-        Player player=id2player.get(playerId);
-        playerManager.addSession2Player(session,player);
+        boolean statue=playerManager.roleLogin(playerId);
+        String result=null;
+        if(statue){
+            Player player=id2player.get(playerId);
+            //角色登录成功则将session与Player添加进集合
+            playerManager.addSession2Player(session,player);
+            result="角色登录成功";
+            logger.info("角色登录成功...");
+        }else{
+            result="角色登录失败";
+            logger.info("角色登录失败...");
+        }
 
         //发送角色登录成功响应包
         RespRoleLoginPacket respRoleLoginPacket=new RespRoleLoginPacket();
         respRoleLoginPacket.setPlayerId(playerId);
-        respRoleLoginPacket.setResult("角色登录成功");
-        logger.info("角色登录成功...");
+        respRoleLoginPacket.setResult(result);
         PacketUtil.sendPacket(session,respRoleLoginPacket);
     }
 

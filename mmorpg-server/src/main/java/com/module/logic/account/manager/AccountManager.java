@@ -15,17 +15,19 @@ import java.util.List;
 public class AccountManager {
     @Autowired
     private EntityProvider<AccountEntity,String> entityProvider;
+    private static AccountManager self;
 
     @PostConstruct
     public void init(){
+        self=this;
         System.out.println("EntityProvider为空否？"+entityProvider);
-//        CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
-        //尝试查询数据
+        CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
+//        尝试查询数据
 //        List<AccountEntity> list=cacheEntityProvider.query("findAccountEntityByAccount","222222");
 //        for(AccountEntity ac:list){
 //            System.out.println("账号id为："+ac.getId()+"\t密码为："+ac.getPassword());
 //        }
-        //尝试插入数据
+//        尝试插入数据
 //        AccountEntity accountEntity=new AccountEntity();
 //        accountEntity.setAccount("222222");
 //        accountEntity.setPassword("199999888");
@@ -36,6 +38,10 @@ public class AccountManager {
 //        list.add(1004L);
 //        accountEntity.setIds(list);
 //        cacheEntityProvider.save(accountEntity);
+    }
+
+    public static AccountManager getInstance(){
+        return self;
     }
 
     public boolean register(String account,String password){
@@ -59,5 +65,11 @@ public class AccountManager {
             return true;
         }
         return false;
+    }
+
+    public List<AccountEntity> findAccountEntity(String account,String sql){
+        CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
+        List<AccountEntity> list=cacheEntityProvider.query(sql,account);
+        return list;
     }
 }

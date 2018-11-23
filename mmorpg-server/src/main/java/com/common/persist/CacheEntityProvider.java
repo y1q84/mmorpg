@@ -22,7 +22,7 @@ public class CacheEntityProvider<T extends IEntity<ID>,ID extends Serializable> 
 
     @Override
     public T get(ID id) {
-        T t=loadingCache.get(id);
+        T t=loadingCache.get(id);//从缓存中拿出
         return t;
     }
 
@@ -51,11 +51,13 @@ public class CacheEntityProvider<T extends IEntity<ID>,ID extends Serializable> 
     @Override
     public void update(T entity) {
         loadingCache.put(entity.getId(),entity);
+        super.update(entity);
     }
 
     @Override
     public void delete(ID id) {
         loadingCache.invalidate(id);
+        super.delete(id);
     }
 
     @Override

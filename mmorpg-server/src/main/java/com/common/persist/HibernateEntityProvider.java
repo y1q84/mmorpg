@@ -2,8 +2,11 @@ package com.common.persist;
 
 import com.common.annotation.IdCreateStrategy;
 import com.common.util.ReflectUtil;
+import com.module.logic.player.entity.PlayerEntity;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 

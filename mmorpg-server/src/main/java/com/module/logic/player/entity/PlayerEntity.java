@@ -1,5 +1,6 @@
 package com.module.logic.player.entity;
 
+import com.common.annotation.IdCreateStrategy;
 import com.common.persist.IEntity;
 import com.module.logic.player.Player;
 import com.module.logic.player.type.RoleType;
@@ -12,12 +13,13 @@ import javax.persistence.*;
  */
 @Entity
 @NamedQueries({
-        @NamedQuery(name="findPlayerByAccount", query="select p from PlayerEntity p where p.account=:account")
+        @NamedQuery(name="findPlayerByAccount", query="select p from PlayerEntity p where p.account=?1")
 })
 public class PlayerEntity implements IEntity<Long> {
 
     @Id
     @Column
+    @IdCreateStrategy("snowflakeid")
     private long playerId;
     @Column
     private String account;
@@ -38,9 +40,6 @@ public class PlayerEntity implements IEntity<Long> {
 
     @Column
     private long gold=100;
-
-    @Column
-    private int mapId;
 
     //如果不加，会创建改字段对应的列
     @Transient
@@ -126,14 +125,6 @@ public class PlayerEntity implements IEntity<Long> {
         this.gold = gold;
     }
 
-    public int getMapId() {
-        return mapId;
-    }
-
-    public void setMapId(int mapId) {
-        this.mapId = mapId;
-    }
-
     public Player getPlayer() {
         return player;
     }
@@ -144,12 +135,12 @@ public class PlayerEntity implements IEntity<Long> {
 
     @Override
     public Long getId() {
-        return null;
+        return this.playerId;
     }
 
     @Override
-    public void setId(Long aLong) {
-
+    public void setId(Long id) {
+        this.playerId=id;
     }
 
 }
