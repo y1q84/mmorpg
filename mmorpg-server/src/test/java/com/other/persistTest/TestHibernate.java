@@ -55,4 +55,17 @@ public class TestHibernate {
         System.out.println("传进来的值为："+i);
         return (++i)+"";
     }
+
+    @Test
+    public void test3(){
+        String s=null;
+        try{
+            System.out.println("执行前输出。。");
+            s.equals("1");
+            System.out.println("出错了后面还执行否？");
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+    }
 }

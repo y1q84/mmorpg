@@ -6,14 +6,21 @@ import com.common.packetId.PacketId;
 import com.common.session.Constants;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
+import com.module.logic.account.manager.AccountManager;
 import com.module.logic.account.packet.ReqLoginPacket;
 import com.module.logic.account.packet.ReqRegisterPacket;
 import com.module.logic.account.packet.ResLoginPacket;
 import com.module.logic.account.packet.RespRegisterPacket;
+import com.module.logic.account.packet.vo.PlayerEntityInfo;
 import com.module.logic.account.service.AccountService;
+import com.module.logic.player.entity.PlayerEntity;
+import com.module.logic.player.service.PlayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * author:ydx
@@ -26,6 +33,8 @@ public class AccountHandler {
 
     @Autowired
     AccountService accountService;
+    @Autowired
+    PlayerService playerService;
 
     @WsMethod
     public void accountLogin(Session session, ReqLoginPacket reqLoginPacket){
@@ -44,8 +53,20 @@ public class AccountHandler {
             //登录成功，将account添加进session
             //因为创建角色实体的时候每一个角色实体都有对应的账号
             addAccountToSession(session,reqLoginPacket);
+
+            //同时应该向客户端发送该账号已有角色列表
+            List<PlayerEntity> playerEntities= AccountManager.getInstance().getCreatedRole(account);
+            List<PlayerEntityInfo> playerEntityInfos=new ArrayList<>();
+            playerEntities.forEach((e)->{
+                playerEntityInfos.add(PlayerEntityInfo.valueOf(e));
+                //同时应该初始化playerService中id到player的映射
+//                playerService.addId2PlayerEntity(e.getPlayerId(),e);
+                playerService.addId2Player(e.getPlayerId(),playerService.initPlayer(e));
+            });
+            resLoginPacket.setPlayerEntityInfos(playerEntityInfos);
             resLoginPacket.setResult("登录成功");
             logger.info("登录成功！");
+
         }else{
             resLoginPacket.setResult("登录失败");
             logger.info("登录失败！");

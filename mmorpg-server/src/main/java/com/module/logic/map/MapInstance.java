@@ -10,6 +10,7 @@ public class MapInstance {
 
     private long mapId;
     private String name;
+    private int neighborMark;
     private Map<Long,MapObject> objectInMap=new HashMap<>();
     private Map<Long, Player> playerInMap=new HashMap<>();
 
@@ -29,11 +30,20 @@ public class MapInstance {
         this.name = name;
     }
 
+    public int getNeighborMark() {
+        return neighborMark;
+    }
+
+    public void setNeighborMark(int neighborMark) {
+        this.neighborMark = neighborMark;
+    }
+
     public Map<Long,MapObject> getObjectInMap() {
         return objectInMap;
     }
 
     public void addObjectInMap(long id,MapObject mapObject) {
+        //当切换角色登录时，应该将原来角色移除
         if(objectInMap.put(id,mapObject)!=null){
             return;
         }

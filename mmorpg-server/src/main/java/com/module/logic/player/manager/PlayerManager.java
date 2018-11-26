@@ -3,6 +3,7 @@ package com.module.logic.player.manager;
 import com.common.identify.SnowflakeGeneratorStrategy;
 import com.common.persist.CacheEntityProvider;
 import com.common.persist.EntityProvider;
+import com.common.persist.ICreator;
 import com.common.session.Session;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -10,7 +11,6 @@ import com.module.logic.account.entity.AccountEntity;
 import com.module.logic.account.manager.AccountManager;
 import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
-import com.module.logic.player.manager.dao.impl.PlayerDaoImpl;
 import com.module.logic.player.type.RoleType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,19 +45,11 @@ public class PlayerManager {
 
     public PlayerEntity createPlayerEntity(String account, String name, RoleType roleType,String sex){
         PlayerEntity playerEntity=new PlayerEntity();
-        //通过雪花算法生成全局唯一的id
-//        long playerId=SnowflakeGeneratorStrategy.getInstance().createUniqueId();
-//        playerEntity.setPlayerId(playerId);
-//        System.out.println("生成的playerId为："+playerId);
         playerEntity.setAccount(account);
         playerEntity.setPlayerName(name);
         playerEntity.setRoleType(roleType);
         playerEntity.setSex(sex);
         return playerEntity;
-//        playerEntity.setMapId(1001);
-        //保存到数据库
-//        PlayerEntity playerEntity1=new PlayerDaoImpl().save(playerEntity);
-//        return playerEntity1;
     }
 
     public boolean createRole(PlayerEntity playerEntity){
@@ -106,13 +98,36 @@ public class PlayerManager {
     public void updateAccount(PlayerEntity playerEntity,String account){
         //往该账号添加角色id
         //由账号查询得到AccountEntity
-        List<Long> ids=new ArrayList<>();
+//        List<Long> ids=new ArrayList<>();
         AccountEntity accountEntity= AccountManager.getInstance().findAccountEntity(account,"findAccountEntityByAccount").get(0);
-        ids.add(playerEntity.getPlayerId());
-        accountEntity.setIds(ids);
+//        ids.add(playerEntity.getPlayerId());
+        accountEntity.addIds(playerEntity.getPlayerId());
         //需要更新到数据库
         CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
         cacheEntityProvider.update(accountEntity);
+    }
+
+    /**
+     * 将最新玩家数据保存到数据库
+     * @param playerEntity
+     */
+    public void updatePlayerEntity(PlayerEntity playerEntity){
+        CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
+        cacheEntityProvider.update(playerEntity);
+    }
+
+    public PlayerEntity findPlayerEntity(long playerId){
+        CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
+//        cacheEntityProvider.loadOrCreate(playerId, new ICreator() {
+//            @Override
+//            public Object create(Object o) {
+//                PlayerEntity playerEntity=new PlayerEntity();
+//                playerEntity.setPlayerId((long)o);
+//                return playerEntity;
+//            }
+//        });
+        List<PlayerEntity> list=cacheEntityProvider.query("findPlayerEntityById",playerId);
+        return list.get(0);
     }
 
     public BiMap<Player, Session> getPlayer2session() {

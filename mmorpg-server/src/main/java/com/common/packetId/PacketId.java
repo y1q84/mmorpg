@@ -39,7 +39,10 @@ public class PacketId {
     public static final short ENTER_WORLD_RESP=10021;
     /**广播玩家进入场景**/
     public static final short BROADCAST_ENTER_WORLD_RESP=10022;
-
+    /**请求切换场景**/
+    public static final short CHANGE_SCENE_REQ=10023;
+    /**响应切换场景**/
+    public static final short CHANGE_SCENE_RESP=10024;
 
 
     /**请求命令**/

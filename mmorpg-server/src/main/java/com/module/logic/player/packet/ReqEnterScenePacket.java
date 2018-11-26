@@ -10,23 +10,23 @@ import org.springframework.stereotype.Component;
 @DescriptePacket(description = "请求进入场景")
 public class ReqEnterScenePacket extends AbstractPacket {
     @Protobuf(description = "玩家id")
-    private int playerId;
+    private long playerId;
     @Protobuf(description = "场景id")
-    private int sceneId;
+    private long sceneId;
 
-    public int getPlayerId() {
+    public long getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(int playerId) {
+    public void setPlayerId(long playerId) {
         this.playerId = playerId;
     }
 
-    public int getSceneId() {
+    public long getSceneId() {
         return sceneId;
     }
 
-    public void setSceneId(int sceneId) {
+    public void setSceneId(long sceneId) {
         this.sceneId = sceneId;
     }
 

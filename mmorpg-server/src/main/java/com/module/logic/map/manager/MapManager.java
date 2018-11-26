@@ -52,6 +52,10 @@ public class MapManager {
         this.id2Map = id2Map;
     }
 
+    public MapInstance getMapInstance(long mapId){
+        return this.id2Map.get(mapId);
+    }
+
     //创建一个场景
     public MapInstance createMapInstance(MapResource mapResource){
         MapInstance mapInstance=new MapInstance();

@@ -61,7 +61,7 @@ public class AccountEntity implements IEntity<String> {
         return ids;
     }
 
-    public void setIds(List<Long> ids) {
-        this.ids = ids;
+    public void addIds(long id) {
+        this.ids.add(id);
     }
 }

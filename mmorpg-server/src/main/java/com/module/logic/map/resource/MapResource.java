@@ -8,6 +8,7 @@ public class MapResource {
     @Id
     private long mapId;
     private String mapName;
+    private int neighborMark;
     //该地图上其他生物资源
 
     public long getMapId() {
@@ -24,5 +25,13 @@ public class MapResource {
 
     public void setMapName(String mapName) {
         this.mapName = mapName;
+    }
+
+    public int getNeighborMark() {
+        return neighborMark;
+    }
+
+    public void setNeighborMark(int neighborMark) {
+        this.neighborMark = neighborMark;
     }
 }

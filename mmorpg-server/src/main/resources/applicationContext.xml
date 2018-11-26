@@ -29,7 +29,7 @@
         <property name="suffix" value="xlsx"></property>
         <property name="path" value="resource"></property>
         <property name="resourceType" value="EXCEL"></property>
-        <property name="scanPackage" value="com.module.logic.**.resource"></property>
+        <property name="scanPackage" value="classpath*:com.module.logic.**.resource"></property>
     </bean>
 
     <!-- 配置.properties文件路径 -->

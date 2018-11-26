@@ -3,7 +3,15 @@ package com.module.logic.account.manager;
 import com.common.persist.CacheEntityProvider;
 import com.common.persist.EntityProvider;
 import com.module.logic.account.entity.AccountEntity;
+import com.module.logic.account.service.AccountService;
+import com.module.logic.player.Player;
+import com.module.logic.player.entity.PlayerEntity;
+import com.module.logic.player.manager.PlayerManager;
+import com.module.logic.player.packet.vo.ObjectInMapInfo;
+import com.module.logic.player.service.PlayerService;
 import org.checkerframework.checker.units.qual.A;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +21,11 @@ import java.util.List;
 
 @Component
 public class AccountManager {
+    Logger logger=LoggerFactory.getLogger(AccountManager.class);
+
+    @Autowired
+    private PlayerService playerService;
+
     @Autowired
     private EntityProvider<AccountEntity,String> entityProvider;
     private static AccountManager self;
@@ -67,9 +80,40 @@ public class AccountManager {
         return false;
     }
 
+    /**
+     * 根据账号获取已创建角色列表
+     * @param account
+     * @return
+     */
+    public List<PlayerEntity> getCreatedRole(String account){
+        AccountEntity accountEntity= AccountManager.getInstance().findAccountEntity(account,"findAccountEntityByAccount").get(0);
+        List<Long> ids=accountEntity.getIds();//玩家角色id列表
+        List<PlayerEntity> playerEntities=new ArrayList<>();
+        try{
+            if(ids.size()>0){
+                ids.forEach((id)->{
+                    PlayerEntity playerEntity=PlayerManager.getInstance().findPlayerEntity(id);
+                    playerEntities.add(playerEntity);
+                });
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(String.format("获取账号实体：%s对应的角色列表失败",accountEntity.getClass().getSimpleName()));
+        }
+        return playerEntities;
+    }
+
     public List<AccountEntity> findAccountEntity(String account,String sql){
         CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
         List<AccountEntity> list=cacheEntityProvider.query(sql,account);
         return list;
+    }
+
+    public PlayerService getPlayerService() {
+        return playerService;
+    }
+
+    public void setPlayerService(PlayerService playerService) {
+        this.playerService = playerService;
     }
 }
