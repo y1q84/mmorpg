@@ -1,7 +1,9 @@
 //广播玩家进入场景消息
 message RespBroadcastEnterWorldPacket {  
+// 场景id
+optional int64 mapId=1;
 // 玩家信息
-optional int64 playerId=1;
+optional int64 playerId=2;
 // 广播内容
-optional string result=2;
+optional string result=3;
 }

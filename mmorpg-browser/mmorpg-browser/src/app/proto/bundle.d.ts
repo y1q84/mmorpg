@@ -101,6 +101,9 @@ export interface IResLoginPacket {
 
     /** ResLoginPacket result */
     result?: (string|null);
+
+    /** ResLoginPacket playerEntityInfos */
+    playerEntityInfos?: (IPlayerEntityInfo[]|null);
 }
 
 /** Represents a ResLoginPacket. */
@@ -114,6 +117,9 @@ export class ResLoginPacket implements IResLoginPacket {
 
     /** ResLoginPacket result. */
     public result: string;
+
+    /** ResLoginPacket playerEntityInfos. */
+    public playerEntityInfos: IPlayerEntityInfo[];
 
     /**
      * Creates a new ResLoginPacket instance using the specified properties.
@@ -181,6 +187,114 @@ export class ResLoginPacket implements IResLoginPacket {
 
     /**
      * Converts this ResLoginPacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a PlayerEntityInfo. */
+export interface IPlayerEntityInfo {
+
+    /** PlayerEntityInfo id */
+    id?: (number|Long|null);
+
+    /** PlayerEntityInfo sex */
+    sex?: (string|null);
+
+    /** PlayerEntityInfo name */
+    name?: (string|null);
+
+    /** PlayerEntityInfo roleType */
+    roleType?: (string|null);
+}
+
+/** Represents a PlayerEntityInfo. */
+export class PlayerEntityInfo implements IPlayerEntityInfo {
+
+    /**
+     * Constructs a new PlayerEntityInfo.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IPlayerEntityInfo);
+
+    /** PlayerEntityInfo id. */
+    public id: (number|Long);
+
+    /** PlayerEntityInfo sex. */
+    public sex: string;
+
+    /** PlayerEntityInfo name. */
+    public name: string;
+
+    /** PlayerEntityInfo roleType. */
+    public roleType: string;
+
+    /**
+     * Creates a new PlayerEntityInfo instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns PlayerEntityInfo instance
+     */
+    public static create(properties?: IPlayerEntityInfo): PlayerEntityInfo;
+
+    /**
+     * Encodes the specified PlayerEntityInfo message. Does not implicitly {@link PlayerEntityInfo.verify|verify} messages.
+     * @param message PlayerEntityInfo message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IPlayerEntityInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified PlayerEntityInfo message, length delimited. Does not implicitly {@link PlayerEntityInfo.verify|verify} messages.
+     * @param message PlayerEntityInfo message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IPlayerEntityInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a PlayerEntityInfo message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns PlayerEntityInfo
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): PlayerEntityInfo;
+
+    /**
+     * Decodes a PlayerEntityInfo message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns PlayerEntityInfo
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): PlayerEntityInfo;
+
+    /**
+     * Verifies a PlayerEntityInfo message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a PlayerEntityInfo message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns PlayerEntityInfo
+     */
+    public static fromObject(object: { [k: string]: any }): PlayerEntityInfo;
+
+    /**
+     * Creates a plain object from a PlayerEntityInfo message. Also converts values to other types if specified.
+     * @param message PlayerEntityInfo
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: PlayerEntityInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this PlayerEntityInfo to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
@@ -869,10 +983,10 @@ export class RespRoleLoginPacket implements IRespRoleLoginPacket {
 export interface IReqEnterScenePacket {
 
     /** ReqEnterScenePacket playerId */
-    playerId?: (number|null);
+    playerId?: (number|Long|null);
 
     /** ReqEnterScenePacket sceneId */
-    sceneId?: (number|null);
+    sceneId?: (number|Long|null);
 }
 
 /** Represents a ReqEnterScenePacket. */
@@ -885,10 +999,10 @@ export class ReqEnterScenePacket implements IReqEnterScenePacket {
     constructor(properties?: IReqEnterScenePacket);
 
     /** ReqEnterScenePacket playerId. */
-    public playerId: number;
+    public playerId: (number|Long);
 
     /** ReqEnterScenePacket sceneId. */
-    public sceneId: number;
+    public sceneId: (number|Long);
 
     /**
      * Creates a new ReqEnterScenePacket instance using the specified properties.
@@ -965,7 +1079,7 @@ export class ReqEnterScenePacket implements IReqEnterScenePacket {
 export interface IRespEnterScenePacket {
 
     /** RespEnterScenePacket sceneId */
-    sceneId?: (number|null);
+    sceneId?: (number|Long|null);
 
     /** RespEnterScenePacket mapObject */
     mapObject?: (IObjectInMapInfo[]|null);
@@ -981,7 +1095,7 @@ export class RespEnterScenePacket implements IRespEnterScenePacket {
     constructor(properties?: IRespEnterScenePacket);
 
     /** RespEnterScenePacket sceneId. */
-    public sceneId: number;
+    public sceneId: (number|Long);
 
     /** RespEnterScenePacket mapObject. */
     public mapObject: IObjectInMapInfo[];
@@ -1174,6 +1288,9 @@ export class ObjectInMapInfo implements IObjectInMapInfo {
 /** Properties of a RespBroadcastEnterWorldPacket. */
 export interface IRespBroadcastEnterWorldPacket {
 
+    /** RespBroadcastEnterWorldPacket mapId */
+    mapId?: (number|Long|null);
+
     /** RespBroadcastEnterWorldPacket playerId */
     playerId?: (number|Long|null);
 
@@ -1189,6 +1306,9 @@ export class RespBroadcastEnterWorldPacket implements IRespBroadcastEnterWorldPa
      * @param [properties] Properties to set
      */
     constructor(properties?: IRespBroadcastEnterWorldPacket);
+
+    /** RespBroadcastEnterWorldPacket mapId. */
+    public mapId: (number|Long);
 
     /** RespBroadcastEnterWorldPacket playerId. */
     public playerId: (number|Long);
@@ -1262,6 +1382,102 @@ export class RespBroadcastEnterWorldPacket implements IRespBroadcastEnterWorldPa
 
     /**
      * Converts this RespBroadcastEnterWorldPacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a ReqChangeMapInstancePacket. */
+export interface IReqChangeMapInstancePacket {
+
+    /** ReqChangeMapInstancePacket oldMapId */
+    oldMapId?: (number|Long|null);
+
+    /** ReqChangeMapInstancePacket newMapId */
+    newMapId?: (number|Long|null);
+}
+
+/** Represents a ReqChangeMapInstancePacket. */
+export class ReqChangeMapInstancePacket implements IReqChangeMapInstancePacket {
+
+    /**
+     * Constructs a new ReqChangeMapInstancePacket.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IReqChangeMapInstancePacket);
+
+    /** ReqChangeMapInstancePacket oldMapId. */
+    public oldMapId: (number|Long);
+
+    /** ReqChangeMapInstancePacket newMapId. */
+    public newMapId: (number|Long);
+
+    /**
+     * Creates a new ReqChangeMapInstancePacket instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ReqChangeMapInstancePacket instance
+     */
+    public static create(properties?: IReqChangeMapInstancePacket): ReqChangeMapInstancePacket;
+
+    /**
+     * Encodes the specified ReqChangeMapInstancePacket message. Does not implicitly {@link ReqChangeMapInstancePacket.verify|verify} messages.
+     * @param message ReqChangeMapInstancePacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IReqChangeMapInstancePacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ReqChangeMapInstancePacket message, length delimited. Does not implicitly {@link ReqChangeMapInstancePacket.verify|verify} messages.
+     * @param message ReqChangeMapInstancePacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IReqChangeMapInstancePacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a ReqChangeMapInstancePacket message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ReqChangeMapInstancePacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ReqChangeMapInstancePacket;
+
+    /**
+     * Decodes a ReqChangeMapInstancePacket message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ReqChangeMapInstancePacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ReqChangeMapInstancePacket;
+
+    /**
+     * Verifies a ReqChangeMapInstancePacket message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a ReqChangeMapInstancePacket message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ReqChangeMapInstancePacket
+     */
+    public static fromObject(object: { [k: string]: any }): ReqChangeMapInstancePacket;
+
+    /**
+     * Creates a plain object from a ReqChangeMapInstancePacket message. Also converts values to other types if specified.
+     * @param message ReqChangeMapInstancePacket
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ReqChangeMapInstancePacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ReqChangeMapInstancePacket to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };

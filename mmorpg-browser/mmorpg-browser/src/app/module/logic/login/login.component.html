@@ -10,10 +10,14 @@
 </div>
 <div>
     <form method="POST" *ngIf="connectState===true && loginState===true">
+        <h3>已有角色</h3>
+        <select [ngModel]="useRole" (ngModelChange)="onChange($event)" name="sel">
+            <option [value]="i" *ngFor="let i of role">{{i}}</option>
+        </select><br/>
         <h3>角色创建</h3>
         角色：<input name="playerName" placeholder="角色名"  [(ngModel)]="playerName" /><br/>
         <!-- <input name="roleType" placeholder="职业" [(ngModel)]="roleType" /><br/> -->
-        性别：<select [ngModel]="sSex" (ngModelChange)="onChange($event)" name="sel1">
+        性别：<select [ngModel]="sSex" (ngModelChange)="onChange1($event)" name="sel1">
                   <option [value]="i" *ngFor="let i of sex">{{i}}</option>
               </select><br/>
         职业：<select [ngModel]="selectedRole" (ngModelChange)="onChange2($event)" name="sel2">
@@ -23,7 +27,8 @@
         <input type="button" (click)="createRole()" value="创建角色"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <!-- <input type="button" (click)="enterscene()" value="进入场景"/> -->
         <input type="button" (click)="roleLogin()" value="角色登录"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="button" routerLink="/mapInstance" value="进入场景"/>
+        <!-- <input type="button" routerLink="/mapInstance" value="进入场景"/> -->
+        <input type="button" routerLink="/map" value="进入场景"/>
         <h3>{{respCreateRoleMessage}}</h3>
       </form>
 </div>

@@ -54,7 +54,7 @@ export class MapComponent implements OnInit {
           err => console.log(err),
           () => console.log('流已经结束')
          );
-         this.wsService.sendMess(ReqEnterScenePacket, {playerId: 11111 , sceneId : 1, mapId: 2 });
+         this.wsService.sendMess(ReqEnterScenePacket, {playerId: 11111 , sceneId : 1001, mapId: 2 });
   }
 
   respMessage(data: any) {

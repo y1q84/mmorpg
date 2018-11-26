@@ -5,6 +5,8 @@ import { ReqLoginPacket, ReqCreateRolePacket, RoleType, ReqRoleLoginPacket } fro
 import { PacketId } from '../../packetId/PacketId';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { validateConfig } from '@angular/router/src/config';
+import { mapChildrenIntoArray } from '@angular/router/src/url_tree';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +25,11 @@ export class LoginComponent implements OnInit {
   uname: string;
   pass: string;
   playerName: string;
+  // 用来存放已经创建的角色
+  // 应该从账号登录成功的响应包里面获取值
+  role: string[] = [];
+  useRole: string;
+  id2object = new Map <number, string>(); // 用于角色登录时获取玩家id
   // sex: string;
   sex = '男 女'.split('');
   sSex = '男';
@@ -30,6 +37,11 @@ export class LoginComponent implements OnInit {
   selectedRole = 'WARRIOR';
 
   onChange(newValue) {
+    console.log('新职业：' + newValue);
+    this.useRole = newValue;
+  }
+
+  onChange1(newValue) {
     console.log(newValue);
     this.sSex = newValue;
   }
@@ -75,19 +87,6 @@ export class LoginComponent implements OnInit {
    * 发送登录消息
    */
   sendLoginMessage() {
-        // 等价于下面subscribe括号里面的代码
-        // const myObserver = {
-        //   next:data =>{
-        //     // console.log(`接收到数据推送：${data}`);
-        //     if (this.connectState === true) return;
-        //     if (data === '连接成功'){
-        //       this.connectState = true;
-        //       console.log(data);
-        //     }
-        //   },
-        //   error:err => console.log(err),
-        //   complete:() => console.log('流已经结束')
-        // }
         WebsocketService.observable.subscribe(
           // data接收的是服务端发送给过来的消息
           data => {
@@ -108,14 +107,6 @@ export class LoginComponent implements OnInit {
                   console.log(`longinComponent该请求${data.packetId}不存在...`);
 
            }
-
-            // this.reciveMessage = data.respObj.result;
-            // console.log('LoginComponent------>服务端推送过来的消息内容为:' + data.respObj.result);
-            // if (this.loginState === true) {return; }
-            // if (data === '登陆成功') {
-            //   this.loginState = true;
-            //   console.log('第一次：' + data);
-            // }
           },
           err => console.log(err),
           () => console.log('流已经结束')
@@ -135,19 +126,45 @@ export class LoginComponent implements OnInit {
   }
   // 角色登录
   roleLogin() {
-    console.log(`palyerId为${this.playerId}`);
-    console.log(`请求角色登录获得的玩家id为：${this.playerId}`);
-     this.wsService.sendMess(ReqRoleLoginPacket, {playerId: this.playerId});
+    // 如果this.playerId为空，则是从已有角色中选择登录
+    // 登录成功之后会获取该playerId
+    let pid: number;
+    if (this.playerId === undefined) {
+      this.id2object.forEach((value, key) => {
+          if (this.useRole === value) {
+              pid = key;
+          }
+      });
+    } else {
+      console.log(`palyerId为${this.playerId}`);
+      console.log(`请求角色登录获得的玩家id为：${this.playerId}`);
+      pid = this.playerId;
+    }
+     this.wsService.sendMess(ReqRoleLoginPacket, {playerId: pid});
   }
 
   // ** 响应方法 **
+  // 响应登录
   respMessage(data: any) {
     this.reciveMessage = data.respObj.result;
     if (data.respObj.result === '登录成功') {
         this.loginState = true;
         console.log(' 登录成功 ');
     }
+    let flag = 1;
+    data.respObj.playerEntityInfos.forEach((val, index, array) => {
+      const roleInfor = '称号:' + val.name + '--性别:' + val.sex + '--职业:' + val.roleType;
+      if (flag === 1) {
+        this.useRole = roleInfor;
+        flag++;
+      }
+      // 存放角色id与角色的映射
+      this.id2object.set(val.id , roleInfor);
+      this.role.push(roleInfor);
+      console.log('名字' + val.name + '职业' + val.roleType);
+    });
   }
+  // 响应创建角色
   respCreateRole(data: any) {
     this.respCreateRoleMessage = data.respObj.result;
     this.playerId = data.respObj.playerId;
@@ -155,7 +172,7 @@ export class LoginComponent implements OnInit {
   }
   respRoleLogin(data) {
     this.respCreateRoleMessage = data.respObj.result;
-    if (this.respCreateRoleMessage === '登录成功') {
+    if (this.respCreateRoleMessage === '角色登录成功') {
       console.log('角色登录成功');
     } else {
       console.log('登录失败');

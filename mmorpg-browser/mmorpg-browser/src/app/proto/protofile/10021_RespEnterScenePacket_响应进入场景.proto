@@ -1,7 +1,7 @@
 //响应进入场景
 message RespEnterScenePacket {  
 // 场景id
-optional int32 sceneId=1;
+optional int64 sceneId=1;
 // 场景内所有物体内容
 repeated ObjectInMapInfo mapObject=2;
 }

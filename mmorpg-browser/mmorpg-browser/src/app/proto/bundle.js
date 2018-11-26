@@ -226,6 +226,7 @@ $root.ResLoginPacket = (function() {
      * @exports IResLoginPacket
      * @interface IResLoginPacket
      * @property {string|null} [result] ResLoginPacket result
+     * @property {Array.<IPlayerEntityInfo>|null} [playerEntityInfos] ResLoginPacket playerEntityInfos
      */
 
     /**
@@ -237,6 +238,7 @@ $root.ResLoginPacket = (function() {
      * @param {IResLoginPacket=} [properties] Properties to set
      */
     function ResLoginPacket(properties) {
+        this.playerEntityInfos = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -250,6 +252,14 @@ $root.ResLoginPacket = (function() {
      * @instance
      */
     ResLoginPacket.prototype.result = "";
+
+    /**
+     * ResLoginPacket playerEntityInfos.
+     * @member {Array.<IPlayerEntityInfo>} playerEntityInfos
+     * @memberof ResLoginPacket
+     * @instance
+     */
+    ResLoginPacket.prototype.playerEntityInfos = $util.emptyArray;
 
     /**
      * Creates a new ResLoginPacket instance using the specified properties.
@@ -277,6 +287,9 @@ $root.ResLoginPacket = (function() {
             writer = $Writer.create();
         if (message.result != null && message.hasOwnProperty("result"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.result);
+        if (message.playerEntityInfos != null && message.playerEntityInfos.length)
+            for (var i = 0; i < message.playerEntityInfos.length; ++i)
+                $root.PlayerEntityInfo.encode(message.playerEntityInfos[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         return writer;
     };
 
@@ -313,6 +326,11 @@ $root.ResLoginPacket = (function() {
             switch (tag >>> 3) {
             case 1:
                 message.result = reader.string();
+                break;
+            case 2:
+                if (!(message.playerEntityInfos && message.playerEntityInfos.length))
+                    message.playerEntityInfos = [];
+                message.playerEntityInfos.push($root.PlayerEntityInfo.decode(reader, reader.uint32()));
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -352,6 +370,15 @@ $root.ResLoginPacket = (function() {
         if (message.result != null && message.hasOwnProperty("result"))
             if (!$util.isString(message.result))
                 return "result: string expected";
+        if (message.playerEntityInfos != null && message.hasOwnProperty("playerEntityInfos")) {
+            if (!Array.isArray(message.playerEntityInfos))
+                return "playerEntityInfos: array expected";
+            for (var i = 0; i < message.playerEntityInfos.length; ++i) {
+                var error = $root.PlayerEntityInfo.verify(message.playerEntityInfos[i]);
+                if (error)
+                    return "playerEntityInfos." + error;
+            }
+        }
         return null;
     };
 
@@ -369,6 +396,16 @@ $root.ResLoginPacket = (function() {
         var message = new $root.ResLoginPacket();
         if (object.result != null)
             message.result = String(object.result);
+        if (object.playerEntityInfos) {
+            if (!Array.isArray(object.playerEntityInfos))
+                throw TypeError(".ResLoginPacket.playerEntityInfos: array expected");
+            message.playerEntityInfos = [];
+            for (var i = 0; i < object.playerEntityInfos.length; ++i) {
+                if (typeof object.playerEntityInfos[i] !== "object")
+                    throw TypeError(".ResLoginPacket.playerEntityInfos: object expected");
+                message.playerEntityInfos[i] = $root.PlayerEntityInfo.fromObject(object.playerEntityInfos[i]);
+            }
+        }
         return message;
     };
 
@@ -385,10 +422,17 @@ $root.ResLoginPacket = (function() {
         if (!options)
             options = {};
         var object = {};
+        if (options.arrays || options.defaults)
+            object.playerEntityInfos = [];
         if (options.defaults)
             object.result = "";
         if (message.result != null && message.hasOwnProperty("result"))
             object.result = message.result;
+        if (message.playerEntityInfos && message.playerEntityInfos.length) {
+            object.playerEntityInfos = [];
+            for (var j = 0; j < message.playerEntityInfos.length; ++j)
+                object.playerEntityInfos[j] = $root.PlayerEntityInfo.toObject(message.playerEntityInfos[j], options);
+        }
         return object;
     };
 
@@ -404,6 +448,274 @@ $root.ResLoginPacket = (function() {
     };
 
     return ResLoginPacket;
+})();
+
+$root.PlayerEntityInfo = (function() {
+
+    /**
+     * Properties of a PlayerEntityInfo.
+     * @exports IPlayerEntityInfo
+     * @interface IPlayerEntityInfo
+     * @property {number|Long|null} [id] PlayerEntityInfo id
+     * @property {string|null} [sex] PlayerEntityInfo sex
+     * @property {string|null} [name] PlayerEntityInfo name
+     * @property {string|null} [roleType] PlayerEntityInfo roleType
+     */
+
+    /**
+     * Constructs a new PlayerEntityInfo.
+     * @exports PlayerEntityInfo
+     * @classdesc Represents a PlayerEntityInfo.
+     * @implements IPlayerEntityInfo
+     * @constructor
+     * @param {IPlayerEntityInfo=} [properties] Properties to set
+     */
+    function PlayerEntityInfo(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * PlayerEntityInfo id.
+     * @member {number|Long} id
+     * @memberof PlayerEntityInfo
+     * @instance
+     */
+    PlayerEntityInfo.prototype.id = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * PlayerEntityInfo sex.
+     * @member {string} sex
+     * @memberof PlayerEntityInfo
+     * @instance
+     */
+    PlayerEntityInfo.prototype.sex = "";
+
+    /**
+     * PlayerEntityInfo name.
+     * @member {string} name
+     * @memberof PlayerEntityInfo
+     * @instance
+     */
+    PlayerEntityInfo.prototype.name = "";
+
+    /**
+     * PlayerEntityInfo roleType.
+     * @member {string} roleType
+     * @memberof PlayerEntityInfo
+     * @instance
+     */
+    PlayerEntityInfo.prototype.roleType = "";
+
+    /**
+     * Creates a new PlayerEntityInfo instance using the specified properties.
+     * @function create
+     * @memberof PlayerEntityInfo
+     * @static
+     * @param {IPlayerEntityInfo=} [properties] Properties to set
+     * @returns {PlayerEntityInfo} PlayerEntityInfo instance
+     */
+    PlayerEntityInfo.create = function create(properties) {
+        return new PlayerEntityInfo(properties);
+    };
+
+    /**
+     * Encodes the specified PlayerEntityInfo message. Does not implicitly {@link PlayerEntityInfo.verify|verify} messages.
+     * @function encode
+     * @memberof PlayerEntityInfo
+     * @static
+     * @param {IPlayerEntityInfo} message PlayerEntityInfo message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    PlayerEntityInfo.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.id);
+        if (message.sex != null && message.hasOwnProperty("sex"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.sex);
+        if (message.name != null && message.hasOwnProperty("name"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
+        if (message.roleType != null && message.hasOwnProperty("roleType"))
+            writer.uint32(/* id 4, wireType 2 =*/34).string(message.roleType);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified PlayerEntityInfo message, length delimited. Does not implicitly {@link PlayerEntityInfo.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof PlayerEntityInfo
+     * @static
+     * @param {IPlayerEntityInfo} message PlayerEntityInfo message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    PlayerEntityInfo.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a PlayerEntityInfo message from the specified reader or buffer.
+     * @function decode
+     * @memberof PlayerEntityInfo
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {PlayerEntityInfo} PlayerEntityInfo
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    PlayerEntityInfo.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.PlayerEntityInfo();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.int64();
+                break;
+            case 2:
+                message.sex = reader.string();
+                break;
+            case 3:
+                message.name = reader.string();
+                break;
+            case 4:
+                message.roleType = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a PlayerEntityInfo message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof PlayerEntityInfo
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {PlayerEntityInfo} PlayerEntityInfo
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    PlayerEntityInfo.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a PlayerEntityInfo message.
+     * @function verify
+     * @memberof PlayerEntityInfo
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    PlayerEntityInfo.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
+                return "id: integer|Long expected";
+        if (message.sex != null && message.hasOwnProperty("sex"))
+            if (!$util.isString(message.sex))
+                return "sex: string expected";
+        if (message.name != null && message.hasOwnProperty("name"))
+            if (!$util.isString(message.name))
+                return "name: string expected";
+        if (message.roleType != null && message.hasOwnProperty("roleType"))
+            if (!$util.isString(message.roleType))
+                return "roleType: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a PlayerEntityInfo message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof PlayerEntityInfo
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {PlayerEntityInfo} PlayerEntityInfo
+     */
+    PlayerEntityInfo.fromObject = function fromObject(object) {
+        if (object instanceof $root.PlayerEntityInfo)
+            return object;
+        var message = new $root.PlayerEntityInfo();
+        if (object.id != null)
+            if ($util.Long)
+                (message.id = $util.Long.fromValue(object.id)).unsigned = false;
+            else if (typeof object.id === "string")
+                message.id = parseInt(object.id, 10);
+            else if (typeof object.id === "number")
+                message.id = object.id;
+            else if (typeof object.id === "object")
+                message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber();
+        if (object.sex != null)
+            message.sex = String(object.sex);
+        if (object.name != null)
+            message.name = String(object.name);
+        if (object.roleType != null)
+            message.roleType = String(object.roleType);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a PlayerEntityInfo message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof PlayerEntityInfo
+     * @static
+     * @param {PlayerEntityInfo} message PlayerEntityInfo
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    PlayerEntityInfo.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.id = options.longs === String ? "0" : 0;
+            object.sex = "";
+            object.name = "";
+            object.roleType = "";
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (typeof message.id === "number")
+                object.id = options.longs === String ? String(message.id) : message.id;
+            else
+                object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber() : message.id;
+        if (message.sex != null && message.hasOwnProperty("sex"))
+            object.sex = message.sex;
+        if (message.name != null && message.hasOwnProperty("name"))
+            object.name = message.name;
+        if (message.roleType != null && message.hasOwnProperty("roleType"))
+            object.roleType = message.roleType;
+        return object;
+    };
+
+    /**
+     * Converts this PlayerEntityInfo to JSON.
+     * @function toJSON
+     * @memberof PlayerEntityInfo
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    PlayerEntityInfo.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return PlayerEntityInfo;
 })();
 
 $root.ReqLoginAuthPacket = (function() {
@@ -1956,8 +2268,8 @@ $root.ReqEnterScenePacket = (function() {
      * Properties of a ReqEnterScenePacket.
      * @exports IReqEnterScenePacket
      * @interface IReqEnterScenePacket
-     * @property {number|null} [playerId] ReqEnterScenePacket playerId
-     * @property {number|null} [sceneId] ReqEnterScenePacket sceneId
+     * @property {number|Long|null} [playerId] ReqEnterScenePacket playerId
+     * @property {number|Long|null} [sceneId] ReqEnterScenePacket sceneId
      */
 
     /**
@@ -1977,19 +2289,19 @@ $root.ReqEnterScenePacket = (function() {
 
     /**
      * ReqEnterScenePacket playerId.
-     * @member {number} playerId
+     * @member {number|Long} playerId
      * @memberof ReqEnterScenePacket
      * @instance
      */
-    ReqEnterScenePacket.prototype.playerId = 0;
+    ReqEnterScenePacket.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * ReqEnterScenePacket sceneId.
-     * @member {number} sceneId
+     * @member {number|Long} sceneId
      * @memberof ReqEnterScenePacket
      * @instance
      */
-    ReqEnterScenePacket.prototype.sceneId = 0;
+    ReqEnterScenePacket.prototype.sceneId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * Creates a new ReqEnterScenePacket instance using the specified properties.
@@ -2016,9 +2328,9 @@ $root.ReqEnterScenePacket = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.playerId != null && message.hasOwnProperty("playerId"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.playerId);
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.playerId);
         if (message.sceneId != null && message.hasOwnProperty("sceneId"))
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.sceneId);
+            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.sceneId);
         return writer;
     };
 
@@ -2054,10 +2366,10 @@ $root.ReqEnterScenePacket = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.playerId = reader.int32();
+                message.playerId = reader.int64();
                 break;
             case 2:
-                message.sceneId = reader.int32();
+                message.sceneId = reader.int64();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -2095,11 +2407,11 @@ $root.ReqEnterScenePacket = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.playerId != null && message.hasOwnProperty("playerId"))
-            if (!$util.isInteger(message.playerId))
-                return "playerId: integer expected";
+            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                return "playerId: integer|Long expected";
         if (message.sceneId != null && message.hasOwnProperty("sceneId"))
-            if (!$util.isInteger(message.sceneId))
-                return "sceneId: integer expected";
+            if (!$util.isInteger(message.sceneId) && !(message.sceneId && $util.isInteger(message.sceneId.low) && $util.isInteger(message.sceneId.high)))
+                return "sceneId: integer|Long expected";
         return null;
     };
 
@@ -2116,9 +2428,23 @@ $root.ReqEnterScenePacket = (function() {
             return object;
         var message = new $root.ReqEnterScenePacket();
         if (object.playerId != null)
-            message.playerId = object.playerId | 0;
+            if ($util.Long)
+                (message.playerId = $util.Long.fromValue(object.playerId)).unsigned = false;
+            else if (typeof object.playerId === "string")
+                message.playerId = parseInt(object.playerId, 10);
+            else if (typeof object.playerId === "number")
+                message.playerId = object.playerId;
+            else if (typeof object.playerId === "object")
+                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber();
         if (object.sceneId != null)
-            message.sceneId = object.sceneId | 0;
+            if ($util.Long)
+                (message.sceneId = $util.Long.fromValue(object.sceneId)).unsigned = false;
+            else if (typeof object.sceneId === "string")
+                message.sceneId = parseInt(object.sceneId, 10);
+            else if (typeof object.sceneId === "number")
+                message.sceneId = object.sceneId;
+            else if (typeof object.sceneId === "object")
+                message.sceneId = new $util.LongBits(object.sceneId.low >>> 0, object.sceneId.high >>> 0).toNumber();
         return message;
     };
 
@@ -2136,13 +2462,27 @@ $root.ReqEnterScenePacket = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.playerId = 0;
-            object.sceneId = 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.playerId = options.longs === String ? "0" : 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.sceneId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.sceneId = options.longs === String ? "0" : 0;
         }
         if (message.playerId != null && message.hasOwnProperty("playerId"))
-            object.playerId = message.playerId;
+            if (typeof message.playerId === "number")
+                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+            else
+                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber() : message.playerId;
         if (message.sceneId != null && message.hasOwnProperty("sceneId"))
-            object.sceneId = message.sceneId;
+            if (typeof message.sceneId === "number")
+                object.sceneId = options.longs === String ? String(message.sceneId) : message.sceneId;
+            else
+                object.sceneId = options.longs === String ? $util.Long.prototype.toString.call(message.sceneId) : options.longs === Number ? new $util.LongBits(message.sceneId.low >>> 0, message.sceneId.high >>> 0).toNumber() : message.sceneId;
         return object;
     };
 
@@ -2166,7 +2506,7 @@ $root.RespEnterScenePacket = (function() {
      * Properties of a RespEnterScenePacket.
      * @exports IRespEnterScenePacket
      * @interface IRespEnterScenePacket
-     * @property {number|null} [sceneId] RespEnterScenePacket sceneId
+     * @property {number|Long|null} [sceneId] RespEnterScenePacket sceneId
      * @property {Array.<IObjectInMapInfo>|null} [mapObject] RespEnterScenePacket mapObject
      */
 
@@ -2188,11 +2528,11 @@ $root.RespEnterScenePacket = (function() {
 
     /**
      * RespEnterScenePacket sceneId.
-     * @member {number} sceneId
+     * @member {number|Long} sceneId
      * @memberof RespEnterScenePacket
      * @instance
      */
-    RespEnterScenePacket.prototype.sceneId = 0;
+    RespEnterScenePacket.prototype.sceneId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * RespEnterScenePacket mapObject.
@@ -2227,7 +2567,7 @@ $root.RespEnterScenePacket = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.sceneId != null && message.hasOwnProperty("sceneId"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.sceneId);
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.sceneId);
         if (message.mapObject != null && message.mapObject.length)
             for (var i = 0; i < message.mapObject.length; ++i)
                 $root.ObjectInMapInfo.encode(message.mapObject[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
@@ -2266,7 +2606,7 @@ $root.RespEnterScenePacket = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.sceneId = reader.int32();
+                message.sceneId = reader.int64();
                 break;
             case 2:
                 if (!(message.mapObject && message.mapObject.length))
@@ -2309,8 +2649,8 @@ $root.RespEnterScenePacket = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.sceneId != null && message.hasOwnProperty("sceneId"))
-            if (!$util.isInteger(message.sceneId))
-                return "sceneId: integer expected";
+            if (!$util.isInteger(message.sceneId) && !(message.sceneId && $util.isInteger(message.sceneId.low) && $util.isInteger(message.sceneId.high)))
+                return "sceneId: integer|Long expected";
         if (message.mapObject != null && message.hasOwnProperty("mapObject")) {
             if (!Array.isArray(message.mapObject))
                 return "mapObject: array expected";
@@ -2336,7 +2676,14 @@ $root.RespEnterScenePacket = (function() {
             return object;
         var message = new $root.RespEnterScenePacket();
         if (object.sceneId != null)
-            message.sceneId = object.sceneId | 0;
+            if ($util.Long)
+                (message.sceneId = $util.Long.fromValue(object.sceneId)).unsigned = false;
+            else if (typeof object.sceneId === "string")
+                message.sceneId = parseInt(object.sceneId, 10);
+            else if (typeof object.sceneId === "number")
+                message.sceneId = object.sceneId;
+            else if (typeof object.sceneId === "object")
+                message.sceneId = new $util.LongBits(object.sceneId.low >>> 0, object.sceneId.high >>> 0).toNumber();
         if (object.mapObject) {
             if (!Array.isArray(object.mapObject))
                 throw TypeError(".RespEnterScenePacket.mapObject: array expected");
@@ -2366,9 +2713,16 @@ $root.RespEnterScenePacket = (function() {
         if (options.arrays || options.defaults)
             object.mapObject = [];
         if (options.defaults)
-            object.sceneId = 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.sceneId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.sceneId = options.longs === String ? "0" : 0;
         if (message.sceneId != null && message.hasOwnProperty("sceneId"))
-            object.sceneId = message.sceneId;
+            if (typeof message.sceneId === "number")
+                object.sceneId = options.longs === String ? String(message.sceneId) : message.sceneId;
+            else
+                object.sceneId = options.longs === String ? $util.Long.prototype.toString.call(message.sceneId) : options.longs === Number ? new $util.LongBits(message.sceneId.low >>> 0, message.sceneId.high >>> 0).toNumber() : message.sceneId;
         if (message.mapObject && message.mapObject.length) {
             object.mapObject = [];
             for (var j = 0; j < message.mapObject.length; ++j)
@@ -2687,6 +3041,7 @@ $root.RespBroadcastEnterWorldPacket = (function() {
      * Properties of a RespBroadcastEnterWorldPacket.
      * @exports IRespBroadcastEnterWorldPacket
      * @interface IRespBroadcastEnterWorldPacket
+     * @property {number|Long|null} [mapId] RespBroadcastEnterWorldPacket mapId
      * @property {number|Long|null} [playerId] RespBroadcastEnterWorldPacket playerId
      * @property {string|null} [result] RespBroadcastEnterWorldPacket result
      */
@@ -2705,6 +3060,14 @@ $root.RespBroadcastEnterWorldPacket = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
+
+    /**
+     * RespBroadcastEnterWorldPacket mapId.
+     * @member {number|Long} mapId
+     * @memberof RespBroadcastEnterWorldPacket
+     * @instance
+     */
+    RespBroadcastEnterWorldPacket.prototype.mapId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * RespBroadcastEnterWorldPacket playerId.
@@ -2746,10 +3109,12 @@ $root.RespBroadcastEnterWorldPacket = (function() {
     RespBroadcastEnterWorldPacket.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
+        if (message.mapId != null && message.hasOwnProperty("mapId"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.mapId);
         if (message.playerId != null && message.hasOwnProperty("playerId"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.playerId);
+            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.playerId);
         if (message.result != null && message.hasOwnProperty("result"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.result);
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.result);
         return writer;
     };
 
@@ -2785,9 +3150,12 @@ $root.RespBroadcastEnterWorldPacket = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.playerId = reader.int64();
+                message.mapId = reader.int64();
                 break;
             case 2:
+                message.playerId = reader.int64();
+                break;
+            case 3:
                 message.result = reader.string();
                 break;
             default:
@@ -2825,6 +3193,9 @@ $root.RespBroadcastEnterWorldPacket = (function() {
     RespBroadcastEnterWorldPacket.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (message.mapId != null && message.hasOwnProperty("mapId"))
+            if (!$util.isInteger(message.mapId) && !(message.mapId && $util.isInteger(message.mapId.low) && $util.isInteger(message.mapId.high)))
+                return "mapId: integer|Long expected";
         if (message.playerId != null && message.hasOwnProperty("playerId"))
             if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
                 return "playerId: integer|Long expected";
@@ -2846,6 +3217,15 @@ $root.RespBroadcastEnterWorldPacket = (function() {
         if (object instanceof $root.RespBroadcastEnterWorldPacket)
             return object;
         var message = new $root.RespBroadcastEnterWorldPacket();
+        if (object.mapId != null)
+            if ($util.Long)
+                (message.mapId = $util.Long.fromValue(object.mapId)).unsigned = false;
+            else if (typeof object.mapId === "string")
+                message.mapId = parseInt(object.mapId, 10);
+            else if (typeof object.mapId === "number")
+                message.mapId = object.mapId;
+            else if (typeof object.mapId === "object")
+                message.mapId = new $util.LongBits(object.mapId.low >>> 0, object.mapId.high >>> 0).toNumber();
         if (object.playerId != null)
             if ($util.Long)
                 (message.playerId = $util.Long.fromValue(object.playerId)).unsigned = false;
@@ -2876,11 +3256,21 @@ $root.RespBroadcastEnterWorldPacket = (function() {
         if (options.defaults) {
             if ($util.Long) {
                 var long = new $util.Long(0, 0, false);
+                object.mapId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.mapId = options.longs === String ? "0" : 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
                 object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
             } else
                 object.playerId = options.longs === String ? "0" : 0;
             object.result = "";
         }
+        if (message.mapId != null && message.hasOwnProperty("mapId"))
+            if (typeof message.mapId === "number")
+                object.mapId = options.longs === String ? String(message.mapId) : message.mapId;
+            else
+                object.mapId = options.longs === String ? $util.Long.prototype.toString.call(message.mapId) : options.longs === Number ? new $util.LongBits(message.mapId.low >>> 0, message.mapId.high >>> 0).toNumber() : message.mapId;
         if (message.playerId != null && message.hasOwnProperty("playerId"))
             if (typeof message.playerId === "number")
                 object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
@@ -2903,6 +3293,244 @@ $root.RespBroadcastEnterWorldPacket = (function() {
     };
 
     return RespBroadcastEnterWorldPacket;
+})();
+
+$root.ReqChangeMapInstancePacket = (function() {
+
+    /**
+     * Properties of a ReqChangeMapInstancePacket.
+     * @exports IReqChangeMapInstancePacket
+     * @interface IReqChangeMapInstancePacket
+     * @property {number|Long|null} [oldMapId] ReqChangeMapInstancePacket oldMapId
+     * @property {number|Long|null} [newMapId] ReqChangeMapInstancePacket newMapId
+     */
+
+    /**
+     * Constructs a new ReqChangeMapInstancePacket.
+     * @exports ReqChangeMapInstancePacket
+     * @classdesc Represents a ReqChangeMapInstancePacket.
+     * @implements IReqChangeMapInstancePacket
+     * @constructor
+     * @param {IReqChangeMapInstancePacket=} [properties] Properties to set
+     */
+    function ReqChangeMapInstancePacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ReqChangeMapInstancePacket oldMapId.
+     * @member {number|Long} oldMapId
+     * @memberof ReqChangeMapInstancePacket
+     * @instance
+     */
+    ReqChangeMapInstancePacket.prototype.oldMapId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * ReqChangeMapInstancePacket newMapId.
+     * @member {number|Long} newMapId
+     * @memberof ReqChangeMapInstancePacket
+     * @instance
+     */
+    ReqChangeMapInstancePacket.prototype.newMapId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * Creates a new ReqChangeMapInstancePacket instance using the specified properties.
+     * @function create
+     * @memberof ReqChangeMapInstancePacket
+     * @static
+     * @param {IReqChangeMapInstancePacket=} [properties] Properties to set
+     * @returns {ReqChangeMapInstancePacket} ReqChangeMapInstancePacket instance
+     */
+    ReqChangeMapInstancePacket.create = function create(properties) {
+        return new ReqChangeMapInstancePacket(properties);
+    };
+
+    /**
+     * Encodes the specified ReqChangeMapInstancePacket message. Does not implicitly {@link ReqChangeMapInstancePacket.verify|verify} messages.
+     * @function encode
+     * @memberof ReqChangeMapInstancePacket
+     * @static
+     * @param {IReqChangeMapInstancePacket} message ReqChangeMapInstancePacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqChangeMapInstancePacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.oldMapId != null && message.hasOwnProperty("oldMapId"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.oldMapId);
+        if (message.newMapId != null && message.hasOwnProperty("newMapId"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.newMapId);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ReqChangeMapInstancePacket message, length delimited. Does not implicitly {@link ReqChangeMapInstancePacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ReqChangeMapInstancePacket
+     * @static
+     * @param {IReqChangeMapInstancePacket} message ReqChangeMapInstancePacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqChangeMapInstancePacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ReqChangeMapInstancePacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof ReqChangeMapInstancePacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ReqChangeMapInstancePacket} ReqChangeMapInstancePacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqChangeMapInstancePacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ReqChangeMapInstancePacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.oldMapId = reader.int64();
+                break;
+            case 2:
+                message.newMapId = reader.int64();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ReqChangeMapInstancePacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ReqChangeMapInstancePacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ReqChangeMapInstancePacket} ReqChangeMapInstancePacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqChangeMapInstancePacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ReqChangeMapInstancePacket message.
+     * @function verify
+     * @memberof ReqChangeMapInstancePacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ReqChangeMapInstancePacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.oldMapId != null && message.hasOwnProperty("oldMapId"))
+            if (!$util.isInteger(message.oldMapId) && !(message.oldMapId && $util.isInteger(message.oldMapId.low) && $util.isInteger(message.oldMapId.high)))
+                return "oldMapId: integer|Long expected";
+        if (message.newMapId != null && message.hasOwnProperty("newMapId"))
+            if (!$util.isInteger(message.newMapId) && !(message.newMapId && $util.isInteger(message.newMapId.low) && $util.isInteger(message.newMapId.high)))
+                return "newMapId: integer|Long expected";
+        return null;
+    };
+
+    /**
+     * Creates a ReqChangeMapInstancePacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ReqChangeMapInstancePacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ReqChangeMapInstancePacket} ReqChangeMapInstancePacket
+     */
+    ReqChangeMapInstancePacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.ReqChangeMapInstancePacket)
+            return object;
+        var message = new $root.ReqChangeMapInstancePacket();
+        if (object.oldMapId != null)
+            if ($util.Long)
+                (message.oldMapId = $util.Long.fromValue(object.oldMapId)).unsigned = false;
+            else if (typeof object.oldMapId === "string")
+                message.oldMapId = parseInt(object.oldMapId, 10);
+            else if (typeof object.oldMapId === "number")
+                message.oldMapId = object.oldMapId;
+            else if (typeof object.oldMapId === "object")
+                message.oldMapId = new $util.LongBits(object.oldMapId.low >>> 0, object.oldMapId.high >>> 0).toNumber();
+        if (object.newMapId != null)
+            if ($util.Long)
+                (message.newMapId = $util.Long.fromValue(object.newMapId)).unsigned = false;
+            else if (typeof object.newMapId === "string")
+                message.newMapId = parseInt(object.newMapId, 10);
+            else if (typeof object.newMapId === "number")
+                message.newMapId = object.newMapId;
+            else if (typeof object.newMapId === "object")
+                message.newMapId = new $util.LongBits(object.newMapId.low >>> 0, object.newMapId.high >>> 0).toNumber();
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ReqChangeMapInstancePacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ReqChangeMapInstancePacket
+     * @static
+     * @param {ReqChangeMapInstancePacket} message ReqChangeMapInstancePacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ReqChangeMapInstancePacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.oldMapId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.oldMapId = options.longs === String ? "0" : 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.newMapId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.newMapId = options.longs === String ? "0" : 0;
+        }
+        if (message.oldMapId != null && message.hasOwnProperty("oldMapId"))
+            if (typeof message.oldMapId === "number")
+                object.oldMapId = options.longs === String ? String(message.oldMapId) : message.oldMapId;
+            else
+                object.oldMapId = options.longs === String ? $util.Long.prototype.toString.call(message.oldMapId) : options.longs === Number ? new $util.LongBits(message.oldMapId.low >>> 0, message.oldMapId.high >>> 0).toNumber() : message.oldMapId;
+        if (message.newMapId != null && message.hasOwnProperty("newMapId"))
+            if (typeof message.newMapId === "number")
+                object.newMapId = options.longs === String ? String(message.newMapId) : message.newMapId;
+            else
+                object.newMapId = options.longs === String ? $util.Long.prototype.toString.call(message.newMapId) : options.longs === Number ? new $util.LongBits(message.newMapId.low >>> 0, message.newMapId.high >>> 0).toNumber() : message.newMapId;
+        return object;
+    };
+
+    /**
+     * Converts this ReqChangeMapInstancePacket to JSON.
+     * @function toJSON
+     * @memberof ReqChangeMapInstancePacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ReqChangeMapInstancePacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ReqChangeMapInstancePacket;
 })();
 
 module.exports = $root;
