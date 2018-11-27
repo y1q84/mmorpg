@@ -52,6 +52,13 @@ public class MapInstance {
         }
     }
 
+    public void removeObjectInMap(MapObject mapObject){
+        objectInMap.remove(mapObject.getId());
+        if(mapObject instanceof Player){
+            getPlayerInMap().remove(mapObject.getId());
+        }
+    }
+
     public Map<Long, Player> getPlayerInMap() {
         return playerInMap;
     }

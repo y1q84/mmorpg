@@ -9,6 +9,8 @@ import com.module.logic.account.manager.AccountManager;
 import com.module.logic.map.MapInstance;
 import com.module.logic.map.manager.MapManager;
 import com.module.logic.map.obj.MapObject;
+import com.module.logic.player.logic.position.InitialPosition;
+import com.module.logic.player.logic.position.MapType;
 import com.module.logic.player.packet.*;
 import com.module.logic.monster.manager.MonsterManager;
 import com.module.logic.monster.resource.Monster;
@@ -39,7 +41,6 @@ public class PlayerService {
     Logger logger= LoggerFactory.getLogger(PlayerService.class);
 
     private Map<Long,Player> id2player=new HashMap<>();
-    private Map<Long,PlayerEntity> id2PlayerEntity=new HashMap<>();
 
     @Autowired
     PlayerManager playerManager;
@@ -78,6 +79,8 @@ public class PlayerService {
     public Player initPlayer(PlayerEntity playerEntity){
         Player player=new Player();
         player.setId(playerEntity.getPlayerId());
+        //初始化玩家所在场景
+        player.setMapId(playerEntity.getMapId());
         player.setPlayerEntity(playerEntity);
         playerEntity.setPlayer(player);
         // TODO 其他的初始化玩家的信息
@@ -91,7 +94,16 @@ public class PlayerService {
         boolean statue=playerManager.roleLogin(playerId);
         String result=null;
         if(statue){
+
             Player player=id2player.get(playerId);
+            //玩家登录成功之后初始化场景位置
+            if(player.getInitialPosition()==null){
+                //设置玩家初始位置信息
+                InitialPosition initialPosition=new InitialPosition();
+                initialPosition.setMapType(MapType.DEFAULT);
+                player.setInitialPosition(initialPosition);
+            }
+            playerManager.getPositionHandlerByType(player.getInitialPosition().getMapType()).initialPostion(player);
             //角色登录成功则将session与Player添加进集合
             playerManager.addSession2Player(session,player);
             result="角色登录成功";
@@ -110,15 +122,12 @@ public class PlayerService {
 
     public void enterWorld(Session session,ReqEnterScenePacket reqEnterScenePacket){
         Player player=playerManager.getPlayer2session().inverse().get(session);
-        long mapId=reqEnterScenePacket.getSceneId();
-        MapManager.getInstance().enterWorld(mapId,player);
-
+        MapManager.getInstance().enterWorld(player);
         //用来存放场景里所有的生物
         List<ObjectInMapInfo> objects=new ArrayList<>();
         //存放场景里面npc
         Map<Long, MapInstance> mapId2MapInstance=MapManager.getInstance().getId2Map();
-        logger.info("mapId为1001的地图对象为空否？"+mapId2MapInstance.get(mapId));
-        MapInstance mapInstance=mapId2MapInstance.get(mapId);
+        MapInstance mapInstance=mapId2MapInstance.get(player.getMapId());
         Map<Long,MapObject> id2MapInstance=mapInstance.getObjectInMap();
         //向场景打印npc信息
         //将MapObject转为ObjectInfo放进响应包
@@ -127,13 +136,13 @@ public class PlayerService {
         });
         //发送响应进入场景的包
         RespEnterScenePacket respEnterScenePacket=new RespEnterScenePacket();
-        respEnterScenePacket.setSceneId(mapId);
+        respEnterScenePacket.setSceneId(player.getMapId());
         //将场景里面所有的物体加载到响应包里面
         respEnterScenePacket.setMapObject(objects);
         PacketUtil.sendPacket(session,respEnterScenePacket);
 
         RespBroadcastEnterWorldPacket respBroadcastEnterWorldPacket=new RespBroadcastEnterWorldPacket();
-        respBroadcastEnterWorldPacket.setMapId(mapId);
+        respBroadcastEnterWorldPacket.setMapId(player.getMapId());
         respBroadcastEnterWorldPacket.setPlayerId(player.getPlayerEntity().getPlayerId());
         respBroadcastEnterWorldPacket.setResult("成功进入场景");
         //封装成一个广播包会比较好
@@ -187,18 +196,8 @@ public class PlayerService {
         this.id2player = id2player;
     }
 
-    public PlayerEntity getPlayerEntity(long playerId) {
-        return id2PlayerEntity.get(playerId);
-    }
-
-    public void setId2PlayerEntity(Map<Long, PlayerEntity> id2PlayerEntity) {
-        this.id2PlayerEntity = id2PlayerEntity;
-    }
-
     public void addId2Player(long playerId,Player player){
         this.id2player.put(playerId,player);
     }
-    public void addId2PlayerEntity(Long playerId, PlayerEntity playerEntity){
-        this.id2PlayerEntity.put(playerId,playerEntity);
-    }
+
 }

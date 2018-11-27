@@ -90,7 +90,7 @@ public class AccountManager {
         List<Long> ids=accountEntity.getIds();//玩家角色id列表
         List<PlayerEntity> playerEntities=new ArrayList<>();
         try{
-            if(ids.size()>0){
+            if(ids!=null){
                 ids.forEach((id)->{
                     PlayerEntity playerEntity=PlayerManager.getInstance().findPlayerEntity(id);
                     playerEntities.add(playerEntity);

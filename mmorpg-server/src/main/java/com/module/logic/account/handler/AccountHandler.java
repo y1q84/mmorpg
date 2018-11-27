@@ -57,12 +57,13 @@ public class AccountHandler {
             //同时应该向客户端发送该账号已有角色列表
             List<PlayerEntity> playerEntities= AccountManager.getInstance().getCreatedRole(account);
             List<PlayerEntityInfo> playerEntityInfos=new ArrayList<>();
-            playerEntities.forEach((e)->{
-                playerEntityInfos.add(PlayerEntityInfo.valueOf(e));
-                //同时应该初始化playerService中id到player的映射
-//                playerService.addId2PlayerEntity(e.getPlayerId(),e);
-                playerService.addId2Player(e.getPlayerId(),playerService.initPlayer(e));
-            });
+            if(playerEntities!=null){
+                playerEntities.forEach((e)->{
+                    playerEntityInfos.add(PlayerEntityInfo.valueOf(e));
+                    //同时应该初始化playerService中id到player的映射
+                    playerService.addId2Player(e.getPlayerId(),playerService.initPlayer(e));
+                });
+            }
             resLoginPacket.setPlayerEntityInfos(playerEntityInfos);
             resLoginPacket.setResult("登录成功");
             logger.info("登录成功！");

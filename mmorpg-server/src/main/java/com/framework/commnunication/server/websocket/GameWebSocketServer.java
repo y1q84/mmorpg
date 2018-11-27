@@ -1,5 +1,6 @@
 package com.framework.commnunication.server.websocket;
 
+import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
 import com.common.util.FileUtil;
 import com.framework.commnunication.server.websocket.handler.DispatchHandler;
 import com.framework.commnunication.server.websocket.handler.GameWebSocketServerInboundHandler;
@@ -26,6 +27,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.logging.Level;
 
 @Component
 public class GameWebSocketServer {
@@ -86,6 +88,8 @@ public class GameWebSocketServer {
     }
 
     public static void main(String[] args) {
+        java.util.logging.Logger logger=java.util.logging.Logger.getLogger(ProtobufProxy.class.getName());
+        logger.setLevel(Level.WARNING);
         //在容器启动之前删除指定目录下的.proto文件
         FileUtil.deleteAllFiles(new File("C:\\mmorpg\\mmorpg\\mmorpg-browser\\mmorpg-browser\\src\\app\\proto\\protofile\\"));
         ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");

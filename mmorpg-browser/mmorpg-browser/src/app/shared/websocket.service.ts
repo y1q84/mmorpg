@@ -18,6 +18,9 @@ export class WebsocketService {
   syncConnectState$: Observable<any>;
   subscriber: Subscriber<any>;
   private connectState: boolean;
+  // 用于存放玩家从登录页面跳转到场景页面的数据
+  // 需要存放的内容有
+
   // 定义一个观察者列表
   subscribers: Array<Subscriber<any>> = [];
 

@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -62,6 +63,9 @@ public class AccountEntity implements IEntity<String> {
     }
 
     public void addIds(long id) {
+        if(this.ids==null){
+            this.ids=new ArrayList<>();
+        }
         this.ids.add(id);
     }
 }

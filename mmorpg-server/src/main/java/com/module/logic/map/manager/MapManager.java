@@ -5,6 +5,7 @@ import com.common.resource.provider.StaticResourceProvider;
 import com.module.logic.map.MapInstance;
 import com.module.logic.map.obj.CreatureObject;
 import com.module.logic.map.resource.MapResource;
+import com.module.logic.player.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -65,13 +66,13 @@ public class MapManager {
     }
 
     //进入场景
-    public void enterWorld(long mapId, CreatureObject creatureObject){
+    public void enterWorld(CreatureObject creatureObject){
         //判断角色是否已经在场景里面了
         if(creatureObject.isInTheWorld()){
             return;
         }
         //根据场景id获取到对应的场景
-        MapInstance mapInstance=id2Map.get(mapId);
+        MapInstance mapInstance=id2Map.get(((Player)creatureObject).getMapId());
         if(mapInstance==null){
             return ;
         }
@@ -86,6 +87,15 @@ public class MapManager {
             return ;
         }
         mapInstance.addObjectInMap(creatureObject.getId(),creatureObject);
+    }
+
+    public void removeFromMap(CreatureObject creatureObject){
+        MapInstance mapInstance=id2Map.get(creatureObject.getMapId());
+        if(mapInstance==null){
+            return;
+        }
+        mapInstance.removeObjectInMap(creatureObject);
+
     }
 
 }

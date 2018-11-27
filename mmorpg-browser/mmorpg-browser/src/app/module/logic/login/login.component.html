@@ -28,7 +28,7 @@
         <!-- <input type="button" (click)="enterscene()" value="进入场景"/> -->
         <input type="button" (click)="roleLogin()" value="角色登录"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <!-- <input type="button" routerLink="/mapInstance" value="进入场景"/> -->
-        <input type="button" routerLink="/map" value="进入场景"/>
+        <input type="button" (click)="reqEnterscene()" routerLink="/map" value="进入场景"/><p>{{enterSceneStatus}}</p>
         <h3>{{respCreateRoleMessage}}</h3>
       </form>
 </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Subscriber } from 'rxjs';
 import { WebsocketService } from 'src/app/shared/websocket.service';
-import { ReqLoginPacket, ReqCreateRolePacket, RoleType, ReqRoleLoginPacket } from 'src/app/proto/bundle';
+import { ReqLoginPacket, ReqCreateRolePacket, RoleType, ReqRoleLoginPacket, ReqEnterScenePacket } from 'src/app/proto/bundle';
 import { PacketId } from '../../packetId/PacketId';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   reciveMessage: any;
   respCreateRoleMessage: string;
   playerId: number;
+  pid: number; // 玩家id(从已有角色|新创建的角色id取)
   uname: string;
   pass: string;
   playerName: string;
@@ -35,6 +36,9 @@ export class LoginComponent implements OnInit {
   sSex = '男';
   roleType: string[] = [];
   selectedRole = 'WARRIOR';
+  // 请求进入场景状态
+  enterSceneStatus: string;
+  transfor: string;
 
   onChange(newValue) {
     console.log('新职业：' + newValue);
@@ -128,19 +132,28 @@ export class LoginComponent implements OnInit {
   roleLogin() {
     // 如果this.playerId为空，则是从已有角色中选择登录
     // 登录成功之后会获取该playerId
-    let pid: number;
     if (this.playerId === undefined) {
       this.id2object.forEach((value, key) => {
           if (this.useRole === value) {
-              pid = key;
+              this.pid = key;
           }
       });
     } else {
       console.log(`palyerId为${this.playerId}`);
       console.log(`请求角色登录获得的玩家id为：${this.playerId}`);
-      pid = this.playerId;
+      this.pid = this.playerId;
     }
-     this.wsService.sendMess(ReqRoleLoginPacket, {playerId: pid});
+     this.wsService.sendMess(ReqRoleLoginPacket, {playerId: this.pid});
+  }
+
+  // 请求进入场景
+  reqEnterscene() {
+    if (this.pid !== undefined) {
+      this.wsService.sendMess(ReqEnterScenePacket, {playerId: this.pid });
+      this.enterSceneStatus = ' ';
+    } else {
+      this.enterSceneStatus = '请选择需要进入场景的角色';
+    }
   }
 
   // ** 响应方法 **
@@ -179,7 +192,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  enterscene() {
-      this.wsService.goto(`map`);
-  }
+  // enterscene() {
+  //     this.wsService.goto(`map`);
+  // }
 }

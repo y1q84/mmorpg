@@ -1,16 +1,19 @@
 package com.module.logic.player.manager;
 
-import com.common.identify.SnowflakeGeneratorStrategy;
 import com.common.persist.CacheEntityProvider;
 import com.common.persist.EntityProvider;
-import com.common.persist.ICreator;
+import com.common.resource.provider.ResourceProvider;
 import com.common.session.Session;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.module.logic.account.entity.AccountEntity;
 import com.module.logic.account.manager.AccountManager;
+import com.module.logic.map.manager.MapManager;
 import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
+import com.module.logic.player.logic.position.MapType;
+import com.module.logic.player.logic.position.handler.AbstractInitialPositionHandler;
+import com.module.logic.player.resource.PlayerPositionResource;
 import com.module.logic.player.type.RoleType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +31,12 @@ public class PlayerManager {
 
     private BiMap<Player,Session> player2session= HashBiMap.create();
     private Map<String,Session> account2Session=new HashMap<>();
+    private Map<MapType, AbstractInitialPositionHandler> type2PositionHandler=new HashMap<>();
 
     private static PlayerManager self;
 
+    @Autowired
+    private ResourceProvider<PlayerPositionResource, RoleType> resourceProvider;
     @Autowired
     private EntityProvider<PlayerEntity,Long> entityProvider;
 
@@ -83,6 +88,9 @@ public class PlayerManager {
             Session oldSession=account2Session.get(player.getPlayerEntity().getAccount());
             if(oldSession!=null){
                 //将之踢下线
+                //在地图上消失
+                MapManager.getInstance().removeFromMap(player);
+                // TODO 玩家下线的其他操作
             }
         }
         //设置新的session
@@ -130,6 +138,10 @@ public class PlayerManager {
         return list.get(0);
     }
 
+    public void registerPostionHandler(AbstractInitialPositionHandler positionHandler){
+        type2PositionHandler.put(positionHandler.getMapType(),positionHandler);
+    }
+
     public BiMap<Player, Session> getPlayer2session() {
         return player2session;
     }
@@ -144,5 +156,13 @@ public class PlayerManager {
 
     public void setAccount2Session(Map<String, Session> account2Session) {
         this.account2Session = account2Session;
+    }
+
+    public AbstractInitialPositionHandler getPositionHandlerByType(MapType mapType) {
+        return type2PositionHandler.get(mapType);
+    }
+
+    public void setType2PositionHandler(Map<MapType, AbstractInitialPositionHandler> type2PositionHandler) {
+        this.type2PositionHandler = type2PositionHandler;
     }
 }

@@ -42,6 +42,9 @@ public class PlayerEntity implements IEntity<Long> {
     @Column
     private long gold=100;
 
+    @Column
+    private long mapId;
+
     //如果不加，会创建改字段对应的列
     @Transient
     private Player player;
@@ -124,6 +127,14 @@ public class PlayerEntity implements IEntity<Long> {
 
     public void setGold(long gold) {
         this.gold = gold;
+    }
+
+    public long getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(long mapId) {
+        this.mapId = mapId;
     }
 
     public Player getPlayer() {
