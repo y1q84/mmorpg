@@ -39,12 +39,12 @@ public class AccountHandler {
     @WsMethod
     public void accountLogin(Session session, ReqLoginPacket reqLoginPacket){
         //此处应该要处理多个登录请求
-        //如果已经登录了，则session里面账号不为空
-        String oldAccount=session.getAccount(Constants.SESSION_ID);
-        if(oldAccount!=null){
-            //如果玩家已经登录了，则不做任何处理
-            return;
-        }
+        //同一浏览器的不同窗口，其连接的channel不同，故所得session不同，因而此判断不起作用
+//        String oldAccount=session.getAccount(Constants.SESSION_ID);
+//        if(oldAccount!=null){
+//            //如果玩家已经登录了，则不做任何处理
+//            return ;
+//        }
         String account=reqLoginPacket.getAccount();
         String password=reqLoginPacket.getPassword();
         boolean stateCode= accountService.login(account,password);

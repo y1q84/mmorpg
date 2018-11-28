@@ -88,6 +88,7 @@ public class GameWebSocketServer {
     }
 
     public static void main(String[] args) {
+        //不输出jprotobuf内部信息
         java.util.logging.Logger logger=java.util.logging.Logger.getLogger(ProtobufProxy.class.getName());
         logger.setLevel(Level.WARNING);
         //在容器启动之前删除指定目录下的.proto文件

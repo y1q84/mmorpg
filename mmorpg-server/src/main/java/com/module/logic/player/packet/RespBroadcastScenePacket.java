@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
  * create 2018\11\12 0012
  */
 @Component
-@DescriptePacket(description = "广播玩家进入场景消息")
-public class RespBroadcastEnterWorldPacket extends AbstractPacket {
+@DescriptePacket(description = "广播玩家场景信息")
+public class RespBroadcastScenePacket extends AbstractPacket {
 
     @Protobuf(description = "场景id")
     private long mapId;
@@ -45,6 +45,6 @@ public class RespBroadcastEnterWorldPacket extends AbstractPacket {
 
     @Override
     public short getPacketId() {
-        return PacketId.BROADCAST_ENTER_WORLD_RESP;
+        return PacketId.BROADCAST_SCENE_RESP;
     }
 }

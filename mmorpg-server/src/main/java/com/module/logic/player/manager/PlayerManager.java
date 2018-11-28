@@ -4,17 +4,23 @@ import com.common.persist.CacheEntityProvider;
 import com.common.persist.EntityProvider;
 import com.common.resource.provider.ResourceProvider;
 import com.common.session.Session;
+import com.common.util.PacketUtil;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.module.logic.account.entity.AccountEntity;
 import com.module.logic.account.manager.AccountManager;
+import com.module.logic.map.MapInstance;
 import com.module.logic.map.manager.MapManager;
 import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
 import com.module.logic.player.logic.position.MapType;
 import com.module.logic.player.logic.position.handler.AbstractInitialPositionHandler;
+import com.module.logic.player.packet.RespBroadcastScenePacket;
+import com.module.logic.player.packet.RespRemoveRolePacket;
 import com.module.logic.player.resource.PlayerPositionResource;
+import com.module.logic.player.service.PlayerService;
 import com.module.logic.player.type.RoleType;
+import com.sun.xml.internal.ws.api.message.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +45,9 @@ public class PlayerManager {
     private ResourceProvider<PlayerPositionResource, RoleType> resourceProvider;
     @Autowired
     private EntityProvider<PlayerEntity,Long> entityProvider;
+
+    @Autowired
+    private PlayerService playerService;
 
     @PostConstruct
     public void init(){
@@ -81,16 +90,45 @@ public class PlayerManager {
         return false;
     }
 
+    public void roleLogOut(Session session,Player player){
+        //怎么将先前的玩家踢下线？
+        //从场景中移除，保先前角色的数据，进行广播
+        MapManager.getInstance().removeFromMap(player);
+        // TODO 玩家下线的其他操作
+        //向先前玩家发送已经被强制下线通知
+        RespRemoveRolePacket removeRolePacket=new RespRemoveRolePacket();
+        removeRolePacket.setReason("账号重复登录，你已被挤下线啦..");
+        PacketUtil.sendPacket(session,removeRolePacket);
+        //向先前玩家的其他玩家广播离开了场景
+        RespBroadcastScenePacket respBroadcastScenePacket=new RespBroadcastScenePacket();
+        respBroadcastScenePacket.setMapId(player.getMapId());
+        respBroadcastScenePacket.setPlayerId(player.getId());
+        respBroadcastScenePacket.setResult("玩家退出当前场景...");
+        PacketUtil.broadcast(session,respBroadcastScenePacket);
+        //最后应该关闭会话
+//        session.getChannel().close();
+    }
+
     //在登录的时候添加
     public void addSession2Player(Session session,Player player){
         //TODO 这里需要考虑一个问题就是判断玩家是否已经登录，如果已经登录则需要将之踢下线
         if(account2Session.size()>0){
             Session oldSession=account2Session.get(player.getPlayerEntity().getAccount());
             if(oldSession!=null){
-                //将之踢下线
-                //在地图上消失
-                MapManager.getInstance().removeFromMap(player);
-                // TODO 玩家下线的其他操作
+                //说明此账号已经有登录
+                Player prePlayer=player2session.inverse().get(oldSession);
+                //执行登出操作
+                roleLogOut(oldSession,prePlayer);
+                //给所有其他玩家推送当前场景的最新生物信息
+                //获取当前场景的所有玩家信息id2player
+                Map<Long, MapInstance> mapId2MapInstance=MapManager.getInstance().getId2Map();
+                MapInstance mapInstance=mapId2MapInstance.get(prePlayer.getMapId());
+                Map<Long,Player> id2Player=mapInstance.getPlayerInMap();
+                id2Player.forEach((k,v)->{
+                    playerService.showCreatureInMap(player2session.get(v),v);
+                });
+                //从集合移除先前的玩家
+                player2session.remove(prePlayer);
             }
         }
         //设置新的session

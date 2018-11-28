@@ -979,6 +979,96 @@ export class RespRoleLoginPacket implements IRespRoleLoginPacket {
     public toJSON(): { [k: string]: any };
 }
 
+/** Properties of a RespRemoveRolePacket. */
+export interface IRespRemoveRolePacket {
+
+    /** RespRemoveRolePacket reason */
+    reason?: (string|null);
+}
+
+/** Represents a RespRemoveRolePacket. */
+export class RespRemoveRolePacket implements IRespRemoveRolePacket {
+
+    /**
+     * Constructs a new RespRemoveRolePacket.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IRespRemoveRolePacket);
+
+    /** RespRemoveRolePacket reason. */
+    public reason: string;
+
+    /**
+     * Creates a new RespRemoveRolePacket instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns RespRemoveRolePacket instance
+     */
+    public static create(properties?: IRespRemoveRolePacket): RespRemoveRolePacket;
+
+    /**
+     * Encodes the specified RespRemoveRolePacket message. Does not implicitly {@link RespRemoveRolePacket.verify|verify} messages.
+     * @param message RespRemoveRolePacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IRespRemoveRolePacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified RespRemoveRolePacket message, length delimited. Does not implicitly {@link RespRemoveRolePacket.verify|verify} messages.
+     * @param message RespRemoveRolePacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IRespRemoveRolePacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a RespRemoveRolePacket message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns RespRemoveRolePacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RespRemoveRolePacket;
+
+    /**
+     * Decodes a RespRemoveRolePacket message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns RespRemoveRolePacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RespRemoveRolePacket;
+
+    /**
+     * Verifies a RespRemoveRolePacket message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a RespRemoveRolePacket message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns RespRemoveRolePacket
+     */
+    public static fromObject(object: { [k: string]: any }): RespRemoveRolePacket;
+
+    /**
+     * Creates a plain object from a RespRemoveRolePacket message. Also converts values to other types if specified.
+     * @param message RespRemoveRolePacket
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: RespRemoveRolePacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this RespRemoveRolePacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Properties of a ReqEnterScenePacket. */
 export interface IReqEnterScenePacket {
 
@@ -1285,103 +1375,103 @@ export class ObjectInMapInfo implements IObjectInMapInfo {
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of a RespBroadcastEnterWorldPacket. */
-export interface IRespBroadcastEnterWorldPacket {
+/** Properties of a RespBroadcastScenePacket. */
+export interface IRespBroadcastScenePacket {
 
-    /** RespBroadcastEnterWorldPacket mapId */
+    /** RespBroadcastScenePacket mapId */
     mapId?: (number|Long|null);
 
-    /** RespBroadcastEnterWorldPacket playerId */
+    /** RespBroadcastScenePacket playerId */
     playerId?: (number|Long|null);
 
-    /** RespBroadcastEnterWorldPacket result */
+    /** RespBroadcastScenePacket result */
     result?: (string|null);
 }
 
-/** Represents a RespBroadcastEnterWorldPacket. */
-export class RespBroadcastEnterWorldPacket implements IRespBroadcastEnterWorldPacket {
+/** Represents a RespBroadcastScenePacket. */
+export class RespBroadcastScenePacket implements IRespBroadcastScenePacket {
 
     /**
-     * Constructs a new RespBroadcastEnterWorldPacket.
+     * Constructs a new RespBroadcastScenePacket.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IRespBroadcastEnterWorldPacket);
+    constructor(properties?: IRespBroadcastScenePacket);
 
-    /** RespBroadcastEnterWorldPacket mapId. */
+    /** RespBroadcastScenePacket mapId. */
     public mapId: (number|Long);
 
-    /** RespBroadcastEnterWorldPacket playerId. */
+    /** RespBroadcastScenePacket playerId. */
     public playerId: (number|Long);
 
-    /** RespBroadcastEnterWorldPacket result. */
+    /** RespBroadcastScenePacket result. */
     public result: string;
 
     /**
-     * Creates a new RespBroadcastEnterWorldPacket instance using the specified properties.
+     * Creates a new RespBroadcastScenePacket instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns RespBroadcastEnterWorldPacket instance
+     * @returns RespBroadcastScenePacket instance
      */
-    public static create(properties?: IRespBroadcastEnterWorldPacket): RespBroadcastEnterWorldPacket;
+    public static create(properties?: IRespBroadcastScenePacket): RespBroadcastScenePacket;
 
     /**
-     * Encodes the specified RespBroadcastEnterWorldPacket message. Does not implicitly {@link RespBroadcastEnterWorldPacket.verify|verify} messages.
-     * @param message RespBroadcastEnterWorldPacket message or plain object to encode
+     * Encodes the specified RespBroadcastScenePacket message. Does not implicitly {@link RespBroadcastScenePacket.verify|verify} messages.
+     * @param message RespBroadcastScenePacket message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IRespBroadcastEnterWorldPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: IRespBroadcastScenePacket, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified RespBroadcastEnterWorldPacket message, length delimited. Does not implicitly {@link RespBroadcastEnterWorldPacket.verify|verify} messages.
-     * @param message RespBroadcastEnterWorldPacket message or plain object to encode
+     * Encodes the specified RespBroadcastScenePacket message, length delimited. Does not implicitly {@link RespBroadcastScenePacket.verify|verify} messages.
+     * @param message RespBroadcastScenePacket message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IRespBroadcastEnterWorldPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: IRespBroadcastScenePacket, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a RespBroadcastEnterWorldPacket message from the specified reader or buffer.
+     * Decodes a RespBroadcastScenePacket message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns RespBroadcastEnterWorldPacket
+     * @returns RespBroadcastScenePacket
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RespBroadcastEnterWorldPacket;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RespBroadcastScenePacket;
 
     /**
-     * Decodes a RespBroadcastEnterWorldPacket message from the specified reader or buffer, length delimited.
+     * Decodes a RespBroadcastScenePacket message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns RespBroadcastEnterWorldPacket
+     * @returns RespBroadcastScenePacket
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RespBroadcastEnterWorldPacket;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RespBroadcastScenePacket;
 
     /**
-     * Verifies a RespBroadcastEnterWorldPacket message.
+     * Verifies a RespBroadcastScenePacket message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a RespBroadcastEnterWorldPacket message from a plain object. Also converts values to their respective internal types.
+     * Creates a RespBroadcastScenePacket message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns RespBroadcastEnterWorldPacket
+     * @returns RespBroadcastScenePacket
      */
-    public static fromObject(object: { [k: string]: any }): RespBroadcastEnterWorldPacket;
+    public static fromObject(object: { [k: string]: any }): RespBroadcastScenePacket;
 
     /**
-     * Creates a plain object from a RespBroadcastEnterWorldPacket message. Also converts values to other types if specified.
-     * @param message RespBroadcastEnterWorldPacket
+     * Creates a plain object from a RespBroadcastScenePacket message. Also converts values to other types if specified.
+     * @param message RespBroadcastScenePacket
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: RespBroadcastEnterWorldPacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: RespBroadcastScenePacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this RespBroadcastEnterWorldPacket to JSON.
+     * Converts this RespBroadcastScenePacket to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };

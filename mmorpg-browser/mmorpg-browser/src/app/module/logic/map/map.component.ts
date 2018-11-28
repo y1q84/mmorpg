@@ -34,7 +34,7 @@ export class MapComponent implements OnInit {
         WebsocketService.observable.subscribe(
           // data接收的是服务端发送给过来的消息
           data => {
-            console.log('mapComponent----------->服务端发送消息回来：' + data.packetId);
+          console.log('mapComponent----------->服务端发送消息回来：' + data.packetId);
            switch (data.packetId) {
              case PacketId.ENTER_WORLD_REQ:
                  this.wsService.sendMess(ReqEnterScenePacket, {playerId: this.playerId , sceneId : this.sceneId, mapId: this.mapId });
@@ -42,9 +42,13 @@ export class MapComponent implements OnInit {
              case PacketId.ENTER_WORLD_RESP:
                   this.respMessage(data);
                   break;
-             case PacketId.BROADCAST_ENTER_WORLD_RESP:
+             case PacketId.BROADCAST_SCENE_RESP:
                   console.log('广播玩家进入场景。。');
-                  this.broadcastEnterworld(data);
+                  this.broadcastSceneInfo(data);
+                  break;
+             case PacketId.REMOVE_ROLE_RESP:
+                  console.log('响应将玩家踢下线..');
+                  this.respRemovePlayer(data);
                   break;
              default:
                   console.log(data.packetId + '对应请求为。。');
@@ -58,18 +62,23 @@ export class MapComponent implements OnInit {
         //  this.wsService.sendMess(ReqEnterScenePacket, {playerId: 11111 , sceneId : 1001, mapId: 2 });
   }
 
+
+
+  /**
+   *响应请求
+   */
   respMessage(data: any) {
     data.respObj.mapObject.forEach((val, index, array) => {
         console.log('枚举类型为：' + val.objectType);
         if (val.objectType === 'MONSTER') {
           if (index === 0) {
-            this.receviceMessage = '怪物id:' + val.objectId + '\n怪物姓名：' + val.objectName;
+            this.receviceMessage += '\n怪物id:' + val.objectId + '\n怪物姓名：' + val.objectName;
           } else {
             this.receviceMessage += `\n怪物id:${val.objectId}\n怪物姓名:${val.objectName}`;
           }
         } else if (val.objectType === 'PLAYER') {
           if (index === 0) {
-            this.receviceMessage = '玩家id:' + val.objectId + '\n玩家姓名：' + val.objectName;
+            this.receviceMessage += '\n玩家id:' + val.objectId + '\n玩家姓名：' + val.objectName;
           } else {
             this.receviceMessage += `\n玩家id:${val.objectId}\n玩家姓名:${val.objectName}`;
           }
@@ -79,8 +88,16 @@ export class MapComponent implements OnInit {
     });
   }
 
-  broadcastEnterworld(data: any) {
+  broadcastSceneInfo(data: any) {
     console.log('显示进入场景结果:' + data.respObj.result);
     this.receviceMessage += `\nid为${data.respObj.playerId}的玩家${data.respObj.result}`;
+  }
+
+  // 将玩家踢下线
+  respRemovePlayer(data: any) {
+    console.log('下线原因' + data.respObj.reason);
+    this.receviceMessage += `\n${data.respObj.reason}`;
+    // 3秒后跳转到登录页面
+    setTimeout(() => window.location.href = 'http://localhost:4200/login', 3000);
   }
 }

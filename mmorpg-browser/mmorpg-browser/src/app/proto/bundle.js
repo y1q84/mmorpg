@@ -2262,6 +2262,193 @@ $root.RespRoleLoginPacket = (function() {
     return RespRoleLoginPacket;
 })();
 
+$root.RespRemoveRolePacket = (function() {
+
+    /**
+     * Properties of a RespRemoveRolePacket.
+     * @exports IRespRemoveRolePacket
+     * @interface IRespRemoveRolePacket
+     * @property {string|null} [reason] RespRemoveRolePacket reason
+     */
+
+    /**
+     * Constructs a new RespRemoveRolePacket.
+     * @exports RespRemoveRolePacket
+     * @classdesc Represents a RespRemoveRolePacket.
+     * @implements IRespRemoveRolePacket
+     * @constructor
+     * @param {IRespRemoveRolePacket=} [properties] Properties to set
+     */
+    function RespRemoveRolePacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * RespRemoveRolePacket reason.
+     * @member {string} reason
+     * @memberof RespRemoveRolePacket
+     * @instance
+     */
+    RespRemoveRolePacket.prototype.reason = "";
+
+    /**
+     * Creates a new RespRemoveRolePacket instance using the specified properties.
+     * @function create
+     * @memberof RespRemoveRolePacket
+     * @static
+     * @param {IRespRemoveRolePacket=} [properties] Properties to set
+     * @returns {RespRemoveRolePacket} RespRemoveRolePacket instance
+     */
+    RespRemoveRolePacket.create = function create(properties) {
+        return new RespRemoveRolePacket(properties);
+    };
+
+    /**
+     * Encodes the specified RespRemoveRolePacket message. Does not implicitly {@link RespRemoveRolePacket.verify|verify} messages.
+     * @function encode
+     * @memberof RespRemoveRolePacket
+     * @static
+     * @param {IRespRemoveRolePacket} message RespRemoveRolePacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespRemoveRolePacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.reason != null && message.hasOwnProperty("reason"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.reason);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified RespRemoveRolePacket message, length delimited. Does not implicitly {@link RespRemoveRolePacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof RespRemoveRolePacket
+     * @static
+     * @param {IRespRemoveRolePacket} message RespRemoveRolePacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespRemoveRolePacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a RespRemoveRolePacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof RespRemoveRolePacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {RespRemoveRolePacket} RespRemoveRolePacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespRemoveRolePacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RespRemoveRolePacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.reason = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a RespRemoveRolePacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof RespRemoveRolePacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {RespRemoveRolePacket} RespRemoveRolePacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespRemoveRolePacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a RespRemoveRolePacket message.
+     * @function verify
+     * @memberof RespRemoveRolePacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    RespRemoveRolePacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.reason != null && message.hasOwnProperty("reason"))
+            if (!$util.isString(message.reason))
+                return "reason: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a RespRemoveRolePacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof RespRemoveRolePacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {RespRemoveRolePacket} RespRemoveRolePacket
+     */
+    RespRemoveRolePacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.RespRemoveRolePacket)
+            return object;
+        var message = new $root.RespRemoveRolePacket();
+        if (object.reason != null)
+            message.reason = String(object.reason);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a RespRemoveRolePacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof RespRemoveRolePacket
+     * @static
+     * @param {RespRemoveRolePacket} message RespRemoveRolePacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    RespRemoveRolePacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.reason = "";
+        if (message.reason != null && message.hasOwnProperty("reason"))
+            object.reason = message.reason;
+        return object;
+    };
+
+    /**
+     * Converts this RespRemoveRolePacket to JSON.
+     * @function toJSON
+     * @memberof RespRemoveRolePacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    RespRemoveRolePacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return RespRemoveRolePacket;
+})();
+
 $root.ReqEnterScenePacket = (function() {
 
     /**
@@ -3035,26 +3222,26 @@ $root.ObjectInMapInfo = (function() {
     return ObjectInMapInfo;
 })();
 
-$root.RespBroadcastEnterWorldPacket = (function() {
+$root.RespBroadcastScenePacket = (function() {
 
     /**
-     * Properties of a RespBroadcastEnterWorldPacket.
-     * @exports IRespBroadcastEnterWorldPacket
-     * @interface IRespBroadcastEnterWorldPacket
-     * @property {number|Long|null} [mapId] RespBroadcastEnterWorldPacket mapId
-     * @property {number|Long|null} [playerId] RespBroadcastEnterWorldPacket playerId
-     * @property {string|null} [result] RespBroadcastEnterWorldPacket result
+     * Properties of a RespBroadcastScenePacket.
+     * @exports IRespBroadcastScenePacket
+     * @interface IRespBroadcastScenePacket
+     * @property {number|Long|null} [mapId] RespBroadcastScenePacket mapId
+     * @property {number|Long|null} [playerId] RespBroadcastScenePacket playerId
+     * @property {string|null} [result] RespBroadcastScenePacket result
      */
 
     /**
-     * Constructs a new RespBroadcastEnterWorldPacket.
-     * @exports RespBroadcastEnterWorldPacket
-     * @classdesc Represents a RespBroadcastEnterWorldPacket.
-     * @implements IRespBroadcastEnterWorldPacket
+     * Constructs a new RespBroadcastScenePacket.
+     * @exports RespBroadcastScenePacket
+     * @classdesc Represents a RespBroadcastScenePacket.
+     * @implements IRespBroadcastScenePacket
      * @constructor
-     * @param {IRespBroadcastEnterWorldPacket=} [properties] Properties to set
+     * @param {IRespBroadcastScenePacket=} [properties] Properties to set
      */
-    function RespBroadcastEnterWorldPacket(properties) {
+    function RespBroadcastScenePacket(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -3062,51 +3249,51 @@ $root.RespBroadcastEnterWorldPacket = (function() {
     }
 
     /**
-     * RespBroadcastEnterWorldPacket mapId.
+     * RespBroadcastScenePacket mapId.
      * @member {number|Long} mapId
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @instance
      */
-    RespBroadcastEnterWorldPacket.prototype.mapId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    RespBroadcastScenePacket.prototype.mapId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
-     * RespBroadcastEnterWorldPacket playerId.
+     * RespBroadcastScenePacket playerId.
      * @member {number|Long} playerId
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @instance
      */
-    RespBroadcastEnterWorldPacket.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    RespBroadcastScenePacket.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
-     * RespBroadcastEnterWorldPacket result.
+     * RespBroadcastScenePacket result.
      * @member {string} result
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @instance
      */
-    RespBroadcastEnterWorldPacket.prototype.result = "";
+    RespBroadcastScenePacket.prototype.result = "";
 
     /**
-     * Creates a new RespBroadcastEnterWorldPacket instance using the specified properties.
+     * Creates a new RespBroadcastScenePacket instance using the specified properties.
      * @function create
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @static
-     * @param {IRespBroadcastEnterWorldPacket=} [properties] Properties to set
-     * @returns {RespBroadcastEnterWorldPacket} RespBroadcastEnterWorldPacket instance
+     * @param {IRespBroadcastScenePacket=} [properties] Properties to set
+     * @returns {RespBroadcastScenePacket} RespBroadcastScenePacket instance
      */
-    RespBroadcastEnterWorldPacket.create = function create(properties) {
-        return new RespBroadcastEnterWorldPacket(properties);
+    RespBroadcastScenePacket.create = function create(properties) {
+        return new RespBroadcastScenePacket(properties);
     };
 
     /**
-     * Encodes the specified RespBroadcastEnterWorldPacket message. Does not implicitly {@link RespBroadcastEnterWorldPacket.verify|verify} messages.
+     * Encodes the specified RespBroadcastScenePacket message. Does not implicitly {@link RespBroadcastScenePacket.verify|verify} messages.
      * @function encode
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @static
-     * @param {IRespBroadcastEnterWorldPacket} message RespBroadcastEnterWorldPacket message or plain object to encode
+     * @param {IRespBroadcastScenePacket} message RespBroadcastScenePacket message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    RespBroadcastEnterWorldPacket.encode = function encode(message, writer) {
+    RespBroadcastScenePacket.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.mapId != null && message.hasOwnProperty("mapId"))
@@ -3119,33 +3306,33 @@ $root.RespBroadcastEnterWorldPacket = (function() {
     };
 
     /**
-     * Encodes the specified RespBroadcastEnterWorldPacket message, length delimited. Does not implicitly {@link RespBroadcastEnterWorldPacket.verify|verify} messages.
+     * Encodes the specified RespBroadcastScenePacket message, length delimited. Does not implicitly {@link RespBroadcastScenePacket.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @static
-     * @param {IRespBroadcastEnterWorldPacket} message RespBroadcastEnterWorldPacket message or plain object to encode
+     * @param {IRespBroadcastScenePacket} message RespBroadcastScenePacket message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    RespBroadcastEnterWorldPacket.encodeDelimited = function encodeDelimited(message, writer) {
+    RespBroadcastScenePacket.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a RespBroadcastEnterWorldPacket message from the specified reader or buffer.
+     * Decodes a RespBroadcastScenePacket message from the specified reader or buffer.
      * @function decode
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {RespBroadcastEnterWorldPacket} RespBroadcastEnterWorldPacket
+     * @returns {RespBroadcastScenePacket} RespBroadcastScenePacket
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    RespBroadcastEnterWorldPacket.decode = function decode(reader, length) {
+    RespBroadcastScenePacket.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RespBroadcastEnterWorldPacket();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RespBroadcastScenePacket();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -3167,30 +3354,30 @@ $root.RespBroadcastEnterWorldPacket = (function() {
     };
 
     /**
-     * Decodes a RespBroadcastEnterWorldPacket message from the specified reader or buffer, length delimited.
+     * Decodes a RespBroadcastScenePacket message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {RespBroadcastEnterWorldPacket} RespBroadcastEnterWorldPacket
+     * @returns {RespBroadcastScenePacket} RespBroadcastScenePacket
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    RespBroadcastEnterWorldPacket.decodeDelimited = function decodeDelimited(reader) {
+    RespBroadcastScenePacket.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a RespBroadcastEnterWorldPacket message.
+     * Verifies a RespBroadcastScenePacket message.
      * @function verify
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    RespBroadcastEnterWorldPacket.verify = function verify(message) {
+    RespBroadcastScenePacket.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.mapId != null && message.hasOwnProperty("mapId"))
@@ -3206,17 +3393,17 @@ $root.RespBroadcastEnterWorldPacket = (function() {
     };
 
     /**
-     * Creates a RespBroadcastEnterWorldPacket message from a plain object. Also converts values to their respective internal types.
+     * Creates a RespBroadcastScenePacket message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {RespBroadcastEnterWorldPacket} RespBroadcastEnterWorldPacket
+     * @returns {RespBroadcastScenePacket} RespBroadcastScenePacket
      */
-    RespBroadcastEnterWorldPacket.fromObject = function fromObject(object) {
-        if (object instanceof $root.RespBroadcastEnterWorldPacket)
+    RespBroadcastScenePacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.RespBroadcastScenePacket)
             return object;
-        var message = new $root.RespBroadcastEnterWorldPacket();
+        var message = new $root.RespBroadcastScenePacket();
         if (object.mapId != null)
             if ($util.Long)
                 (message.mapId = $util.Long.fromValue(object.mapId)).unsigned = false;
@@ -3241,15 +3428,15 @@ $root.RespBroadcastEnterWorldPacket = (function() {
     };
 
     /**
-     * Creates a plain object from a RespBroadcastEnterWorldPacket message. Also converts values to other types if specified.
+     * Creates a plain object from a RespBroadcastScenePacket message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @static
-     * @param {RespBroadcastEnterWorldPacket} message RespBroadcastEnterWorldPacket
+     * @param {RespBroadcastScenePacket} message RespBroadcastScenePacket
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    RespBroadcastEnterWorldPacket.toObject = function toObject(message, options) {
+    RespBroadcastScenePacket.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -3282,17 +3469,17 @@ $root.RespBroadcastEnterWorldPacket = (function() {
     };
 
     /**
-     * Converts this RespBroadcastEnterWorldPacket to JSON.
+     * Converts this RespBroadcastScenePacket to JSON.
      * @function toJSON
-     * @memberof RespBroadcastEnterWorldPacket
+     * @memberof RespBroadcastScenePacket
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    RespBroadcastEnterWorldPacket.prototype.toJSON = function toJSON() {
+    RespBroadcastScenePacket.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return RespBroadcastEnterWorldPacket;
+    return RespBroadcastScenePacket;
 })();
 
 $root.ReqChangeMapInstancePacket = (function() {

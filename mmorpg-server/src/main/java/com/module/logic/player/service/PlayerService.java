@@ -1,19 +1,14 @@
 package com.module.logic.player.service;
 
-import com.common.resource.provider.StaticResourceProvider;
 import com.common.session.Constants;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
-import com.module.logic.account.entity.AccountEntity;
-import com.module.logic.account.manager.AccountManager;
 import com.module.logic.map.MapInstance;
 import com.module.logic.map.manager.MapManager;
 import com.module.logic.map.obj.MapObject;
 import com.module.logic.player.logic.position.InitialPosition;
 import com.module.logic.player.logic.position.MapType;
 import com.module.logic.player.packet.*;
-import com.module.logic.monster.manager.MonsterManager;
-import com.module.logic.monster.resource.Monster;
 import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
 import com.module.logic.player.manager.PlayerManager;
@@ -23,9 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,7 +81,8 @@ public class PlayerService {
     }
 
     public void roleLogin(Session session, ReqRoleLoginPacket reqRoleLoginPacket){
-
+        //如果登录成功则session2player有映射关系
+        //如果两个页面登录同一账号，那么能够成功创建角色取决于谁先登录
         //角色登录逻辑
         long playerId=reqRoleLoginPacket.getPlayerId();
         boolean statue=playerManager.roleLogin(playerId);
@@ -96,6 +90,8 @@ public class PlayerService {
         if(statue){
 
             Player player=id2player.get(playerId);
+            //角色登录成功则将session与Player添加进集合
+            playerManager.addSession2Player(session,player);
             //玩家登录成功之后初始化场景位置
             if(player.getInitialPosition()==null){
                 //设置玩家初始位置信息
@@ -104,8 +100,6 @@ public class PlayerService {
                 player.setInitialPosition(initialPosition);
             }
             playerManager.getPositionHandlerByType(player.getInitialPosition().getMapType()).initialPostion(player);
-            //角色登录成功则将session与Player添加进集合
-            playerManager.addSession2Player(session,player);
             result="角色登录成功";
             logger.info("角色登录成功...");
         }else{
@@ -123,6 +117,22 @@ public class PlayerService {
     public void enterWorld(Session session,ReqEnterScenePacket reqEnterScenePacket){
         Player player=playerManager.getPlayer2session().inverse().get(session);
         MapManager.getInstance().enterWorld(player);
+        showCreatureInMap(session,player);
+
+        RespBroadcastScenePacket respBroadcastScenePacket =new RespBroadcastScenePacket();
+        respBroadcastScenePacket.setMapId(player.getMapId());
+        respBroadcastScenePacket.setPlayerId(player.getPlayerEntity().getPlayerId());
+        respBroadcastScenePacket.setResult("成功进入场景");
+        //封装成一个广播包会比较好
+        PacketUtil.broadcast(session, respBroadcastScenePacket);
+    }
+
+    /**
+     * 显示场景内生物信息
+     * @param session
+     * @param player
+     */
+    public void showCreatureInMap(Session session, Player player){
         //用来存放场景里所有的生物
         List<ObjectInMapInfo> objects=new ArrayList<>();
         //存放场景里面npc
@@ -140,13 +150,6 @@ public class PlayerService {
         //将场景里面所有的物体加载到响应包里面
         respEnterScenePacket.setMapObject(objects);
         PacketUtil.sendPacket(session,respEnterScenePacket);
-
-        RespBroadcastEnterWorldPacket respBroadcastEnterWorldPacket=new RespBroadcastEnterWorldPacket();
-        respBroadcastEnterWorldPacket.setMapId(player.getMapId());
-        respBroadcastEnterWorldPacket.setPlayerId(player.getPlayerEntity().getPlayerId());
-        respBroadcastEnterWorldPacket.setResult("成功进入场景");
-        //封装成一个广播包会比较好
-        PacketUtil.broadcast(session,respBroadcastEnterWorldPacket);
     }
 
     /**
@@ -175,11 +178,11 @@ public class PlayerService {
         mapInstance1.getPlayerInMap().remove(player);
 
         //广播玩家从当前场景离开
-        RespBroadcastEnterWorldPacket respBroadcastEnterWorldPacket=new RespBroadcastEnterWorldPacket();
-        respBroadcastEnterWorldPacket.setMapId(oldMapId);
-        respBroadcastEnterWorldPacket.setPlayerId(playerEntity.getPlayerId());
-        respBroadcastEnterWorldPacket.setResult("离开当前场景");
-        PacketUtil.broadcast(session,respBroadcastEnterWorldPacket);
+        RespBroadcastScenePacket respBroadcastScenePacket =new RespBroadcastScenePacket();
+        respBroadcastScenePacket.setMapId(oldMapId);
+        respBroadcastScenePacket.setPlayerId(playerEntity.getPlayerId());
+        respBroadcastScenePacket.setResult("离开当前场景");
+        PacketUtil.broadcast(session, respBroadcastScenePacket);
 
         //进入新场景
         ReqEnterScenePacket reqEnterScenePacket=new ReqEnterScenePacket();

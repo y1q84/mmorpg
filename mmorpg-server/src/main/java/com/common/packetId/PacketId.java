@@ -33,12 +33,14 @@ public class PacketId {
     public static final short ROLE_LOGIN_REQ=10012;
     /**响应角色登录**/
     public static final short ROLE_LOGIN_RESP=10013;
+    /**响应将角色挤下线**/
+    public static final short REMOVE_ROLE_RESP=10014;
     /**请求进入场景**/
     public static final short ENTER_WORLD_REQ=10020;
     /**响应进入场景**/
     public static final short ENTER_WORLD_RESP=10021;
-    /**广播玩家进入场景**/
-    public static final short BROADCAST_ENTER_WORLD_RESP=10022;
+    /**广播玩家场景信息**/
+    public static final short BROADCAST_SCENE_RESP=10022;
     /**请求切换场景**/
     public static final short CHANGE_SCENE_REQ=10023;
     /**响应切换场景**/

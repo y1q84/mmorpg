@@ -3,15 +3,10 @@ package com.common.util;
 import com.common.session.Session;
 import com.module.logic.map.MapInstance;
 import com.module.logic.map.manager.MapManager;
-import com.module.logic.map.obj.MapObject;
-import com.module.logic.player.packet.RespBroadcastEnterWorldPacket;
+import com.module.logic.player.packet.RespBroadcastScenePacket;
 import com.module.logic.player.Player;
 import com.module.logic.player.manager.PlayerManager;
-import com.module.logic.player.packet.RespEnterScenePacket;
-import com.module.logic.player.packet.vo.ObjectInMapInfo;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class PacketUtil {
@@ -20,7 +15,7 @@ public class PacketUtil {
         session.getChannel().writeAndFlush(packet);
     }
     public static void broatcastEnterWorldPacket(Session session, Object packet, Map<Long, Player> palyerInScene){
-        RespBroadcastEnterWorldPacket respPacket=(RespBroadcastEnterWorldPacket)packet;
+        RespBroadcastScenePacket respPacket=(RespBroadcastScenePacket)packet;
         long id=respPacket.getPlayerId();//当前玩家id
         //这里需要获取到其他玩家的session以获取不同的channel发送消息
         Map<Player,Session> p2s=PlayerManager.getInstance().getPlayer2session();
@@ -41,7 +36,7 @@ public class PacketUtil {
 
 
     public static void broadcast(Session session, Object packet){
-        RespBroadcastEnterWorldPacket respPacket=(RespBroadcastEnterWorldPacket)packet;
+        RespBroadcastScenePacket respPacket=(RespBroadcastScenePacket)packet;
         Map<Long, MapInstance> mapId2MapInstance=MapManager.getInstance().getId2Map();
         MapInstance mapInstance=mapId2MapInstance.get(respPacket.getMapId());
         if(mapInstance==null){

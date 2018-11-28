@@ -1,8 +1,9 @@
 import { ReqLoginPacket, ResLoginPacket, ReqCreateRolePacket, RespCreateRolePacket,
     ReqEnterScenePacket, RespEnterScenePacket, ReqRoleLoginPacket, RespRoleLoginPacket,
-    RespBroadcastEnterWorldPacket,
     ReqRegisterPacket,
-    RespRegisterPacket} from 'src/app/proto/bundle';
+    RespRegisterPacket,
+    RespRemoveRolePacket,
+    RespBroadcastScenePacket} from 'src/app/proto/bundle';
 
 
 
@@ -30,12 +31,14 @@ export class PacketId {
     public static readonly ROLE_LOGIN_REQ: number = 10012;
     /**响应角色登录**/
     public static readonly ROLE_LOGIN_RESP: number = 10013;
+    /**响应将角色挤下线**/
+    public static readonly REMOVE_ROLE_RESP: number = 10014;
     /**请求进入场景**/
     public static readonly ENTER_WORLD_REQ: number = 10020;
     /**响应进入场景**/
     public static readonly ENTER_WORLD_RESP: number = 10021;
-    /**广播玩家进入场景**/
-    public static readonly BROADCAST_ENTER_WORLD_RESP: number = 10022;
+    /**广播玩家场景信息**/
+    public static readonly BROADCAST_SCENE_RESP: number = 10022;
 
     /**请求命令**/
     public static readonly COMMAND_REQ: number = 10201;
@@ -53,7 +56,8 @@ export class PacketId {
         PacketId.add(PacketId.ENTER_WORLD_RESP, RespEnterScenePacket);
         PacketId.add(PacketId.ROLE_LOGIN_REQ, ReqRoleLoginPacket);
         PacketId.add(PacketId.ROLE_LOGIN_RESP, RespRoleLoginPacket);
-        PacketId.add(PacketId.BROADCAST_ENTER_WORLD_RESP, RespBroadcastEnterWorldPacket);
+        PacketId.add(PacketId.REMOVE_ROLE_RESP, RespRemoveRolePacket);
+        PacketId.add(PacketId.BROADCAST_SCENE_RESP, RespBroadcastScenePacket);
     }
 
 
