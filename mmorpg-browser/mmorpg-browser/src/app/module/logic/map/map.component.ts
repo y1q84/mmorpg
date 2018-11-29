@@ -11,7 +11,7 @@ import { ReqEnterScenePacket } from 'src/app/proto/bundle';
 export class MapComponent implements OnInit {
 
   inputContent: string;
-  receviceMessage: string;
+  receviceMessage = '';
   playerId: number;
   sceneId: number;
   mapId: number;
@@ -68,20 +68,21 @@ export class MapComponent implements OnInit {
    *响应请求
    */
   respMessage(data: any) {
+    this.receviceMessage += `id为：${data.respObj.sceneId}的场景信息如下：\n`;
     data.respObj.mapObject.forEach((val, index, array) => {
         console.log('枚举类型为：' + val.objectType);
         if (val.objectType === 'MONSTER') {
-          if (index === 0) {
-            this.receviceMessage += '\n怪物id:' + val.objectId + '\n怪物姓名：' + val.objectName;
-          } else {
-            this.receviceMessage += `\n怪物id:${val.objectId}\n怪物姓名:${val.objectName}`;
-          }
+          // if (index === 0) {
+          //   this.receviceMessage += '\n怪物id:' + val.objectId + '\n怪物姓名：' + val.objectName;
+          // } else {
+            this.receviceMessage += `怪物id:${val.objectId}\n怪物姓名:${val.objectName}\n`;
+          // }
         } else if (val.objectType === 'PLAYER') {
-          if (index === 0) {
-            this.receviceMessage += '\n玩家id:' + val.objectId + '\n玩家姓名：' + val.objectName;
-          } else {
-            this.receviceMessage += `\n玩家id:${val.objectId}\n玩家姓名:${val.objectName}`;
-          }
+          // if (index === 0) {
+          //   this.receviceMessage += '\n玩家id:' + val.objectId + '\n玩家姓名：' + val.objectName;
+          // } else {
+            this.receviceMessage += `玩家id:${val.objectId}\n玩家姓名:${val.objectName}\n`;
+          // }
         }
 
         console.log('玩家id' + val.objectId + '\n玩家姓名：' + val.objectName);
@@ -90,13 +91,13 @@ export class MapComponent implements OnInit {
 
   broadcastSceneInfo(data: any) {
     console.log('显示进入场景结果:' + data.respObj.result);
-    this.receviceMessage += `\nid为${data.respObj.playerId}的玩家${data.respObj.result}`;
+    this.receviceMessage += `id为${data.respObj.playerId}的玩家${data.respObj.result}\n`;
   }
 
   // 将玩家踢下线
   respRemovePlayer(data: any) {
     console.log('下线原因' + data.respObj.reason);
-    this.receviceMessage += `\n${data.respObj.reason}`;
+    this.receviceMessage += `${data.respObj.reason}\n`;
     // 3秒后跳转到登录页面
     setTimeout(() => window.location.href = 'http://localhost:4200/login', 3000);
   }

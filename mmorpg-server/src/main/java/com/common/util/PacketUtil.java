@@ -6,6 +6,7 @@ import com.module.logic.map.manager.MapManager;
 import com.module.logic.player.packet.RespBroadcastScenePacket;
 import com.module.logic.player.Player;
 import com.module.logic.player.manager.PlayerManager;
+import com.module.logic.player.service.PlayerService;
 
 import java.util.Map;
 
@@ -35,8 +36,9 @@ public class PacketUtil {
     }
 
 
-    public static void broadcast(Session session, Object packet){
-        RespBroadcastScenePacket respPacket=(RespBroadcastScenePacket)packet;
+    public static void broadcast(Session session, Object... packet){
+        //可变长参下标为1对应的是响应广播包
+        RespBroadcastScenePacket respPacket=(RespBroadcastScenePacket)packet[0];
         Map<Long, MapInstance> mapId2MapInstance=MapManager.getInstance().getId2Map();
         MapInstance mapInstance=mapId2MapInstance.get(respPacket.getMapId());
         if(mapInstance==null){
@@ -55,6 +57,9 @@ public class PacketUtil {
             //广播给除自己之外的其他玩家
             if(playerId!=selfId){
                 s.getChannel().writeAndFlush(respPacket);
+                //可变长参下标为1对应的是PlayerService
+                //此处应该要向其他玩家推当前场景最新信息
+                PlayerService.showCreatureInMap(s,player);
                 System.out.println("playerId为："+selfId+"的玩家进入场景...");
             }
         }

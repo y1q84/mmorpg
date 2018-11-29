@@ -94,11 +94,9 @@ public class PlayerManager {
         //怎么将先前的玩家踢下线？
         //从场景中移除，保先前角色的数据，进行广播
         MapManager.getInstance().removeFromMap(player);
+        //保存玩家最新数据
         // TODO 玩家下线的其他操作
-        //向先前玩家发送已经被强制下线通知
-        RespRemoveRolePacket removeRolePacket=new RespRemoveRolePacket();
-        removeRolePacket.setReason("账号重复登录，你已被挤下线啦..");
-        PacketUtil.sendPacket(session,removeRolePacket);
+
         //向先前玩家的其他玩家广播离开了场景
         RespBroadcastScenePacket respBroadcastScenePacket=new RespBroadcastScenePacket();
         respBroadcastScenePacket.setMapId(player.getMapId());
@@ -117,16 +115,20 @@ public class PlayerManager {
             if(oldSession!=null){
                 //说明此账号已经有登录
                 Player prePlayer=player2session.inverse().get(oldSession);
+                //向先前玩家发送已经被强制下线通知
+                RespRemoveRolePacket removeRolePacket=new RespRemoveRolePacket();
+                removeRolePacket.setReason("账号重复登录，你已被挤下线啦..");
+                PacketUtil.sendPacket(oldSession,removeRolePacket);
                 //执行登出操作
                 roleLogOut(oldSession,prePlayer);
-                //给所有其他玩家推送当前场景的最新生物信息
-                //获取当前场景的所有玩家信息id2player
-                Map<Long, MapInstance> mapId2MapInstance=MapManager.getInstance().getId2Map();
-                MapInstance mapInstance=mapId2MapInstance.get(prePlayer.getMapId());
-                Map<Long,Player> id2Player=mapInstance.getPlayerInMap();
-                id2Player.forEach((k,v)->{
-                    playerService.showCreatureInMap(player2session.get(v),v);
-                });
+//                //给所有其他玩家推送当前场景的最新生物信息
+//                //获取当前场景的所有玩家信息id2player
+//                Map<Long, MapInstance> mapId2MapInstance=MapManager.getInstance().getId2Map();
+//                MapInstance mapInstance=mapId2MapInstance.get(prePlayer.getMapId());
+//                Map<Long,Player> id2Player=mapInstance.getPlayerInMap();
+//                id2Player.forEach((k,v)->{
+//                    playerService.showCreatureInMap(player2session.get(v),v);
+//                });
                 //从集合移除先前的玩家
                 player2session.remove(prePlayer);
             }
@@ -178,6 +180,11 @@ public class PlayerManager {
 
     public void registerPostionHandler(AbstractInitialPositionHandler positionHandler){
         type2PositionHandler.put(positionHandler.getMapType(),positionHandler);
+    }
+
+    //处理连接断开
+    public void dealWithChannelClose(Session session){
+
     }
 
     public BiMap<Player, Session> getPlayer2session() {

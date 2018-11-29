@@ -2,7 +2,9 @@ package com.common.session;
 
 import io.netty.channel.Channel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -14,6 +16,8 @@ public class Session {
     private Channel channel;
 
     private Map<String,String> sessionId2account=new HashMap<>();
+    //连接断开事件
+    private List<IsessionCloseEvent> sessionCloseEvents=new ArrayList<>();
 
     public static Session valueOf(Channel channel){
         Session session = new Session();
@@ -36,5 +40,12 @@ public class Session {
 
     public String getAccount(String sessionId){
         return sessionId2account.get(sessionId);
+    }
+    public List<IsessionCloseEvent> getSessionCloseEvents() {
+        return sessionCloseEvents;
+    }
+
+    public void setSessionCloseEvents(List<IsessionCloseEvent> sessionCloseEvents) {
+        this.sessionCloseEvents = sessionCloseEvents;
     }
 }

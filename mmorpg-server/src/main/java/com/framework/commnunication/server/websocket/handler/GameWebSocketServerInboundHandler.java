@@ -1,13 +1,16 @@
 package com.framework.commnunication.server.websocket.handler;
 
 import com.baidu.bjf.remoting.protobuf.Codec;
+import com.common.observer.event.IChannelDisConnectEvent;
 import com.common.pack.BytePacket;
 import com.common.packetId.AbstractPacket;
 import com.common.packetId.PacketId;
 import com.common.session.Constants;
 import com.common.session.Session;
+import com.common.session.SessionManager;
 import com.module.logic.account.packet.ReqLoginPacket;
 import com.module.logic.gm.manager.GMManager;
+import com.module.logic.player.Player;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -32,6 +35,8 @@ public class GameWebSocketServerInboundHandler extends SimpleChannelInboundHandl
 
 	@Autowired
 	private PacketId packetId;
+	@Autowired
+    private SessionManager sessionManager;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, BytePacket msg) throws Exception {
@@ -81,6 +86,14 @@ public class GameWebSocketServerInboundHandler extends SimpleChannelInboundHandl
         //同时将改channel赋值给session中channel字段
         sessionAttribute.compareAndSet(null,Session.valueOf(channel));
         logger.info("用户:"+channel.remoteAddress()+"上线...");
+        //在连接上的时候添加连接断开监听者
+        //连接断开时应该将玩家从场景中剔除
+//        getListeneringController.attachEvent(IChannelDisConnectEvent.class,(Session session, Player player)->{
+//            //将玩家从场景中移除
+//            //向当前场景其他玩家广播
+//            //显示该场景最新数据
+//        });
+        sessionManager.addChannelId2Session(Session.valueOf(channel));
     }
 
     @Override
@@ -90,6 +103,9 @@ public class GameWebSocketServerInboundHandler extends SimpleChannelInboundHandl
         Attribute<Session> sessionAttribute=channel.attr(Constants.SESSION_ATTRIBUTE_KEY);
         sessionAttribute.compareAndSet(sessionAttribute.get(),null);
         logger.info("用户:"+channel.remoteAddress()+"离线...");
+        //连接断开时应该将玩家从场景中剔除
+//        getListeneringController.fire(IChannelDisConnectEvent.class).onChannelDisConnectEvent(session,player);
+        sessionManager.removeChannelId2Session(channel.id());
     }
 
     @Override

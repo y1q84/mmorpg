@@ -132,7 +132,7 @@ public class PlayerService {
      * @param session
      * @param player
      */
-    public void showCreatureInMap(Session session, Player player){
+    public static void showCreatureInMap(Session session, Player player){
         //用来存放场景里所有的生物
         List<ObjectInMapInfo> objects=new ArrayList<>();
         //存放场景里面npc

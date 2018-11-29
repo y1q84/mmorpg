@@ -45,9 +45,7 @@ public class AccountHandler {
 //            //如果玩家已经登录了，则不做任何处理
 //            return ;
 //        }
-        String account=reqLoginPacket.getAccount();
-        String password=reqLoginPacket.getPassword();
-        boolean stateCode= accountService.login(account,password);
+        boolean stateCode= accountService.login(session,reqLoginPacket);
         ResLoginPacket resLoginPacket = new ResLoginPacket();
         if(stateCode){
             //登录成功，将account添加进session
@@ -55,7 +53,7 @@ public class AccountHandler {
             addAccountToSession(session,reqLoginPacket);
 
             //同时应该向客户端发送该账号已有角色列表
-            List<PlayerEntity> playerEntities= AccountManager.getInstance().getCreatedRole(account);
+            List<PlayerEntity> playerEntities= AccountManager.getInstance().getCreatedRole(reqLoginPacket.getAccount());
             List<PlayerEntityInfo> playerEntityInfos=new ArrayList<>();
             if(playerEntities!=null){
                 playerEntities.forEach((e)->{
