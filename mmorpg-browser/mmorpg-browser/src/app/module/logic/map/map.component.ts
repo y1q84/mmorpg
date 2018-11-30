@@ -68,7 +68,7 @@ export class MapComponent implements OnInit {
    *响应请求
    */
   respMessage(data: any) {
-    this.receviceMessage += `id为：${data.respObj.sceneId}的场景信息如下：\n`;
+    this.receviceMessage += `======================id为${data.respObj.sceneId}的场景信息======================\n`;
     data.respObj.mapObject.forEach((val, index, array) => {
         console.log('枚举类型为：' + val.objectType);
         if (val.objectType === 'MONSTER') {

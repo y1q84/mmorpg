@@ -84,16 +84,10 @@ public class GameWebSocketServerInboundHandler extends SimpleChannelInboundHandl
         Channel channel = ctx.channel();
         Attribute<Session> sessionAttribute=channel.attr(Constants.SESSION_ATTRIBUTE_KEY);
         //同时将改channel赋值给session中channel字段
-        sessionAttribute.compareAndSet(null,Session.valueOf(channel));
+        Session session=Session.valueOf(channel);
+        sessionAttribute.compareAndSet(null,session);
         logger.info("用户:"+channel.remoteAddress()+"上线...");
-        //在连接上的时候添加连接断开监听者
-        //连接断开时应该将玩家从场景中剔除
-//        getListeneringController.attachEvent(IChannelDisConnectEvent.class,(Session session, Player player)->{
-//            //将玩家从场景中移除
-//            //向当前场景其他玩家广播
-//            //显示该场景最新数据
-//        });
-        sessionManager.addChannelId2Session(Session.valueOf(channel));
+        sessionManager.addChannelId2Session(session);
     }
 
     @Override
@@ -103,8 +97,6 @@ public class GameWebSocketServerInboundHandler extends SimpleChannelInboundHandl
         Attribute<Session> sessionAttribute=channel.attr(Constants.SESSION_ATTRIBUTE_KEY);
         sessionAttribute.compareAndSet(sessionAttribute.get(),null);
         logger.info("用户:"+channel.remoteAddress()+"离线...");
-        //连接断开时应该将玩家从场景中剔除
-//        getListeneringController.fire(IChannelDisConnectEvent.class).onChannelDisConnectEvent(session,player);
         sessionManager.removeChannelId2Session(channel.id());
     }
 

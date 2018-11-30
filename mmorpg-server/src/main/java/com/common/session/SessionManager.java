@@ -1,17 +1,19 @@
 package com.common.session;
 
 import io.netty.channel.ChannelId;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class SessionManager {
     private Map<ChannelId,Session> channelId2Session=new HashMap<>();
 
     public void addChannelId2Session(Session session){
         ChannelId id=session.getChannel().id();
-        if(channelId2Session.get(id)!=null){
+        if(!channelId2Session.containsKey(id)){
             channelId2Session.put(id,session);
         }
     }

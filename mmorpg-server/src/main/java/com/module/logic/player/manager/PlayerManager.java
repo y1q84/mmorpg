@@ -3,6 +3,7 @@ package com.module.logic.player.manager;
 import com.common.persist.CacheEntityProvider;
 import com.common.persist.EntityProvider;
 import com.common.resource.provider.ResourceProvider;
+import com.common.session.Constants;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
 import com.google.common.collect.BiMap;
@@ -57,6 +58,14 @@ public class PlayerManager {
         return self;
     }
 
+    /**
+     * 创建玩家实体
+     * @param account 账号
+     * @param name 名字
+     * @param roleType 角色类型
+     * @param sex 性别
+     * @return
+     */
     public PlayerEntity createPlayerEntity(String account, String name, RoleType roleType,String sex){
         PlayerEntity playerEntity=new PlayerEntity();
         playerEntity.setAccount(account);
@@ -66,6 +75,11 @@ public class PlayerManager {
         return playerEntity;
     }
 
+    /**
+     * 创建角色
+     * @param playerEntity
+     * @return
+     */
     public boolean createRole(PlayerEntity playerEntity){
         CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
         boolean result=false;
@@ -82,6 +96,11 @@ public class PlayerManager {
         return result;
     }
 
+    /**
+     * 登录操作
+     * @param playerId
+     * @return
+     */
     public boolean roleLogin(long playerId){
         PlayerEntity playerEntity= (PlayerEntity) ((CacheEntityProvider)entityProvider).get(playerId);
         if(playerEntity!=null){
@@ -90,6 +109,11 @@ public class PlayerManager {
         return false;
     }
 
+    /**
+     * 登出操作
+     * @param session
+     * @param player
+     */
     public void roleLogOut(Session session,Player player){
         //怎么将先前的玩家踢下线？
         //从场景中移除，保先前角色的数据，进行广播
@@ -107,7 +131,11 @@ public class PlayerManager {
 //        session.getChannel().close();
     }
 
-    //在登录的时候添加
+    /**
+     *登录时添加player与session的映射
+     * @param session
+     * @param player
+     */
     public void addSession2Player(Session session,Player player){
         //TODO 这里需要考虑一个问题就是判断玩家是否已经登录，如果已经登录则需要将之踢下线
         if(account2Session.size()>0){
@@ -121,14 +149,6 @@ public class PlayerManager {
                 PacketUtil.sendPacket(oldSession,removeRolePacket);
                 //执行登出操作
                 roleLogOut(oldSession,prePlayer);
-//                //给所有其他玩家推送当前场景的最新生物信息
-//                //获取当前场景的所有玩家信息id2player
-//                Map<Long, MapInstance> mapId2MapInstance=MapManager.getInstance().getId2Map();
-//                MapInstance mapInstance=mapId2MapInstance.get(prePlayer.getMapId());
-//                Map<Long,Player> id2Player=mapInstance.getPlayerInMap();
-//                id2Player.forEach((k,v)->{
-//                    playerService.showCreatureInMap(player2session.get(v),v);
-//                });
                 //从集合移除先前的玩家
                 player2session.remove(prePlayer);
             }
@@ -136,6 +156,20 @@ public class PlayerManager {
         //设置新的session
         account2Session.put(player.getPlayerEntity().getAccount(),session);
         player2session.put(player,session);
+    }
+
+    /**
+     * 连接断开时进行处理
+     * @param session
+     */
+    public void dealWithChannelClose(Session session){
+        Player player=player2session.inverse().get(session);
+        if(player!=null){
+            roleLogOut(session,player);
+            //连接断开应该清除player2session，account2Session两个集合中对应的Player
+            player2session.inverse().remove(session);
+            account2Session.remove(session.getAccount(Constants.SESSION_ID));
+        }
     }
 
     /**
@@ -166,25 +200,16 @@ public class PlayerManager {
 
     public PlayerEntity findPlayerEntity(long playerId){
         CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
-//        cacheEntityProvider.loadOrCreate(playerId, new ICreator() {
-//            @Override
-//            public Object create(Object o) {
-//                PlayerEntity playerEntity=new PlayerEntity();
-//                playerEntity.setPlayerId((long)o);
-//                return playerEntity;
-//            }
-//        });
         List<PlayerEntity> list=cacheEntityProvider.query("findPlayerEntityById",playerId);
         return list.get(0);
     }
 
+    /**
+     * 添加登录位置类型与登录位置处理器的映射
+     * @param positionHandler
+     */
     public void registerPostionHandler(AbstractInitialPositionHandler positionHandler){
         type2PositionHandler.put(positionHandler.getMapType(),positionHandler);
-    }
-
-    //处理连接断开
-    public void dealWithChannelClose(Session session){
-
     }
 
     public BiMap<Player, Session> getPlayer2session() {

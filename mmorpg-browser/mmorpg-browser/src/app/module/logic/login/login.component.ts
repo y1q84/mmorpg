@@ -173,7 +173,10 @@ export class LoginComponent implements OnInit {
       }
       // 存放角色id与角色的映射
       this.id2object.set(val.id , roleInfor);
-      this.role.push(roleInfor);
+      console.log('是否有重复元素存在：' + this.role.indexOf(roleInfor) );
+      if (this.role.indexOf(roleInfor) === -1) {
+        this.role.push(roleInfor);
+      }
       console.log('名字' + val.name + '职业' + val.roleType);
     });
   }
