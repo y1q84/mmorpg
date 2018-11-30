@@ -3,7 +3,8 @@ import { ReqLoginPacket, ResLoginPacket, ReqCreateRolePacket, RespCreateRolePack
     ReqRegisterPacket,
     RespRegisterPacket,
     RespRemoveRolePacket,
-    RespBroadcastScenePacket} from 'src/app/proto/bundle';
+    RespBroadcastScenePacket,
+    ReqChangeMapInstancePacket} from 'src/app/proto/bundle';
 
 
 
@@ -39,6 +40,8 @@ export class PacketId {
     public static readonly ENTER_WORLD_RESP: number = 10021;
     /**广播玩家场景信息**/
     public static readonly BROADCAST_SCENE_RESP: number = 10022;
+    /**请求切换场景**/
+    public static readonly CHANGE_SCENE_REQ: number = 10023;
 
     /**请求命令**/
     public static readonly COMMAND_REQ: number = 10201;
@@ -58,6 +61,7 @@ export class PacketId {
         PacketId.add(PacketId.ROLE_LOGIN_RESP, RespRoleLoginPacket);
         PacketId.add(PacketId.REMOVE_ROLE_RESP, RespRemoveRolePacket);
         PacketId.add(PacketId.BROADCAST_SCENE_RESP, RespBroadcastScenePacket);
+        PacketId.add(PacketId.CHANGE_SCENE_REQ, ReqChangeMapInstancePacket);
     }
 
 

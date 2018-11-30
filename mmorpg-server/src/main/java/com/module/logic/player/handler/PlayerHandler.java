@@ -3,6 +3,7 @@ package com.module.logic.player.handler;
 import com.common.annotation.WsClass;
 import com.common.annotation.WsMethod;
 import com.common.session.Session;
+import com.module.logic.player.packet.ReqChangeMapInstancePacket;
 import com.module.logic.player.packet.ReqCreateRolePacket;
 import com.module.logic.player.packet.ReqEnterScenePacket;
 import com.module.logic.player.packet.ReqRoleLoginPacket;
@@ -37,5 +38,10 @@ public class PlayerHandler {
     @WsMethod
     public void roleEnterScene(Session session, ReqEnterScenePacket reqEnterScenePacket){
         playerService.enterWorld(session,reqEnterScenePacket);
+    }
+
+    @WsMethod
+    public void changeMapInstance(Session session, ReqChangeMapInstancePacket reqChangeMapInstancePacket){
+        playerService.changeMapInstance(session,reqChangeMapInstancePacket);
     }
 }

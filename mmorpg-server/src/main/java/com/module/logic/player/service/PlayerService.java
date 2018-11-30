@@ -38,6 +38,11 @@ public class PlayerService {
     @Autowired
     PlayerManager playerManager;
 
+    /**
+     * 创建角色
+     * @param session
+     * @param reqCreateRolePacket
+     */
     public void createRole(Session session, ReqCreateRolePacket reqCreateRolePacket){
 
         String name=reqCreateRolePacket.getPlayerName();
@@ -69,6 +74,11 @@ public class PlayerService {
         }
     }
 
+    /**
+     * 初始化玩家信息
+     * @param playerEntity
+     * @return
+     */
     public Player initPlayer(PlayerEntity playerEntity){
         Player player=new Player();
         player.setId(playerEntity.getPlayerId());
@@ -80,6 +90,11 @@ public class PlayerService {
         return player;
     }
 
+    /**
+     * 玩家登录
+     * @param session
+     * @param reqRoleLoginPacket
+     */
     public void roleLogin(Session session, ReqRoleLoginPacket reqRoleLoginPacket){
         //如果登录成功则session2player有映射关系
         //如果两个页面登录同一账号，那么能够成功创建角色取决于谁先登录
@@ -114,6 +129,11 @@ public class PlayerService {
         PacketUtil.sendPacket(session,respRoleLoginPacket);
     }
 
+    /**
+     * 玩家进入场景
+     * @param session
+     * @param reqEnterScenePacket
+     */
     public void enterWorld(Session session,ReqEnterScenePacket reqEnterScenePacket){
         Player player=playerManager.getPlayer2session().inverse().get(session);
         MapManager.getInstance().enterWorld(player);
@@ -163,9 +183,9 @@ public class PlayerService {
         long oldMapId=reqChangeMapInstancePacket.getOldMapId();
         long newMapId=reqChangeMapInstancePacket.getNewMapId();
         MapManager mapManager=MapManager.getInstance();
-        MapInstance mapInstance1=mapManager.getMapInstance(oldMapId);
-        MapInstance mapInstance2=mapManager.getMapInstance(newMapId);
-        if(mapInstance1.getNeighborMark()!= mapInstance2.getNeighborMark()){
+        MapInstance oldMapInstance=mapManager.getMapInstance(oldMapId);
+        MapInstance newMapInstance=mapManager.getMapInstance(newMapId);
+        if(oldMapInstance.getNeighborMark()!= newMapInstance.getNeighborMark()){
             return;
         }
 
@@ -173,18 +193,12 @@ public class PlayerService {
         Player player=playerManager.getPlayer2session().inverse().get(session);
         PlayerEntity playerEntity=player.getPlayerEntity();
         playerManager.updatePlayerEntity(playerEntity);
-        //将玩家对象从当前场景移除？
-        mapInstance1.getObjectInMap().remove(player);
-        mapInstance1.getPlayerInMap().remove(player);
-
-        //广播玩家从当前场景离开
-        RespBroadcastScenePacket respBroadcastScenePacket =new RespBroadcastScenePacket();
-        respBroadcastScenePacket.setMapId(oldMapId);
-        respBroadcastScenePacket.setPlayerId(playerEntity.getPlayerId());
-        respBroadcastScenePacket.setResult("离开当前场景");
-        PacketUtil.broadcast(session, respBroadcastScenePacket);
+        //向该场景的所有其他玩家广播该玩家退出场景，并刷新当前场景信息
+        //session为当前要切换玩家的session，player为当前玩家
+        playerManager.roleLogOut(session,player);
 
         //进入新场景
+        player.setMapId(newMapId);
         ReqEnterScenePacket reqEnterScenePacket=new ReqEnterScenePacket();
         reqEnterScenePacket.setPlayerId(playerEntity.getPlayerId());
         reqEnterScenePacket.setSceneId(newMapId);

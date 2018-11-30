@@ -60,7 +60,7 @@ public class PacketUtil {
                 //可变长参下标为1对应的是PlayerService
                 //此处应该要向其他玩家推当前场景最新信息
                 PlayerService.showCreatureInMap(s,player);
-                System.out.println("playerId为："+selfId+"的玩家进入场景...");
+//                System.out.println("playerId为："+selfId+"的玩家进入场景...");
             }
         }
     }

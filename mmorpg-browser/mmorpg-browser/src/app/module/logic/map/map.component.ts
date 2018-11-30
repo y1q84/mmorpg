@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from 'src/app/shared/websocket.service';
 import { PacketId } from '../../packetId/PacketId';
-import { ReqEnterScenePacket } from 'src/app/proto/bundle';
+import { ReqEnterScenePacket, ReqChangeMapInstancePacket } from 'src/app/proto/bundle';
 
 @Component({
   selector: 'app-map',
@@ -13,16 +13,17 @@ export class MapComponent implements OnInit {
   inputContent: string;
   receviceMessage = '';
   playerId: number;
-  sceneId: number;
+  oldSceneId: number;
   mapId: number;
-  scene = '场景1 场景2 场景3 场景4'.split(' ');
-  selectedScene = '场景1';
+  scene = '1001 1002 1003 1004'.split(' ');
+  selectedScene = '1001';
 
 
   constructor(private wsService: WebsocketService) { }
 
   ngOnInit() {
-    this.sendEnterSceneMessage();
+    console.log('从loginComponent跳转过来后执行了sendChangeSceenMessage方法，但此时的oldSceneId为0--->' + this.oldSceneId);
+    this.sceneMessage();
   }
 
   onChange(newValue) {
@@ -30,26 +31,26 @@ export class MapComponent implements OnInit {
     this.selectedScene = newValue;
   }
 
-  sendEnterSceneMessage() {
+  sceneMessage() {
         WebsocketService.observable.subscribe(
           // data接收的是服务端发送给过来的消息
           data => {
           console.log('mapComponent----------->服务端发送消息回来：' + data.packetId);
            switch (data.packetId) {
-             case PacketId.ENTER_WORLD_REQ:
-                 this.wsService.sendMess(ReqEnterScenePacket, {playerId: this.playerId , sceneId : this.sceneId, mapId: this.mapId });
-                 break;
-             case PacketId.ENTER_WORLD_RESP:
-                  this.respMessage(data);
+              case PacketId.ENTER_WORLD_REQ:
+                  this.wsService.sendMess(ReqEnterScenePacket, {playerId: this.playerId , sceneId : this.oldSceneId, mapId: this.mapId });
                   break;
-             case PacketId.BROADCAST_SCENE_RESP:
-                  console.log('广播玩家进入场景。。');
-                  this.broadcastSceneInfo(data);
-                  break;
-             case PacketId.REMOVE_ROLE_RESP:
-                  console.log('响应将玩家踢下线..');
-                  this.respRemovePlayer(data);
-                  break;
+              case PacketId.ENTER_WORLD_RESP:
+                    this.respMessage(data);
+                    break;
+              case PacketId.BROADCAST_SCENE_RESP:
+                    console.log('广播玩家进入场景。。');
+                    this.broadcastSceneInfo(data);
+                    break;
+              case PacketId.REMOVE_ROLE_RESP:
+                    console.log('响应将玩家踢下线..');
+                    this.respRemovePlayer(data);
+                    break;
              default:
                   console.log(data.packetId + '对应请求为。。');
                   console.log('该请求' + data.packetId + '不存在...');
@@ -59,32 +60,30 @@ export class MapComponent implements OnInit {
           err => console.log(err),
           () => console.log('流已经结束')
          );
-        //  this.wsService.sendMess(ReqEnterScenePacket, {playerId: 11111 , sceneId : 1001, mapId: 2 });
+  }
+
+  /**
+   ******************处理请求******************
+   */
+  sendChangeSceneMessage() {
+    this.wsService.sendMess(ReqChangeMapInstancePacket, {oldMapId: this.oldSceneId , newMapId: this.selectedScene});
   }
 
 
-
   /**
-   *响应请求
+   ******************处理响应******************
    */
   respMessage(data: any) {
+    this.oldSceneId = data.respObj.sceneId;
     this.receviceMessage += `======================id为${data.respObj.sceneId}的场景信息======================\n`;
     data.respObj.mapObject.forEach((val, index, array) => {
         console.log('枚举类型为：' + val.objectType);
         if (val.objectType === 'MONSTER') {
-          // if (index === 0) {
-          //   this.receviceMessage += '\n怪物id:' + val.objectId + '\n怪物姓名：' + val.objectName;
-          // } else {
             this.receviceMessage += `怪物id:${val.objectId}\n怪物姓名:${val.objectName}\n`;
-          // }
         } else if (val.objectType === 'PLAYER') {
-          // if (index === 0) {
-          //   this.receviceMessage += '\n玩家id:' + val.objectId + '\n玩家姓名：' + val.objectName;
-          // } else {
-            this.receviceMessage += `玩家id:${val.objectId}\n玩家姓名:${val.objectName}\n`;
-          // }
-        }
 
+            this.receviceMessage += `玩家id:${val.objectId}\n玩家姓名:${val.objectName}\n`;
+        }
         console.log('玩家id' + val.objectId + '\n玩家姓名：' + val.objectName);
     });
   }
