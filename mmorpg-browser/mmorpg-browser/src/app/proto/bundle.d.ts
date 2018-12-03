@@ -705,6 +705,9 @@ export interface IRespCreateRolePacket {
 
     /** RespCreateRolePacket playerId */
     playerId?: (number|Long|null);
+
+    /** RespCreateRolePacket roleCreateInfo */
+    roleCreateInfo?: (IRoleCreateInfo|null);
 }
 
 /** Represents a RespCreateRolePacket. */
@@ -721,6 +724,9 @@ export class RespCreateRolePacket implements IRespCreateRolePacket {
 
     /** RespCreateRolePacket playerId. */
     public playerId: (number|Long);
+
+    /** RespCreateRolePacket roleCreateInfo. */
+    public roleCreateInfo?: (IRoleCreateInfo|null);
 
     /**
      * Creates a new RespCreateRolePacket instance using the specified properties.
@@ -788,6 +794,114 @@ export class RespCreateRolePacket implements IRespCreateRolePacket {
 
     /**
      * Converts this RespCreateRolePacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a RoleCreateInfo. */
+export interface IRoleCreateInfo {
+
+    /** RoleCreateInfo id */
+    id?: (number|Long|null);
+
+    /** RoleCreateInfo sex */
+    sex?: (string|null);
+
+    /** RoleCreateInfo name */
+    name?: (string|null);
+
+    /** RoleCreateInfo roleType */
+    roleType?: (string|null);
+}
+
+/** Represents a RoleCreateInfo. */
+export class RoleCreateInfo implements IRoleCreateInfo {
+
+    /**
+     * Constructs a new RoleCreateInfo.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IRoleCreateInfo);
+
+    /** RoleCreateInfo id. */
+    public id: (number|Long);
+
+    /** RoleCreateInfo sex. */
+    public sex: string;
+
+    /** RoleCreateInfo name. */
+    public name: string;
+
+    /** RoleCreateInfo roleType. */
+    public roleType: string;
+
+    /**
+     * Creates a new RoleCreateInfo instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns RoleCreateInfo instance
+     */
+    public static create(properties?: IRoleCreateInfo): RoleCreateInfo;
+
+    /**
+     * Encodes the specified RoleCreateInfo message. Does not implicitly {@link RoleCreateInfo.verify|verify} messages.
+     * @param message RoleCreateInfo message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IRoleCreateInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified RoleCreateInfo message, length delimited. Does not implicitly {@link RoleCreateInfo.verify|verify} messages.
+     * @param message RoleCreateInfo message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IRoleCreateInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a RoleCreateInfo message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns RoleCreateInfo
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RoleCreateInfo;
+
+    /**
+     * Decodes a RoleCreateInfo message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns RoleCreateInfo
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RoleCreateInfo;
+
+    /**
+     * Verifies a RoleCreateInfo message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a RoleCreateInfo message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns RoleCreateInfo
+     */
+    public static fromObject(object: { [k: string]: any }): RoleCreateInfo;
+
+    /**
+     * Creates a plain object from a RoleCreateInfo message. Also converts values to other types if specified.
+     * @param message RoleCreateInfo
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: RoleCreateInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this RoleCreateInfo to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
@@ -1171,6 +1285,9 @@ export interface IRespEnterScenePacket {
     /** RespEnterScenePacket sceneId */
     sceneId?: (number|Long|null);
 
+    /** RespEnterScenePacket sceneIds */
+    sceneIds?: ((number|Long)[]|null);
+
     /** RespEnterScenePacket mapObject */
     mapObject?: (IObjectInMapInfo[]|null);
 }
@@ -1186,6 +1303,9 @@ export class RespEnterScenePacket implements IRespEnterScenePacket {
 
     /** RespEnterScenePacket sceneId. */
     public sceneId: (number|Long);
+
+    /** RespEnterScenePacket sceneIds. */
+    public sceneIds: (number|Long)[];
 
     /** RespEnterScenePacket mapObject. */
     public mapObject: IObjectInMapInfo[];
@@ -1568,6 +1688,96 @@ export class ReqChangeMapInstancePacket implements IReqChangeMapInstancePacket {
 
     /**
      * Converts this ReqChangeMapInstancePacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a RespChangeMapInstancePacket. */
+export interface IRespChangeMapInstancePacket {
+
+    /** RespChangeMapInstancePacket result */
+    result?: (string|null);
+}
+
+/** Represents a RespChangeMapInstancePacket. */
+export class RespChangeMapInstancePacket implements IRespChangeMapInstancePacket {
+
+    /**
+     * Constructs a new RespChangeMapInstancePacket.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IRespChangeMapInstancePacket);
+
+    /** RespChangeMapInstancePacket result. */
+    public result: string;
+
+    /**
+     * Creates a new RespChangeMapInstancePacket instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns RespChangeMapInstancePacket instance
+     */
+    public static create(properties?: IRespChangeMapInstancePacket): RespChangeMapInstancePacket;
+
+    /**
+     * Encodes the specified RespChangeMapInstancePacket message. Does not implicitly {@link RespChangeMapInstancePacket.verify|verify} messages.
+     * @param message RespChangeMapInstancePacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IRespChangeMapInstancePacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified RespChangeMapInstancePacket message, length delimited. Does not implicitly {@link RespChangeMapInstancePacket.verify|verify} messages.
+     * @param message RespChangeMapInstancePacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IRespChangeMapInstancePacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a RespChangeMapInstancePacket message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns RespChangeMapInstancePacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RespChangeMapInstancePacket;
+
+    /**
+     * Decodes a RespChangeMapInstancePacket message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns RespChangeMapInstancePacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RespChangeMapInstancePacket;
+
+    /**
+     * Verifies a RespChangeMapInstancePacket message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a RespChangeMapInstancePacket message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns RespChangeMapInstancePacket
+     */
+    public static fromObject(object: { [k: string]: any }): RespChangeMapInstancePacket;
+
+    /**
+     * Creates a plain object from a RespChangeMapInstancePacket message. Also converts values to other types if specified.
+     * @param message RespChangeMapInstancePacket
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: RespChangeMapInstancePacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this RespChangeMapInstancePacket to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };

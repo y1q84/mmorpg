@@ -1,9 +1,11 @@
 //响应进入场景
 message RespEnterScenePacket {  
-// 场景id
+// 默认场景id
 optional int64 sceneId=1;
+// 场景列表
+repeated int64 sceneIds=2;
 // 场景内所有物体内容
-repeated ObjectInMapInfo mapObject=2;
+repeated ObjectInMapInfo mapObject=3;
 }
 message ObjectInMapInfo {  
 optional int64 objectId=1;

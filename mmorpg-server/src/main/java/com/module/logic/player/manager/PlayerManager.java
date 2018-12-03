@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -198,10 +199,20 @@ public class PlayerManager {
         cacheEntityProvider.update(playerEntity);
     }
 
-    public PlayerEntity findPlayerEntity(long playerId){
+    public PlayerEntity findPlayerEntity(Object obj){
+        List<PlayerEntity> list=new ArrayList<>();
         CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
-        List<PlayerEntity> list=cacheEntityProvider.query("findPlayerEntityById",playerId);
-        return list.get(0);
+        if(obj instanceof Long){
+            long playerId=(long)obj;
+            list=cacheEntityProvider.query("findPlayerEntityById",playerId);
+        }else if(obj instanceof String){
+            String playerName=(String)obj;
+            list=cacheEntityProvider.query("findPlayerEntityByName", playerName);
+        }
+        if(list.size()>0){
+            return list.get(0);
+        }
+        return null;
     }
 
     /**

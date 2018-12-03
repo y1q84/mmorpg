@@ -14,8 +14,10 @@ import java.util.List;
 @DescriptePacket(description = "响应进入场景")
 public class RespEnterScenePacket extends AbstractPacket {
 
-    @Protobuf(description = "场景id")
+    @Protobuf(description = "默认场景id")
     private long sceneId;
+    @Protobuf(description = "场景列表")
+    private List<Long> sceneIds=new ArrayList<>();
     @Protobuf(description = "场景内所有物体内容")
     private List<ObjectInMapInfo> mapObject=new ArrayList<>();
 
@@ -25,6 +27,14 @@ public class RespEnterScenePacket extends AbstractPacket {
 
     public void setSceneId(long sceneId) {
         this.sceneId = sceneId;
+    }
+
+    public List<Long> getSceneIds() {
+        return sceneIds;
+    }
+
+    public void setSceneIds(List<Long> sceneIds) {
+        this.sceneIds = sceneIds;
     }
 
     public List<ObjectInMapInfo> getMapObjectMap() {

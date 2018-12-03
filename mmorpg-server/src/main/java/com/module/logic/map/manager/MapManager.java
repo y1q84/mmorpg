@@ -62,6 +62,7 @@ public class MapManager {
         MapInstance mapInstance=new MapInstance();
         mapInstance.setMapId(mapResource.getMapId());
         mapInstance.setName(mapResource.getMapName());
+        mapInstance.setNeighborMark(mapResource.getNeighborMark());
         return mapInstance;
     }
 
@@ -95,6 +96,7 @@ public class MapManager {
             return;
         }
         mapInstance.removeObjectInMap(creatureObject);
+        creatureObject.setIsInTheWorld(false);
 
     }
 

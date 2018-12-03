@@ -39,6 +39,8 @@ export class LoginComponent implements OnInit {
   // 请求进入场景状态
   enterSceneStatus: string;
   transfor: string;
+  // 能否进入场景
+  isDisabled = true;
 
   onChange(newValue) {
     console.log('新职业：' + newValue);
@@ -118,7 +120,9 @@ export class LoginComponent implements OnInit {
          this.wsService.sendMess(ReqLoginPacket, {account: this.uname, password : this.pass });
   //  setInterval(this.wsService.sendMess, 500, ReqLoginPacket, {userName: this.uname, password : this.pass }) ;
   }
-  // ** 请求方法 **
+  /**
+   ***************************请求方法*****************************
+   */
   // 创建角色
   createRole() {
     // const type = RoleType['MASTER'];
@@ -130,19 +134,25 @@ export class LoginComponent implements OnInit {
   }
   // 角色登录
   roleLogin() {
-    // 如果this.playerId为空，则是从已有角色中选择登录
+    // 如果this.playerId为空，则是从已有角色中选择登录?
+    // 不一定，如果我创建了一个角色，然后
     // 登录成功之后会获取该playerId
-    if (this.playerId === undefined) {
-      this.id2object.forEach((value, key) => {
-          if (this.useRole === value) {
-              this.pid = key;
-          }
-      });
-    } else {
-      console.log(`palyerId为${this.playerId}`);
-      console.log(`请求角色登录获得的玩家id为：${this.playerId}`);
-      this.pid = this.playerId;
-    }
+    // if (this.playerId === undefined) {
+    //   this.id2object.forEach((value, key) => {
+    //       if (this.useRole === value) {
+    //           this.pid = key;
+    //       }
+    //   });
+    // } else {
+    //   console.log(`palyerId为${this.playerId}`);
+    //   console.log(`请求角色登录获得的玩家id为：${this.playerId}`);
+    //   this.pid = this.playerId;
+    // }
+    this.id2object.forEach((value, key) => {
+      if (this.useRole === value) {
+          this.pid = key;
+      }
+  });
      this.wsService.sendMess(ReqRoleLoginPacket, {playerId: this.pid});
   }
 
@@ -156,7 +166,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  // ** 响应方法 **
+  /**
+   *
+   ************************** 响应方法 **************************
+   */
   // 响应登录
   respMessage(data: any) {
     this.reciveMessage = data.respObj.result;
@@ -183,15 +196,29 @@ export class LoginComponent implements OnInit {
   // 响应创建角色
   respCreateRole(data: any) {
     this.respCreateRoleMessage = data.respObj.result;
-    this.playerId = data.respObj.playerId;
+    // 如果是角色创建成功，则新增角色选择下拉框
+    // 这时应该返回一个playerEntityInfos列表
+    if (data.respObj.result === '角色创建成功..') {
+      const roleInfor =
+      '称号:' + data.respObj.roleCreateInfo.name +
+      '--性别:' + data.respObj.roleCreateInfo.sex +
+      '--职业:' + data.respObj.roleCreateInfo.roleType;
+      if (this.role.indexOf(roleInfor) === -1) {
+        this.role.push(roleInfor);
+      }
+      this.playerId = data.respObj.playerId;
+      this.id2object.set(data.respObj.roleCreateInfo.id, roleInfor);
+    }
     console.log('角色创建：' + this.respCreateRoleMessage);
   }
   respRoleLogin(data) {
     this.respCreateRoleMessage = data.respObj.result;
     if (this.respCreateRoleMessage === '角色登录成功') {
       console.log('角色登录成功');
+      this.isDisabled = false;
     } else {
       console.log('登录失败');
+      this.isDisabled = true;
     }
   }
 

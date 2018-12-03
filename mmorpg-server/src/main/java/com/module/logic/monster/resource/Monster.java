@@ -15,6 +15,7 @@ public class Monster extends CreatureObject {
     private long id;
     private String name;
     private int hp;
+    private int level;
     private List<Follower> follows;
 
     public long getId() {
@@ -39,6 +40,16 @@ public class Monster extends CreatureObject {
 
     public void setHp(int hp) {
         this.hp = hp;
+    }
+
+    @Override
+    public int getLevel() {
+        return level;
+    }
+
+    @Override
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public List<Follower> getFollows() {

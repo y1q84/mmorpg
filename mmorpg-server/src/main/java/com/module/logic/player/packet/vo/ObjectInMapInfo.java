@@ -31,6 +31,7 @@ public class ObjectInMapInfo {
             Monster monster=(Monster)mapObject;
             objectInMapInfo.setObjectId(monster.getId());
             objectInMapInfo.setObjectName(monster.getName());
+            objectInMapInfo.setHp(monster.getHp());
             objectInMapInfo.setLevel(monster.getLevel());
             objectInMapInfo.setObjectType("MONSTER");
             return objectInMapInfo;

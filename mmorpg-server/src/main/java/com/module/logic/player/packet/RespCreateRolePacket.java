@@ -4,6 +4,8 @@ import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.common.annotation.DescriptePacket;
 import com.common.packetId.AbstractPacket;
 import com.common.packetId.PacketId;
+import com.module.logic.account.packet.vo.PlayerEntityInfo;
+import com.module.logic.player.packet.vo.RoleCreateInfo;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,6 +16,8 @@ public class RespCreateRolePacket extends AbstractPacket {
     private String result;
     @Protobuf(description = "角色id")
     private long playerId;
+    @Protobuf(description = "创建的角色信息")
+    private RoleCreateInfo roleCreateInfo;
 
     public String getResult() {
         return result;
@@ -29,6 +33,14 @@ public class RespCreateRolePacket extends AbstractPacket {
 
     public void setPlayerId(long playerId) {
         this.playerId = playerId;
+    }
+
+    public RoleCreateInfo getRoleCreateInfo() {
+        return roleCreateInfo;
+    }
+
+    public void setRoleCreateInfo(RoleCreateInfo roleCreateInfo) {
+        this.roleCreateInfo = roleCreateInfo;
     }
 
     @Override

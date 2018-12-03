@@ -3,6 +3,7 @@ package com.module.logic.player.service;
 import com.common.session.Constants;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
+import com.module.logic.account.packet.vo.PlayerEntityInfo;
 import com.module.logic.map.MapInstance;
 import com.module.logic.map.manager.MapManager;
 import com.module.logic.map.obj.MapObject;
@@ -13,6 +14,7 @@ import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
 import com.module.logic.player.manager.PlayerManager;
 import com.module.logic.player.packet.vo.ObjectInMapInfo;
+import com.module.logic.player.packet.vo.RoleCreateInfo;
 import com.module.logic.player.type.RoleType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +52,16 @@ public class PlayerService {
         String sex=reqCreateRolePacket.getSex();
         logger.info("角色名："+name+"\t角色类型为："+roleType.name()+"\t性别:"+sex);
         String account=session.getAccount(Constants.SESSION_ID);
-        PlayerEntity playerEntity=playerManager.createPlayerEntity(account,name,roleType,sex);
+        PlayerEntity playerEntity=playerManager.findPlayerEntity(name);
+        RespCreateRolePacket respCreateRolePacket=new RespCreateRolePacket();
+        if(playerEntity!=null){
+            respCreateRolePacket.setResult("角色创建失败..");
+            PacketUtil.sendPacket(session,respCreateRolePacket);
+            return;
+        }
+        playerEntity=playerManager.createPlayerEntity(account,name,roleType,sex);
+        //向客户端返回新创建的角色对象
+        RoleCreateInfo roleCreateInfo=new RoleCreateInfo();
         if(playerEntity!=null){
             //添加到数据库成功
             boolean status=playerManager.createRole(playerEntity);
@@ -61,15 +72,17 @@ public class PlayerService {
                 Player player=initPlayer(playerEntity);
                 id2player.put(player.getId(),player);
                 result="角色创建成功..";
+                //初始化返回的角色信息
+                roleCreateInfo=RoleCreateInfo.valueOf(playerEntity);
                 logger.info("角色创建成功...");
             }else{
                 result="角色创建失败..";
                 logger.info("角色创建失败...");
             }
             //返回信息
-            RespCreateRolePacket respCreateRolePacket=new RespCreateRolePacket();
             respCreateRolePacket.setPlayerId(playerEntity.getPlayerId());
             respCreateRolePacket.setResult(result);
+            respCreateRolePacket.setRoleCreateInfo(roleCreateInfo);
             PacketUtil.sendPacket(session,respCreateRolePacket);
         }
     }
@@ -82,6 +95,8 @@ public class PlayerService {
     public Player initPlayer(PlayerEntity playerEntity){
         Player player=new Player();
         player.setId(playerEntity.getPlayerId());
+        player.setHp(playerEntity.getHp());
+        player.setLevel(playerEntity.getLevel());
         //初始化玩家所在场景
         player.setMapId(playerEntity.getMapId());
         player.setPlayerEntity(playerEntity);
@@ -164,9 +179,15 @@ public class PlayerService {
         id2MapInstance.forEach((k,p)->{
             objects.add(ObjectInMapInfo.valueOf(p));
         });
+        //场景id集合
+        List<Long> mapIds=new ArrayList<>();
+        mapId2MapInstance.forEach((k,v)->{
+            mapIds.add(k);
+        });
         //发送响应进入场景的包
         RespEnterScenePacket respEnterScenePacket=new RespEnterScenePacket();
         respEnterScenePacket.setSceneId(player.getMapId());
+        respEnterScenePacket.setSceneIds(mapIds);
         //将场景里面所有的物体加载到响应包里面
         respEnterScenePacket.setMapObject(objects);
         PacketUtil.sendPacket(session,respEnterScenePacket);
@@ -180,12 +201,20 @@ public class PlayerService {
     public void changeMapInstance(Session session, ReqChangeMapInstancePacket reqChangeMapInstancePacket){
         //要切换场景要进行那些处理？
         //判断场景是否相邻
+        RespChangeMapInstancePacket respChangeMapInstancePacket=new RespChangeMapInstancePacket();
         long oldMapId=reqChangeMapInstancePacket.getOldMapId();
         long newMapId=reqChangeMapInstancePacket.getNewMapId();
+        if(oldMapId==newMapId){
+            respChangeMapInstancePacket.setResult("你已在当前场景中...");
+            PacketUtil.sendPacket(session,respChangeMapInstancePacket);
+            return ;
+        }
         MapManager mapManager=MapManager.getInstance();
         MapInstance oldMapInstance=mapManager.getMapInstance(oldMapId);
         MapInstance newMapInstance=mapManager.getMapInstance(newMapId);
         if(oldMapInstance.getNeighborMark()!= newMapInstance.getNeighborMark()){
+            respChangeMapInstancePacket.setResult("场景切换失败:非相邻场景不能切换...");
+            PacketUtil.sendPacket(session,respChangeMapInstancePacket);
             return;
         }
 
@@ -196,6 +225,8 @@ public class PlayerService {
         //向该场景的所有其他玩家广播该玩家退出场景，并刷新当前场景信息
         //session为当前要切换玩家的session，player为当前玩家
         playerManager.roleLogOut(session,player);
+        respChangeMapInstancePacket.setResult("场景切换成功，你已从id为"+oldMapId+"的场景中离开...");
+        PacketUtil.sendPacket(session,respChangeMapInstancePacket);
 
         //进入新场景
         player.setMapId(newMapId);

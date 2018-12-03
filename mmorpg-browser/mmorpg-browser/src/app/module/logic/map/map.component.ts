@@ -15,7 +15,8 @@ export class MapComponent implements OnInit {
   playerId: number;
   oldSceneId: number;
   mapId: number;
-  scene = '1001 1002 1003 1004'.split(' ');
+  // scene = '1001 1002 1003 1004'.split(' ');
+  scene: string[] = [];
   selectedScene = '1001';
 
 
@@ -51,6 +52,9 @@ export class MapComponent implements OnInit {
                     console.log('响应将玩家踢下线..');
                     this.respRemovePlayer(data);
                     break;
+              case PacketId.CHANGE_SCENE_RESP:
+                    this.respChangeScene(data);
+                    break;
              default:
                   console.log(data.packetId + '对应请求为。。');
                   console.log('该请求' + data.packetId + '不存在...');
@@ -75,14 +79,20 @@ export class MapComponent implements OnInit {
    */
   respMessage(data: any) {
     this.oldSceneId = data.respObj.sceneId;
+    // 显示场景id
+    data.respObj.sceneIds.forEach((val, index, array) => {
+        if (this.scene.indexOf(val) === -1) {
+          this.scene.push(val);
+        }
+    });
     this.receviceMessage += `======================id为${data.respObj.sceneId}的场景信息======================\n`;
     data.respObj.mapObject.forEach((val, index, array) => {
         console.log('枚举类型为：' + val.objectType);
         if (val.objectType === 'MONSTER') {
-            this.receviceMessage += `怪物id:${val.objectId}\n怪物姓名:${val.objectName}\n`;
+            this.receviceMessage += `怪物id:${val.objectId}\n怪物姓名:${val.objectName}\n怪物血量:${val.hp}\n怪物等级:${val.level}\n`;
         } else if (val.objectType === 'PLAYER') {
 
-            this.receviceMessage += `玩家id:${val.objectId}\n玩家姓名:${val.objectName}\n`;
+            this.receviceMessage += `玩家id:${val.objectId}\n玩家姓名:${val.objectName}\n玩家血量:${val.hp}\n玩家等级:${val.level}\n`;
         }
         console.log('玩家id' + val.objectId + '\n玩家姓名：' + val.objectName);
     });
@@ -99,5 +109,11 @@ export class MapComponent implements OnInit {
     this.receviceMessage += `${data.respObj.reason}\n`;
     // 3秒后跳转到登录页面
     setTimeout(() => window.location.href = 'http://localhost:4200/login', 3000);
+  }
+
+  // 响应切换场景
+  respChangeScene(data: any) {
+    console.log(`切换结果:${data.respObj.result}`);
+    this.receviceMessage += `${data.respObj.result}\n`;
   }
 }
