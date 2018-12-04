@@ -14,6 +14,7 @@ public class Session {
 
     private int id;
     private Channel channel;
+    private long mapId;
 
     private Map<String,String> sessionId2account=new HashMap<>();
     //连接断开事件
@@ -34,7 +35,15 @@ public class Session {
         return channel;
     }
 
-    public void add(String sessionId,String account){
+    public long getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(long mapId) {
+        this.mapId = mapId;
+    }
+
+    public void add(String sessionId, String account){
         sessionId2account.put(sessionId,account);
     }
 

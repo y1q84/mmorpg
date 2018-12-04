@@ -3,6 +3,7 @@ package com.module.logic.player.entity;
 import com.common.annotation.IdCreateStrategy;
 import com.common.persist.IEntity;
 import com.module.logic.player.Player;
+import com.module.logic.player.logic.position.MapType;
 import com.module.logic.player.type.RoleType;
 
 import javax.persistence.*;
@@ -45,6 +46,8 @@ public class PlayerEntity implements IEntity<Long> {
 
     @Column
     private long mapId;
+    @Column
+    private MapType mapType;
 
     //如果不加，会创建改字段对应的列
     @Transient
@@ -144,6 +147,14 @@ public class PlayerEntity implements IEntity<Long> {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public MapType getMapType() {
+        return mapType;
+    }
+
+    public void setMapType(MapType mapType) {
+        this.mapType = mapType;
     }
 
     @Override

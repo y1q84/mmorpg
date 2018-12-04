@@ -28,6 +28,7 @@ public class DefaultInitialPositionHandler extends AbstractInitialPositionHandle
             if(player.getRoleType()==k.getRoleType()){
                 //设置玩家在默认场景id
                 player.setMapId(k.getMapId());
+                player.getPlayerEntity().setMapId(k.getMapId());
             }
         });
     }

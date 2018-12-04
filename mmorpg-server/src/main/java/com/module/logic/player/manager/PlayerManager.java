@@ -10,7 +10,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.module.logic.account.entity.AccountEntity;
 import com.module.logic.account.manager.AccountManager;
-import com.module.logic.map.MapInstance;
 import com.module.logic.map.manager.MapManager;
 import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
@@ -21,7 +20,6 @@ import com.module.logic.player.packet.RespRemoveRolePacket;
 import com.module.logic.player.resource.PlayerPositionResource;
 import com.module.logic.player.service.PlayerService;
 import com.module.logic.player.type.RoleType;
-import com.sun.xml.internal.ws.api.message.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,6 +118,12 @@ public class PlayerManager {
         //从场景中移除，保先前角色的数据，进行广播
         MapManager.getInstance().removeFromMap(player);
         //保存玩家最新数据
+        long mapId=session.getMapId();
+        PlayerEntity playerEntity=player.getPlayerEntity();
+        player.setMapId(mapId);
+        playerEntity.setMapId(mapId);
+        playerEntity.setMapType(MapType.NORMAL_MAP);
+        PlayerManager.getInstance().updatePlayerEntity(playerEntity);
         // TODO 玩家下线的其他操作
 
         //向先前玩家的其他玩家广播离开了场景

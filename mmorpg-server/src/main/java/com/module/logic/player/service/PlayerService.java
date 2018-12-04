@@ -3,16 +3,15 @@ package com.module.logic.player.service;
 import com.common.session.Constants;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
-import com.module.logic.account.packet.vo.PlayerEntityInfo;
 import com.module.logic.map.MapInstance;
 import com.module.logic.map.manager.MapManager;
 import com.module.logic.map.obj.MapObject;
-import com.module.logic.player.logic.position.InitialPosition;
-import com.module.logic.player.logic.position.MapType;
-import com.module.logic.player.packet.*;
 import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
+import com.module.logic.player.logic.position.InitialPosition;
+import com.module.logic.player.logic.position.MapType;
 import com.module.logic.player.manager.PlayerManager;
+import com.module.logic.player.packet.*;
 import com.module.logic.player.packet.vo.ObjectInMapInfo;
 import com.module.logic.player.packet.vo.RoleCreateInfo;
 import com.module.logic.player.type.RoleType;
@@ -120,15 +119,26 @@ public class PlayerService {
         if(statue){
 
             Player player=id2player.get(playerId);
+            //获取存储在数据库中的玩家位置信息
+            PlayerEntity playerEntity=player.getPlayerEntity();
+            MapType mapType=playerEntity.getMapType();
+            long mapId=playerEntity.getMapId();
+            if(mapType!=null){
+                if(mapId!=0){
+                    player.setInitialPosition(new InitialPosition(mapId,mapType));
+                }
+            }
             //角色登录成功则将session与Player添加进集合
             playerManager.addSession2Player(session,player);
             //玩家登录成功之后初始化场景位置
+            //第一次登录
             if(player.getInitialPosition()==null){
                 //设置玩家初始位置信息
                 InitialPosition initialPosition=new InitialPosition();
                 initialPosition.setMapType(MapType.DEFAULT);
                 player.setInitialPosition(initialPosition);
             }
+            //初始化玩家在场景中的位置
             playerManager.getPositionHandlerByType(player.getInitialPosition().getMapType()).initialPostion(player);
             result="角色登录成功";
             logger.info("角色登录成功...");
@@ -220,18 +230,18 @@ public class PlayerService {
 
         //玩家自身数据处理?比如，停止移动，清除要处理的消息，将玩家最新数据保存到数据库
         Player player=playerManager.getPlayer2session().inverse().get(session);
-        PlayerEntity playerEntity=player.getPlayerEntity();
-        playerManager.updatePlayerEntity(playerEntity);
+//        PlayerEntity playerEntity=player.getPlayerEntity();
+//        playerManager.updatePlayerEntity(playerEntity);
         //向该场景的所有其他玩家广播该玩家退出场景，并刷新当前场景信息
         //session为当前要切换玩家的session，player为当前玩家
+        session.setMapId(newMapId);
         playerManager.roleLogOut(session,player);
         respChangeMapInstancePacket.setResult("场景切换成功，你已从id为"+oldMapId+"的场景中离开...");
         PacketUtil.sendPacket(session,respChangeMapInstancePacket);
 
         //进入新场景
-        player.setMapId(newMapId);
         ReqEnterScenePacket reqEnterScenePacket=new ReqEnterScenePacket();
-        reqEnterScenePacket.setPlayerId(playerEntity.getPlayerId());
+        reqEnterScenePacket.setPlayerId(player.getPlayerEntity().getPlayerId());
         reqEnterScenePacket.setSceneId(newMapId);
         enterWorld(session,reqEnterScenePacket);
     }

@@ -24,6 +24,7 @@ public class SessionManager {
             return;
         }
         List<IsessionCloseEvent> list= session.getSessionCloseEvents();
+        //连接断开的时候执行此操作
         list.forEach((v)->{
             v.onSessionClose();
         });
