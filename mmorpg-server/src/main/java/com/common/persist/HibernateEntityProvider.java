@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 /**
- * ID继承Serializable是因为session.get(..)的第二个参数为Serializable
+ * ID继承Serializable是因为Hibernate中session.get(..)的第二个参数为Serializable
  * @param <T>
  * @param <ID>
  */

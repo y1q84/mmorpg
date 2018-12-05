@@ -5,7 +5,9 @@ import { ReqLoginPacket, ResLoginPacket, ReqCreateRolePacket, RespCreateRolePack
     RespRemoveRolePacket,
     RespBroadcastScenePacket,
     ReqChangeMapInstancePacket,
-    RespChangeMapInstancePacket} from 'src/app/proto/bundle';
+    RespChangeMapInstancePacket,
+    ReqAttackMonsterPacket,
+    RespAttackMonsterPacket} from 'src/app/proto/bundle';
 
 
 
@@ -50,6 +52,10 @@ export class PacketId {
     public static readonly COMMAND_REQ: number = 10201;
     /**响应命令**/
     public static readonly COMMAND_RESP: number = 10202;
+    /**请求攻击怪物**/
+    public static readonly ATTACK_MONSTER_REQ: number = 10203;
+    /**响应攻击怪物**/
+    public static readonly ATTACK_MONSTER_RESP: number = 10204;
 
     constructor() {
         PacketId.add(PacketId.LOGIN_REQ, ReqLoginPacket);
@@ -66,6 +72,8 @@ export class PacketId {
         PacketId.add(PacketId.BROADCAST_SCENE_RESP, RespBroadcastScenePacket);
         PacketId.add(PacketId.CHANGE_SCENE_REQ, ReqChangeMapInstancePacket);
         PacketId.add(PacketId.CHANGE_SCENE_RESP, RespChangeMapInstancePacket);
+        PacketId.add(PacketId.ATTACK_MONSTER_REQ, ReqAttackMonsterPacket);
+        PacketId.add(PacketId.ATTACK_MONSTER_RESP, RespAttackMonsterPacket);
     }
 
 

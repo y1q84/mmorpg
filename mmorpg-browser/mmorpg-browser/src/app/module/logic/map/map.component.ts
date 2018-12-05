@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from 'src/app/shared/websocket.service';
 import { PacketId } from '../../packetId/PacketId';
-import { ReqEnterScenePacket, ReqChangeMapInstancePacket } from 'src/app/proto/bundle';
+import { ReqEnterScenePacket, ReqChangeMapInstancePacket, ReqAttackMonsterPacket } from 'src/app/proto/bundle';
 
 @Component({
   selector: 'app-map',
@@ -72,6 +72,11 @@ export class MapComponent implements OnInit {
   sendChangeSceneMessage() {
     this.wsService.sendMess(ReqChangeMapInstancePacket, {oldMapId: this.oldSceneId , newMapId: this.selectedScene});
   }
+  sendCommandMessage() {
+    const command = this.inputContent.split(' ');
+    console.log(command[1]);
+    this.wsService.sendMess(ReqAttackMonsterPacket, {mapId: this.selectedScene, monsterId: command[1]});
+  }
 
 
   /**
@@ -88,11 +93,17 @@ export class MapComponent implements OnInit {
     this.receviceMessage += `======================id为${data.respObj.sceneId}的场景信息======================\n`;
     data.respObj.mapObject.forEach((val, index, array) => {
         console.log('枚举类型为：' + val.objectType);
+        let status;
+        if (val.status === 1) {
+            status = '存活';
+        } else if (val.status === 0) {
+            status = '死亡';
+        }
         if (val.objectType === 'MONSTER') {
-            this.receviceMessage += `怪物id:${val.objectId}\n怪物姓名:${val.objectName}\n怪物血量:${val.hp}\n怪物等级:${val.level}\n`;
+            this.receviceMessage += `怪物id:${val.objectId}\n怪物姓名:${val.objectName}\n怪物血量:${val.hp}\n状态:${status}\n怪物等级:${val.level}\n`;
         } else if (val.objectType === 'PLAYER') {
 
-            this.receviceMessage += `玩家id:${val.objectId}\n玩家姓名:${val.objectName}\n玩家血量:${val.hp}\n玩家等级:${val.level}\n`;
+            this.receviceMessage += `玩家id:${val.objectId}\n玩家姓名:${val.objectName}\n玩家血量:${val.hp}\n状态:${status}\n玩家等级:${val.level}\n`;
         }
         console.log('玩家id' + val.objectId + '\n玩家姓名：' + val.objectName);
     });
@@ -100,6 +111,7 @@ export class MapComponent implements OnInit {
 
   broadcastSceneInfo(data: any) {
     console.log('显示进入场景结果:' + data.respObj.result);
+    console.log(`id为${data.respObj.palyerId}的玩家`);
     this.receviceMessage += `id为${data.respObj.playerId}的玩家${data.respObj.result}\n`;
   }
 

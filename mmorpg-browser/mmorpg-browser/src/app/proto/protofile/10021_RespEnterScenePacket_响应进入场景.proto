@@ -12,5 +12,6 @@ optional int64 objectId=1;
 optional string objectName=2;
 optional int32 hp=3;
 optional int32 level=4;
-optional string objectType=5;
+optional int32 status=5;
+optional string objectType=6;
 }

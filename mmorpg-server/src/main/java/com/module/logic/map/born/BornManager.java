@@ -57,7 +57,9 @@ public class BornManager {
         }
     }
 
-
+    /**
+     * 初始化地图上的所有生物
+     */
     public void produceAll(){
         //获取场景地图集合
         Map<Long,MapInstance> map=MapManager.getInstance().getId2Map();
@@ -74,6 +76,10 @@ public class BornManager {
         }
     }
 
+    /**
+     * 产生生物
+     * @param mapInstance
+     */
     public void produceCreature(MapInstance mapInstance){
         long mapId=mapInstance.getMapId();
         //根据mapid获取到该地图上的所有生物资源

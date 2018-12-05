@@ -1396,6 +1396,9 @@ export interface IObjectInMapInfo {
     /** ObjectInMapInfo level */
     level?: (number|null);
 
+    /** ObjectInMapInfo status */
+    status?: (number|null);
+
     /** ObjectInMapInfo objectType */
     objectType?: (string|null);
 }
@@ -1420,6 +1423,9 @@ export class ObjectInMapInfo implements IObjectInMapInfo {
 
     /** ObjectInMapInfo level. */
     public level: number;
+
+    /** ObjectInMapInfo status. */
+    public status: number;
 
     /** ObjectInMapInfo objectType. */
     public objectType: string;
@@ -1778,6 +1784,192 @@ export class RespChangeMapInstancePacket implements IRespChangeMapInstancePacket
 
     /**
      * Converts this RespChangeMapInstancePacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a ReqAttackMonsterPacket. */
+export interface IReqAttackMonsterPacket {
+
+    /** ReqAttackMonsterPacket mapId */
+    mapId?: (number|Long|null);
+
+    /** ReqAttackMonsterPacket monsterId */
+    monsterId?: (number|Long|null);
+}
+
+/** Represents a ReqAttackMonsterPacket. */
+export class ReqAttackMonsterPacket implements IReqAttackMonsterPacket {
+
+    /**
+     * Constructs a new ReqAttackMonsterPacket.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IReqAttackMonsterPacket);
+
+    /** ReqAttackMonsterPacket mapId. */
+    public mapId: (number|Long);
+
+    /** ReqAttackMonsterPacket monsterId. */
+    public monsterId: (number|Long);
+
+    /**
+     * Creates a new ReqAttackMonsterPacket instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ReqAttackMonsterPacket instance
+     */
+    public static create(properties?: IReqAttackMonsterPacket): ReqAttackMonsterPacket;
+
+    /**
+     * Encodes the specified ReqAttackMonsterPacket message. Does not implicitly {@link ReqAttackMonsterPacket.verify|verify} messages.
+     * @param message ReqAttackMonsterPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IReqAttackMonsterPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ReqAttackMonsterPacket message, length delimited. Does not implicitly {@link ReqAttackMonsterPacket.verify|verify} messages.
+     * @param message ReqAttackMonsterPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IReqAttackMonsterPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a ReqAttackMonsterPacket message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ReqAttackMonsterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ReqAttackMonsterPacket;
+
+    /**
+     * Decodes a ReqAttackMonsterPacket message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ReqAttackMonsterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ReqAttackMonsterPacket;
+
+    /**
+     * Verifies a ReqAttackMonsterPacket message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a ReqAttackMonsterPacket message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ReqAttackMonsterPacket
+     */
+    public static fromObject(object: { [k: string]: any }): ReqAttackMonsterPacket;
+
+    /**
+     * Creates a plain object from a ReqAttackMonsterPacket message. Also converts values to other types if specified.
+     * @param message ReqAttackMonsterPacket
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ReqAttackMonsterPacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ReqAttackMonsterPacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a RespAttackMonsterPacket. */
+export interface IRespAttackMonsterPacket {
+
+    /** RespAttackMonsterPacket monsterHp */
+    monsterHp?: (number|null);
+}
+
+/** Represents a RespAttackMonsterPacket. */
+export class RespAttackMonsterPacket implements IRespAttackMonsterPacket {
+
+    /**
+     * Constructs a new RespAttackMonsterPacket.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IRespAttackMonsterPacket);
+
+    /** RespAttackMonsterPacket monsterHp. */
+    public monsterHp: number;
+
+    /**
+     * Creates a new RespAttackMonsterPacket instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns RespAttackMonsterPacket instance
+     */
+    public static create(properties?: IRespAttackMonsterPacket): RespAttackMonsterPacket;
+
+    /**
+     * Encodes the specified RespAttackMonsterPacket message. Does not implicitly {@link RespAttackMonsterPacket.verify|verify} messages.
+     * @param message RespAttackMonsterPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IRespAttackMonsterPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified RespAttackMonsterPacket message, length delimited. Does not implicitly {@link RespAttackMonsterPacket.verify|verify} messages.
+     * @param message RespAttackMonsterPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IRespAttackMonsterPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a RespAttackMonsterPacket message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns RespAttackMonsterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RespAttackMonsterPacket;
+
+    /**
+     * Decodes a RespAttackMonsterPacket message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns RespAttackMonsterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RespAttackMonsterPacket;
+
+    /**
+     * Verifies a RespAttackMonsterPacket message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a RespAttackMonsterPacket message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns RespAttackMonsterPacket
+     */
+    public static fromObject(object: { [k: string]: any }): RespAttackMonsterPacket;
+
+    /**
+     * Creates a plain object from a RespAttackMonsterPacket message. Also converts values to other types if specified.
+     * @param message RespAttackMonsterPacket
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: RespAttackMonsterPacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this RespAttackMonsterPacket to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };

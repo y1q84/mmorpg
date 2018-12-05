@@ -3,10 +3,7 @@ package com.module.logic.player.handler;
 import com.common.annotation.WsClass;
 import com.common.annotation.WsMethod;
 import com.common.session.Session;
-import com.module.logic.player.packet.ReqChangeMapInstancePacket;
-import com.module.logic.player.packet.ReqCreateRolePacket;
-import com.module.logic.player.packet.ReqEnterScenePacket;
-import com.module.logic.player.packet.ReqRoleLoginPacket;
+import com.module.logic.player.packet.*;
 import com.module.logic.player.service.PlayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,5 +40,10 @@ public class PlayerHandler {
     @WsMethod
     public void changeMapInstance(Session session, ReqChangeMapInstancePacket reqChangeMapInstancePacket){
         playerService.changeMapInstance(session,reqChangeMapInstancePacket);
+    }
+
+    @WsMethod
+    public void attackMonster(Session session, ReqAttackMonsterPacket reqAttackMonsterPacket){
+        playerService.attackMonster(session, reqAttackMonsterPacket);
     }
 }

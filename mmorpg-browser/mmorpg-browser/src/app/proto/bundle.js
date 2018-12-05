@@ -3291,6 +3291,7 @@ $root.ObjectInMapInfo = (function() {
      * @property {string|null} [objectName] ObjectInMapInfo objectName
      * @property {number|null} [hp] ObjectInMapInfo hp
      * @property {number|null} [level] ObjectInMapInfo level
+     * @property {number|null} [status] ObjectInMapInfo status
      * @property {string|null} [objectType] ObjectInMapInfo objectType
      */
 
@@ -3342,6 +3343,14 @@ $root.ObjectInMapInfo = (function() {
     ObjectInMapInfo.prototype.level = 0;
 
     /**
+     * ObjectInMapInfo status.
+     * @member {number} status
+     * @memberof ObjectInMapInfo
+     * @instance
+     */
+    ObjectInMapInfo.prototype.status = 0;
+
+    /**
      * ObjectInMapInfo objectType.
      * @member {string} objectType
      * @memberof ObjectInMapInfo
@@ -3381,8 +3390,10 @@ $root.ObjectInMapInfo = (function() {
             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.hp);
         if (message.level != null && message.hasOwnProperty("level"))
             writer.uint32(/* id 4, wireType 0 =*/32).int32(message.level);
+        if (message.status != null && message.hasOwnProperty("status"))
+            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.status);
         if (message.objectType != null && message.hasOwnProperty("objectType"))
-            writer.uint32(/* id 5, wireType 2 =*/42).string(message.objectType);
+            writer.uint32(/* id 6, wireType 2 =*/50).string(message.objectType);
         return writer;
     };
 
@@ -3430,6 +3441,9 @@ $root.ObjectInMapInfo = (function() {
                 message.level = reader.int32();
                 break;
             case 5:
+                message.status = reader.int32();
+                break;
+            case 6:
                 message.objectType = reader.string();
                 break;
             default:
@@ -3479,6 +3493,9 @@ $root.ObjectInMapInfo = (function() {
         if (message.level != null && message.hasOwnProperty("level"))
             if (!$util.isInteger(message.level))
                 return "level: integer expected";
+        if (message.status != null && message.hasOwnProperty("status"))
+            if (!$util.isInteger(message.status))
+                return "status: integer expected";
         if (message.objectType != null && message.hasOwnProperty("objectType"))
             if (!$util.isString(message.objectType))
                 return "objectType: string expected";
@@ -3512,6 +3529,8 @@ $root.ObjectInMapInfo = (function() {
             message.hp = object.hp | 0;
         if (object.level != null)
             message.level = object.level | 0;
+        if (object.status != null)
+            message.status = object.status | 0;
         if (object.objectType != null)
             message.objectType = String(object.objectType);
         return message;
@@ -3539,6 +3558,7 @@ $root.ObjectInMapInfo = (function() {
             object.objectName = "";
             object.hp = 0;
             object.level = 0;
+            object.status = 0;
             object.objectType = "";
         }
         if (message.objectId != null && message.hasOwnProperty("objectId"))
@@ -3552,6 +3572,8 @@ $root.ObjectInMapInfo = (function() {
             object.hp = message.hp;
         if (message.level != null && message.hasOwnProperty("level"))
             object.level = message.level;
+        if (message.status != null && message.hasOwnProperty("status"))
+            object.status = message.status;
         if (message.objectType != null && message.hasOwnProperty("objectType"))
             object.objectType = message.objectType;
         return object;
@@ -4254,6 +4276,431 @@ $root.RespChangeMapInstancePacket = (function() {
     };
 
     return RespChangeMapInstancePacket;
+})();
+
+$root.ReqAttackMonsterPacket = (function() {
+
+    /**
+     * Properties of a ReqAttackMonsterPacket.
+     * @exports IReqAttackMonsterPacket
+     * @interface IReqAttackMonsterPacket
+     * @property {number|Long|null} [mapId] ReqAttackMonsterPacket mapId
+     * @property {number|Long|null} [monsterId] ReqAttackMonsterPacket monsterId
+     */
+
+    /**
+     * Constructs a new ReqAttackMonsterPacket.
+     * @exports ReqAttackMonsterPacket
+     * @classdesc Represents a ReqAttackMonsterPacket.
+     * @implements IReqAttackMonsterPacket
+     * @constructor
+     * @param {IReqAttackMonsterPacket=} [properties] Properties to set
+     */
+    function ReqAttackMonsterPacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ReqAttackMonsterPacket mapId.
+     * @member {number|Long} mapId
+     * @memberof ReqAttackMonsterPacket
+     * @instance
+     */
+    ReqAttackMonsterPacket.prototype.mapId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * ReqAttackMonsterPacket monsterId.
+     * @member {number|Long} monsterId
+     * @memberof ReqAttackMonsterPacket
+     * @instance
+     */
+    ReqAttackMonsterPacket.prototype.monsterId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * Creates a new ReqAttackMonsterPacket instance using the specified properties.
+     * @function create
+     * @memberof ReqAttackMonsterPacket
+     * @static
+     * @param {IReqAttackMonsterPacket=} [properties] Properties to set
+     * @returns {ReqAttackMonsterPacket} ReqAttackMonsterPacket instance
+     */
+    ReqAttackMonsterPacket.create = function create(properties) {
+        return new ReqAttackMonsterPacket(properties);
+    };
+
+    /**
+     * Encodes the specified ReqAttackMonsterPacket message. Does not implicitly {@link ReqAttackMonsterPacket.verify|verify} messages.
+     * @function encode
+     * @memberof ReqAttackMonsterPacket
+     * @static
+     * @param {IReqAttackMonsterPacket} message ReqAttackMonsterPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqAttackMonsterPacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.mapId != null && message.hasOwnProperty("mapId"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.mapId);
+        if (message.monsterId != null && message.hasOwnProperty("monsterId"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.monsterId);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ReqAttackMonsterPacket message, length delimited. Does not implicitly {@link ReqAttackMonsterPacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ReqAttackMonsterPacket
+     * @static
+     * @param {IReqAttackMonsterPacket} message ReqAttackMonsterPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqAttackMonsterPacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ReqAttackMonsterPacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof ReqAttackMonsterPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ReqAttackMonsterPacket} ReqAttackMonsterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqAttackMonsterPacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ReqAttackMonsterPacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.mapId = reader.int64();
+                break;
+            case 2:
+                message.monsterId = reader.int64();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ReqAttackMonsterPacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ReqAttackMonsterPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ReqAttackMonsterPacket} ReqAttackMonsterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqAttackMonsterPacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ReqAttackMonsterPacket message.
+     * @function verify
+     * @memberof ReqAttackMonsterPacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ReqAttackMonsterPacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.mapId != null && message.hasOwnProperty("mapId"))
+            if (!$util.isInteger(message.mapId) && !(message.mapId && $util.isInteger(message.mapId.low) && $util.isInteger(message.mapId.high)))
+                return "mapId: integer|Long expected";
+        if (message.monsterId != null && message.hasOwnProperty("monsterId"))
+            if (!$util.isInteger(message.monsterId) && !(message.monsterId && $util.isInteger(message.monsterId.low) && $util.isInteger(message.monsterId.high)))
+                return "monsterId: integer|Long expected";
+        return null;
+    };
+
+    /**
+     * Creates a ReqAttackMonsterPacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ReqAttackMonsterPacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ReqAttackMonsterPacket} ReqAttackMonsterPacket
+     */
+    ReqAttackMonsterPacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.ReqAttackMonsterPacket)
+            return object;
+        var message = new $root.ReqAttackMonsterPacket();
+        if (object.mapId != null)
+            if ($util.Long)
+                (message.mapId = $util.Long.fromValue(object.mapId)).unsigned = false;
+            else if (typeof object.mapId === "string")
+                message.mapId = parseInt(object.mapId, 10);
+            else if (typeof object.mapId === "number")
+                message.mapId = object.mapId;
+            else if (typeof object.mapId === "object")
+                message.mapId = new $util.LongBits(object.mapId.low >>> 0, object.mapId.high >>> 0).toNumber();
+        if (object.monsterId != null)
+            if ($util.Long)
+                (message.monsterId = $util.Long.fromValue(object.monsterId)).unsigned = false;
+            else if (typeof object.monsterId === "string")
+                message.monsterId = parseInt(object.monsterId, 10);
+            else if (typeof object.monsterId === "number")
+                message.monsterId = object.monsterId;
+            else if (typeof object.monsterId === "object")
+                message.monsterId = new $util.LongBits(object.monsterId.low >>> 0, object.monsterId.high >>> 0).toNumber();
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ReqAttackMonsterPacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ReqAttackMonsterPacket
+     * @static
+     * @param {ReqAttackMonsterPacket} message ReqAttackMonsterPacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ReqAttackMonsterPacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.mapId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.mapId = options.longs === String ? "0" : 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.monsterId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.monsterId = options.longs === String ? "0" : 0;
+        }
+        if (message.mapId != null && message.hasOwnProperty("mapId"))
+            if (typeof message.mapId === "number")
+                object.mapId = options.longs === String ? String(message.mapId) : message.mapId;
+            else
+                object.mapId = options.longs === String ? $util.Long.prototype.toString.call(message.mapId) : options.longs === Number ? new $util.LongBits(message.mapId.low >>> 0, message.mapId.high >>> 0).toNumber() : message.mapId;
+        if (message.monsterId != null && message.hasOwnProperty("monsterId"))
+            if (typeof message.monsterId === "number")
+                object.monsterId = options.longs === String ? String(message.monsterId) : message.monsterId;
+            else
+                object.monsterId = options.longs === String ? $util.Long.prototype.toString.call(message.monsterId) : options.longs === Number ? new $util.LongBits(message.monsterId.low >>> 0, message.monsterId.high >>> 0).toNumber() : message.monsterId;
+        return object;
+    };
+
+    /**
+     * Converts this ReqAttackMonsterPacket to JSON.
+     * @function toJSON
+     * @memberof ReqAttackMonsterPacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ReqAttackMonsterPacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ReqAttackMonsterPacket;
+})();
+
+$root.RespAttackMonsterPacket = (function() {
+
+    /**
+     * Properties of a RespAttackMonsterPacket.
+     * @exports IRespAttackMonsterPacket
+     * @interface IRespAttackMonsterPacket
+     * @property {number|null} [monsterHp] RespAttackMonsterPacket monsterHp
+     */
+
+    /**
+     * Constructs a new RespAttackMonsterPacket.
+     * @exports RespAttackMonsterPacket
+     * @classdesc Represents a RespAttackMonsterPacket.
+     * @implements IRespAttackMonsterPacket
+     * @constructor
+     * @param {IRespAttackMonsterPacket=} [properties] Properties to set
+     */
+    function RespAttackMonsterPacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * RespAttackMonsterPacket monsterHp.
+     * @member {number} monsterHp
+     * @memberof RespAttackMonsterPacket
+     * @instance
+     */
+    RespAttackMonsterPacket.prototype.monsterHp = 0;
+
+    /**
+     * Creates a new RespAttackMonsterPacket instance using the specified properties.
+     * @function create
+     * @memberof RespAttackMonsterPacket
+     * @static
+     * @param {IRespAttackMonsterPacket=} [properties] Properties to set
+     * @returns {RespAttackMonsterPacket} RespAttackMonsterPacket instance
+     */
+    RespAttackMonsterPacket.create = function create(properties) {
+        return new RespAttackMonsterPacket(properties);
+    };
+
+    /**
+     * Encodes the specified RespAttackMonsterPacket message. Does not implicitly {@link RespAttackMonsterPacket.verify|verify} messages.
+     * @function encode
+     * @memberof RespAttackMonsterPacket
+     * @static
+     * @param {IRespAttackMonsterPacket} message RespAttackMonsterPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespAttackMonsterPacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.monsterHp != null && message.hasOwnProperty("monsterHp"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.monsterHp);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified RespAttackMonsterPacket message, length delimited. Does not implicitly {@link RespAttackMonsterPacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof RespAttackMonsterPacket
+     * @static
+     * @param {IRespAttackMonsterPacket} message RespAttackMonsterPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespAttackMonsterPacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a RespAttackMonsterPacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof RespAttackMonsterPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {RespAttackMonsterPacket} RespAttackMonsterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespAttackMonsterPacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RespAttackMonsterPacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.monsterHp = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a RespAttackMonsterPacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof RespAttackMonsterPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {RespAttackMonsterPacket} RespAttackMonsterPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespAttackMonsterPacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a RespAttackMonsterPacket message.
+     * @function verify
+     * @memberof RespAttackMonsterPacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    RespAttackMonsterPacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.monsterHp != null && message.hasOwnProperty("monsterHp"))
+            if (!$util.isInteger(message.monsterHp))
+                return "monsterHp: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates a RespAttackMonsterPacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof RespAttackMonsterPacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {RespAttackMonsterPacket} RespAttackMonsterPacket
+     */
+    RespAttackMonsterPacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.RespAttackMonsterPacket)
+            return object;
+        var message = new $root.RespAttackMonsterPacket();
+        if (object.monsterHp != null)
+            message.monsterHp = object.monsterHp | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a RespAttackMonsterPacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof RespAttackMonsterPacket
+     * @static
+     * @param {RespAttackMonsterPacket} message RespAttackMonsterPacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    RespAttackMonsterPacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.monsterHp = 0;
+        if (message.monsterHp != null && message.hasOwnProperty("monsterHp"))
+            object.monsterHp = message.monsterHp;
+        return object;
+    };
+
+    /**
+     * Converts this RespAttackMonsterPacket to JSON.
+     * @function toJSON
+     * @memberof RespAttackMonsterPacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    RespAttackMonsterPacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return RespAttackMonsterPacket;
 })();
 
 module.exports = $root;

@@ -5,7 +5,9 @@ import com.common.session.Session;
 import com.common.util.PacketUtil;
 import com.module.logic.map.MapInstance;
 import com.module.logic.map.manager.MapManager;
+import com.module.logic.map.obj.CreatureObject;
 import com.module.logic.map.obj.MapObject;
+import com.module.logic.monster.resource.Monster;
 import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
 import com.module.logic.player.logic.position.InitialPosition;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * author:ydx
@@ -99,6 +102,11 @@ public class PlayerService {
         //初始化玩家所在场景
         player.setMapId(playerEntity.getMapId());
         player.setPlayerEntity(playerEntity);
+        if(playerEntity.getHp()>0){
+            player.setStatus(1);
+        }else{
+            player.setStatus(0);
+        }
         playerEntity.setPlayer(player);
         // TODO 其他的初始化玩家的信息
         return player;
@@ -244,6 +252,45 @@ public class PlayerService {
         reqEnterScenePacket.setPlayerId(player.getPlayerEntity().getPlayerId());
         reqEnterScenePacket.setSceneId(newMapId);
         enterWorld(session,reqEnterScenePacket);
+    }
+
+    /**
+     * 请求攻击怪物
+     * @param session
+     * @param reqAttackMonsterPacket
+     */
+    public synchronized void attackMonster(Session session, ReqAttackMonsterPacket reqAttackMonsterPacket){
+        long monsterId= reqAttackMonsterPacket.getMonsterId();
+        long mapId=reqAttackMonsterPacket.getMapId();
+        AtomicBoolean flag= new AtomicBoolean(false);//标识该生物是否处于死亡
+        MapInstance mapInstance=MapManager.getInstance().getMapInstance(mapId);
+        mapInstance.getObjectInMap().forEach((k,v)->{
+            if(k==monsterId){
+                Monster monster=(Monster)v;
+                //先设定玩家每攻击一次，血量就减少100
+                if(monster.getHp()-100 <= 0){
+                    flag.set(true);
+                }
+                monster.setHp(monster.getHp()-100);
+
+            }
+        });
+        Player player=playerManager.getPlayer2session().inverse().get(session);
+        showCreatureInMap(session,player);
+        RespBroadcastScenePacket respBroadcastScenePacket=new RespBroadcastScenePacket();
+        respBroadcastScenePacket.setMapId(mapId);
+        respBroadcastScenePacket.setPlayerId(player.getId());
+        //判断生物血量是否为空
+        if(flag.get()){
+            mapInstance.removeObjectInMap(mapInstance.getObjectInMap().get(monsterId));
+            showCreatureInMap(session,player);
+            respBroadcastScenePacket.setResult(String.format("id为%d的生物已被击杀...",monsterId));
+            PacketUtil.broadcast(session,respBroadcastScenePacket);
+        }else{
+            respBroadcastScenePacket.setResult(String.format("正在攻击id为%d的生物...",monsterId));
+            PacketUtil.broadcast(session,respBroadcastScenePacket);
+        }
+
     }
 
     public Player getPlayerById(long playerId) {

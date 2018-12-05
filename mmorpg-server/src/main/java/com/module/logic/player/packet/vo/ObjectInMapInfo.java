@@ -15,6 +15,8 @@ public class ObjectInMapInfo {
     @Protobuf
     private int level;
     @Protobuf
+    private int status;//1-生存，0-死亡
+    @Protobuf
     private String objectType;
 
     public static ObjectInMapInfo valueOf(MapObject mapObject){
@@ -25,6 +27,7 @@ public class ObjectInMapInfo {
             objectInMapInfo.setObjectName(player.getPlayerEntity().getPlayerName());
             objectInMapInfo.setLevel(player.getLevel());
             objectInMapInfo.setHp(player.getHp());
+            objectInMapInfo.setStatus(player.getPlayerEntity().getHp()>0?1:0);
             objectInMapInfo.setObjectType("PLAYER");
             return objectInMapInfo;
         }else if(mapObject instanceof Monster){
@@ -32,6 +35,7 @@ public class ObjectInMapInfo {
             objectInMapInfo.setObjectId(monster.getId());
             objectInMapInfo.setObjectName(monster.getName());
             objectInMapInfo.setHp(monster.getHp());
+            objectInMapInfo.setStatus(monster.getHp()>0?1:0);
             objectInMapInfo.setLevel(monster.getLevel());
             objectInMapInfo.setObjectType("MONSTER");
             return objectInMapInfo;
@@ -62,6 +66,14 @@ public class ObjectInMapInfo {
 
     public void setHp(int hp) {
         this.hp = hp;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getLevel() {

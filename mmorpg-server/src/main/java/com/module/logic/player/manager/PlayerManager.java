@@ -118,17 +118,18 @@ public class PlayerManager {
         //从场景中移除，保先前角色的数据，进行广播
         MapManager.getInstance().removeFromMap(player);
         //保存玩家最新数据
-        long mapId=session.getMapId();
+        long oldMapId=player.getMapId();
+        long newMapId=session.getMapId();
         PlayerEntity playerEntity=player.getPlayerEntity();
-        player.setMapId(mapId);
-        playerEntity.setMapId(mapId);
+        player.setMapId(newMapId);
+        playerEntity.setMapId(newMapId);
         playerEntity.setMapType(MapType.NORMAL_MAP);
         PlayerManager.getInstance().updatePlayerEntity(playerEntity);
         // TODO 玩家下线的其他操作
 
         //向先前玩家的其他玩家广播离开了场景
         RespBroadcastScenePacket respBroadcastScenePacket=new RespBroadcastScenePacket();
-        respBroadcastScenePacket.setMapId(player.getMapId());
+        respBroadcastScenePacket.setMapId(oldMapId);
         respBroadcastScenePacket.setPlayerId(player.getId());
         respBroadcastScenePacket.setResult("玩家退出当前场景...");
         PacketUtil.broadcast(session,respBroadcastScenePacket);

@@ -18,6 +18,8 @@ public class CreatureObject extends MapObject {
     private AtomicBoolean isInTheWorld = new AtomicBoolean(false);
     //观察者列表
     KnownList knownList;
+    //生物状态：生存->1，死亡->0
+    private int status;
 
     public void updateKnownList(CreatureObject creatureObject){
         getKnownList().addKnown(creatureObject);
@@ -69,5 +71,13 @@ public class CreatureObject extends MapObject {
 
     public void setKnownList(KnownList knownList) {
         this.knownList = knownList;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

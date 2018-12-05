@@ -94,6 +94,7 @@ public class GameWebSocketServer {
         //在容器启动之前删除指定目录下的.proto文件
         FileUtil.deleteAllFiles(new File("C:\\mmorpg\\mmorpg\\mmorpg-browser\\mmorpg-browser\\src\\app\\proto\\protofile\\"));
         ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
+        //服务器启动时，初始化场景的所有生物，并存在mapInstance的集合中
         BornManager.getInstance().produceAll();
         GameWebSocketServer gwss=ac.getBean(GameWebSocketServer.class);
         gwss.start();
