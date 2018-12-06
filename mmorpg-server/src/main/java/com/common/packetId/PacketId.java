@@ -46,6 +46,10 @@ public class PacketId {
     /**响应切换场景**/
     public static final short CHANGE_SCENE_RESP=10024;
 
+    /**请求发送聊天**/
+    public static final short SEND_CHAT_REQ=10101;
+    /**响应发送聊天**/
+    public static final  short SEND_CHAT_RESP=10102;
 
     /**请求命令**/
     public static final short COMMAND_REQ=10201;

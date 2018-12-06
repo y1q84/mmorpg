@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from 'src/app/shared/websocket.service';
 import { PacketId } from '../../packetId/PacketId';
-import { ReqEnterScenePacket, ReqChangeMapInstancePacket, ReqAttackMonsterPacket } from 'src/app/proto/bundle';
+import { ReqEnterScenePacket, ReqChangeMapInstancePacket, ReqAttackMonsterPacket, ReqChatWithOtherPacket } from 'src/app/proto/bundle';
 
 @Component({
   selector: 'app-map',
@@ -55,6 +55,9 @@ export class MapComponent implements OnInit {
               case PacketId.CHANGE_SCENE_RESP:
                     this.respChangeScene(data);
                     break;
+              case PacketId.SEND_CHAT_RESP:
+                    this.respSendChat(data);
+                    break;
              default:
                   console.log(data.packetId + '对应请求为。。');
                   console.log('该请求' + data.packetId + '不存在...');
@@ -75,7 +78,18 @@ export class MapComponent implements OnInit {
   sendCommandMessage() {
     const command = this.inputContent.split(' ');
     console.log(command[1]);
-    this.wsService.sendMess(ReqAttackMonsterPacket, {mapId: this.selectedScene, monsterId: command[1]});
+    const packetClass = PacketId.getPacketId2PacketClass(Number(command[0]));
+    // console.log('请求包为：' + packetClass + '\nReqAttackMonsteerpacket效果相同否？' + ReqAttackMonsterPacket);
+    switch (Number(command[0])) {
+      case PacketId.ATTACK_MONSTER_REQ:
+        this.wsService.sendMess(ReqAttackMonsterPacket, {mapId: this.selectedScene, monsterId: command[1]});
+        break;
+      case PacketId.SEND_CHAT_REQ:
+        this.wsService.sendMess(ReqChatWithOtherPacket, {content: command[1]});
+        break;
+      default:
+        console.log(`该请求${Number(command[0])}不存在...`);
+    }
   }
 
 
@@ -109,6 +123,7 @@ export class MapComponent implements OnInit {
     });
   }
 
+  // 广播场景信息
   broadcastSceneInfo(data: any) {
     console.log('显示进入场景结果:' + data.respObj.result);
     console.log(`id为${data.respObj.palyerId}的玩家`);
@@ -127,5 +142,11 @@ export class MapComponent implements OnInit {
   respChangeScene(data: any) {
     console.log(`切换结果:${data.respObj.result}`);
     this.receviceMessage += `${data.respObj.result}\n`;
+  }
+
+  // 响应聊天消息
+  respSendChat(data: any) {
+      console.log('响应聊天消息...');
+      this.receviceMessage += `消息内容：${data.respObj.content}`;
   }
 }

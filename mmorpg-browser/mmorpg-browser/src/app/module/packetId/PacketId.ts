@@ -7,7 +7,9 @@ import { ReqLoginPacket, ResLoginPacket, ReqCreateRolePacket, RespCreateRolePack
     ReqChangeMapInstancePacket,
     RespChangeMapInstancePacket,
     ReqAttackMonsterPacket,
-    RespAttackMonsterPacket} from 'src/app/proto/bundle';
+    RespAttackMonsterPacket,
+    ReqChatWithOtherPacket,
+    RespChatWithOtherPacket} from 'src/app/proto/bundle';
 
 
 
@@ -48,6 +50,11 @@ export class PacketId {
     /**响应切换场景**/
     public static readonly CHANGE_SCENE_RESP: number = 10024;
 
+    /**请求发送聊天**/
+    public static readonly SEND_CHAT_REQ: number = 10101;
+    /**响应发送聊天**/
+    public static readonly SEND_CHAT_RESP: number = 10102;
+
     /**请求命令**/
     public static readonly COMMAND_REQ: number = 10201;
     /**响应命令**/
@@ -74,6 +81,8 @@ export class PacketId {
         PacketId.add(PacketId.CHANGE_SCENE_RESP, RespChangeMapInstancePacket);
         PacketId.add(PacketId.ATTACK_MONSTER_REQ, ReqAttackMonsterPacket);
         PacketId.add(PacketId.ATTACK_MONSTER_RESP, RespAttackMonsterPacket);
+        PacketId.add(PacketId.SEND_CHAT_REQ, ReqChatWithOtherPacket);
+        PacketId.add(PacketId.SEND_CHAT_RESP, RespChatWithOtherPacket);
     }
 
 

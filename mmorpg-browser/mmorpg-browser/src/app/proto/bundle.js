@@ -4278,6 +4278,403 @@ $root.RespChangeMapInstancePacket = (function() {
     return RespChangeMapInstancePacket;
 })();
 
+$root.ReqChatWithOtherPacket = (function() {
+
+    /**
+     * Properties of a ReqChatWithOtherPacket.
+     * @exports IReqChatWithOtherPacket
+     * @interface IReqChatWithOtherPacket
+     * @property {string|null} [content] ReqChatWithOtherPacket content
+     */
+
+    /**
+     * Constructs a new ReqChatWithOtherPacket.
+     * @exports ReqChatWithOtherPacket
+     * @classdesc Represents a ReqChatWithOtherPacket.
+     * @implements IReqChatWithOtherPacket
+     * @constructor
+     * @param {IReqChatWithOtherPacket=} [properties] Properties to set
+     */
+    function ReqChatWithOtherPacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ReqChatWithOtherPacket content.
+     * @member {string} content
+     * @memberof ReqChatWithOtherPacket
+     * @instance
+     */
+    ReqChatWithOtherPacket.prototype.content = "";
+
+    /**
+     * Creates a new ReqChatWithOtherPacket instance using the specified properties.
+     * @function create
+     * @memberof ReqChatWithOtherPacket
+     * @static
+     * @param {IReqChatWithOtherPacket=} [properties] Properties to set
+     * @returns {ReqChatWithOtherPacket} ReqChatWithOtherPacket instance
+     */
+    ReqChatWithOtherPacket.create = function create(properties) {
+        return new ReqChatWithOtherPacket(properties);
+    };
+
+    /**
+     * Encodes the specified ReqChatWithOtherPacket message. Does not implicitly {@link ReqChatWithOtherPacket.verify|verify} messages.
+     * @function encode
+     * @memberof ReqChatWithOtherPacket
+     * @static
+     * @param {IReqChatWithOtherPacket} message ReqChatWithOtherPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqChatWithOtherPacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.content != null && message.hasOwnProperty("content"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.content);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ReqChatWithOtherPacket message, length delimited. Does not implicitly {@link ReqChatWithOtherPacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ReqChatWithOtherPacket
+     * @static
+     * @param {IReqChatWithOtherPacket} message ReqChatWithOtherPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqChatWithOtherPacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ReqChatWithOtherPacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof ReqChatWithOtherPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ReqChatWithOtherPacket} ReqChatWithOtherPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqChatWithOtherPacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ReqChatWithOtherPacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.content = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ReqChatWithOtherPacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ReqChatWithOtherPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ReqChatWithOtherPacket} ReqChatWithOtherPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqChatWithOtherPacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ReqChatWithOtherPacket message.
+     * @function verify
+     * @memberof ReqChatWithOtherPacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ReqChatWithOtherPacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.content != null && message.hasOwnProperty("content"))
+            if (!$util.isString(message.content))
+                return "content: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a ReqChatWithOtherPacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ReqChatWithOtherPacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ReqChatWithOtherPacket} ReqChatWithOtherPacket
+     */
+    ReqChatWithOtherPacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.ReqChatWithOtherPacket)
+            return object;
+        var message = new $root.ReqChatWithOtherPacket();
+        if (object.content != null)
+            message.content = String(object.content);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ReqChatWithOtherPacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ReqChatWithOtherPacket
+     * @static
+     * @param {ReqChatWithOtherPacket} message ReqChatWithOtherPacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ReqChatWithOtherPacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.content = "";
+        if (message.content != null && message.hasOwnProperty("content"))
+            object.content = message.content;
+        return object;
+    };
+
+    /**
+     * Converts this ReqChatWithOtherPacket to JSON.
+     * @function toJSON
+     * @memberof ReqChatWithOtherPacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ReqChatWithOtherPacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ReqChatWithOtherPacket;
+})();
+
+$root.RespChatWithOtherPacket = (function() {
+
+    /**
+     * Properties of a RespChatWithOtherPacket.
+     * @exports IRespChatWithOtherPacket
+     * @interface IRespChatWithOtherPacket
+     * @property {number|null} [channelId] RespChatWithOtherPacket channelId
+     * @property {string|null} [content] RespChatWithOtherPacket content
+     */
+
+    /**
+     * Constructs a new RespChatWithOtherPacket.
+     * @exports RespChatWithOtherPacket
+     * @classdesc Represents a RespChatWithOtherPacket.
+     * @implements IRespChatWithOtherPacket
+     * @constructor
+     * @param {IRespChatWithOtherPacket=} [properties] Properties to set
+     */
+    function RespChatWithOtherPacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * RespChatWithOtherPacket channelId.
+     * @member {number} channelId
+     * @memberof RespChatWithOtherPacket
+     * @instance
+     */
+    RespChatWithOtherPacket.prototype.channelId = 0;
+
+    /**
+     * RespChatWithOtherPacket content.
+     * @member {string} content
+     * @memberof RespChatWithOtherPacket
+     * @instance
+     */
+    RespChatWithOtherPacket.prototype.content = "";
+
+    /**
+     * Creates a new RespChatWithOtherPacket instance using the specified properties.
+     * @function create
+     * @memberof RespChatWithOtherPacket
+     * @static
+     * @param {IRespChatWithOtherPacket=} [properties] Properties to set
+     * @returns {RespChatWithOtherPacket} RespChatWithOtherPacket instance
+     */
+    RespChatWithOtherPacket.create = function create(properties) {
+        return new RespChatWithOtherPacket(properties);
+    };
+
+    /**
+     * Encodes the specified RespChatWithOtherPacket message. Does not implicitly {@link RespChatWithOtherPacket.verify|verify} messages.
+     * @function encode
+     * @memberof RespChatWithOtherPacket
+     * @static
+     * @param {IRespChatWithOtherPacket} message RespChatWithOtherPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespChatWithOtherPacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.channelId != null && message.hasOwnProperty("channelId"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.channelId);
+        if (message.content != null && message.hasOwnProperty("content"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.content);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified RespChatWithOtherPacket message, length delimited. Does not implicitly {@link RespChatWithOtherPacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof RespChatWithOtherPacket
+     * @static
+     * @param {IRespChatWithOtherPacket} message RespChatWithOtherPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespChatWithOtherPacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a RespChatWithOtherPacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof RespChatWithOtherPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {RespChatWithOtherPacket} RespChatWithOtherPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespChatWithOtherPacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RespChatWithOtherPacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.channelId = reader.int32();
+                break;
+            case 2:
+                message.content = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a RespChatWithOtherPacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof RespChatWithOtherPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {RespChatWithOtherPacket} RespChatWithOtherPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespChatWithOtherPacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a RespChatWithOtherPacket message.
+     * @function verify
+     * @memberof RespChatWithOtherPacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    RespChatWithOtherPacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.channelId != null && message.hasOwnProperty("channelId"))
+            if (!$util.isInteger(message.channelId))
+                return "channelId: integer expected";
+        if (message.content != null && message.hasOwnProperty("content"))
+            if (!$util.isString(message.content))
+                return "content: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a RespChatWithOtherPacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof RespChatWithOtherPacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {RespChatWithOtherPacket} RespChatWithOtherPacket
+     */
+    RespChatWithOtherPacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.RespChatWithOtherPacket)
+            return object;
+        var message = new $root.RespChatWithOtherPacket();
+        if (object.channelId != null)
+            message.channelId = object.channelId | 0;
+        if (object.content != null)
+            message.content = String(object.content);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a RespChatWithOtherPacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof RespChatWithOtherPacket
+     * @static
+     * @param {RespChatWithOtherPacket} message RespChatWithOtherPacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    RespChatWithOtherPacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.channelId = 0;
+            object.content = "";
+        }
+        if (message.channelId != null && message.hasOwnProperty("channelId"))
+            object.channelId = message.channelId;
+        if (message.content != null && message.hasOwnProperty("content"))
+            object.content = message.content;
+        return object;
+    };
+
+    /**
+     * Converts this RespChatWithOtherPacket to JSON.
+     * @function toJSON
+     * @memberof RespChatWithOtherPacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    RespChatWithOtherPacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return RespChatWithOtherPacket;
+})();
+
 $root.ReqAttackMonsterPacket = (function() {
 
     /**
