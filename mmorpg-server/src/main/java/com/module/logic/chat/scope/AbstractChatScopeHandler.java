@@ -21,5 +21,5 @@ public abstract class AbstractChatScopeHandler {
     public abstract ChatScopeType getChatScopeType();
 
     //方便扩展，其他频道可能需要过滤自己
-    public abstract void dealWithChat(Player player,int channelId,String content);
+    public abstract void dealWithChat(Player player,int channelId,long creatureId,String content);
 }

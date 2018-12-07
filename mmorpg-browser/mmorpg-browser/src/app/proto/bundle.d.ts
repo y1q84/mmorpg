@@ -1882,8 +1882,14 @@ export class ReqChatWithOtherPacket implements IReqChatWithOtherPacket {
 /** Properties of a RespChatWithOtherPacket. */
 export interface IRespChatWithOtherPacket {
 
+    /** RespChatWithOtherPacket playerId */
+    playerId?: (number|Long|null);
+
     /** RespChatWithOtherPacket channelId */
     channelId?: (number|null);
+
+    /** RespChatWithOtherPacket creatureId */
+    creatureId?: (number|Long|null);
 
     /** RespChatWithOtherPacket content */
     content?: (string|null);
@@ -1898,8 +1904,14 @@ export class RespChatWithOtherPacket implements IRespChatWithOtherPacket {
      */
     constructor(properties?: IRespChatWithOtherPacket);
 
+    /** RespChatWithOtherPacket playerId. */
+    public playerId: (number|Long);
+
     /** RespChatWithOtherPacket channelId. */
     public channelId: number;
+
+    /** RespChatWithOtherPacket creatureId. */
+    public creatureId: (number|Long);
 
     /** RespChatWithOtherPacket content. */
     public content: string;

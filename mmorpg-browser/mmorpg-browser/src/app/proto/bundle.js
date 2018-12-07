@@ -4471,7 +4471,9 @@ $root.RespChatWithOtherPacket = (function() {
      * Properties of a RespChatWithOtherPacket.
      * @exports IRespChatWithOtherPacket
      * @interface IRespChatWithOtherPacket
+     * @property {number|Long|null} [playerId] RespChatWithOtherPacket playerId
      * @property {number|null} [channelId] RespChatWithOtherPacket channelId
+     * @property {number|Long|null} [creatureId] RespChatWithOtherPacket creatureId
      * @property {string|null} [content] RespChatWithOtherPacket content
      */
 
@@ -4491,12 +4493,28 @@ $root.RespChatWithOtherPacket = (function() {
     }
 
     /**
+     * RespChatWithOtherPacket playerId.
+     * @member {number|Long} playerId
+     * @memberof RespChatWithOtherPacket
+     * @instance
+     */
+    RespChatWithOtherPacket.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
      * RespChatWithOtherPacket channelId.
      * @member {number} channelId
      * @memberof RespChatWithOtherPacket
      * @instance
      */
     RespChatWithOtherPacket.prototype.channelId = 0;
+
+    /**
+     * RespChatWithOtherPacket creatureId.
+     * @member {number|Long} creatureId
+     * @memberof RespChatWithOtherPacket
+     * @instance
+     */
+    RespChatWithOtherPacket.prototype.creatureId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * RespChatWithOtherPacket content.
@@ -4530,10 +4548,14 @@ $root.RespChatWithOtherPacket = (function() {
     RespChatWithOtherPacket.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.playerId);
         if (message.channelId != null && message.hasOwnProperty("channelId"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.channelId);
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.channelId);
+        if (message.creatureId != null && message.hasOwnProperty("creatureId"))
+            writer.uint32(/* id 3, wireType 0 =*/24).int64(message.creatureId);
         if (message.content != null && message.hasOwnProperty("content"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.content);
+            writer.uint32(/* id 4, wireType 2 =*/34).string(message.content);
         return writer;
     };
 
@@ -4569,9 +4591,15 @@ $root.RespChatWithOtherPacket = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.channelId = reader.int32();
+                message.playerId = reader.int64();
                 break;
             case 2:
+                message.channelId = reader.int32();
+                break;
+            case 3:
+                message.creatureId = reader.int64();
+                break;
+            case 4:
                 message.content = reader.string();
                 break;
             default:
@@ -4609,9 +4637,15 @@ $root.RespChatWithOtherPacket = (function() {
     RespChatWithOtherPacket.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                return "playerId: integer|Long expected";
         if (message.channelId != null && message.hasOwnProperty("channelId"))
             if (!$util.isInteger(message.channelId))
                 return "channelId: integer expected";
+        if (message.creatureId != null && message.hasOwnProperty("creatureId"))
+            if (!$util.isInteger(message.creatureId) && !(message.creatureId && $util.isInteger(message.creatureId.low) && $util.isInteger(message.creatureId.high)))
+                return "creatureId: integer|Long expected";
         if (message.content != null && message.hasOwnProperty("content"))
             if (!$util.isString(message.content))
                 return "content: string expected";
@@ -4630,8 +4664,26 @@ $root.RespChatWithOtherPacket = (function() {
         if (object instanceof $root.RespChatWithOtherPacket)
             return object;
         var message = new $root.RespChatWithOtherPacket();
+        if (object.playerId != null)
+            if ($util.Long)
+                (message.playerId = $util.Long.fromValue(object.playerId)).unsigned = false;
+            else if (typeof object.playerId === "string")
+                message.playerId = parseInt(object.playerId, 10);
+            else if (typeof object.playerId === "number")
+                message.playerId = object.playerId;
+            else if (typeof object.playerId === "object")
+                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber();
         if (object.channelId != null)
             message.channelId = object.channelId | 0;
+        if (object.creatureId != null)
+            if ($util.Long)
+                (message.creatureId = $util.Long.fromValue(object.creatureId)).unsigned = false;
+            else if (typeof object.creatureId === "string")
+                message.creatureId = parseInt(object.creatureId, 10);
+            else if (typeof object.creatureId === "number")
+                message.creatureId = object.creatureId;
+            else if (typeof object.creatureId === "object")
+                message.creatureId = new $util.LongBits(object.creatureId.low >>> 0, object.creatureId.high >>> 0).toNumber();
         if (object.content != null)
             message.content = String(object.content);
         return message;
@@ -4651,11 +4703,31 @@ $root.RespChatWithOtherPacket = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.playerId = options.longs === String ? "0" : 0;
             object.channelId = 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.creatureId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.creatureId = options.longs === String ? "0" : 0;
             object.content = "";
         }
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            if (typeof message.playerId === "number")
+                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+            else
+                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber() : message.playerId;
         if (message.channelId != null && message.hasOwnProperty("channelId"))
             object.channelId = message.channelId;
+        if (message.creatureId != null && message.hasOwnProperty("creatureId"))
+            if (typeof message.creatureId === "number")
+                object.creatureId = options.longs === String ? String(message.creatureId) : message.creatureId;
+            else
+                object.creatureId = options.longs === String ? $util.Long.prototype.toString.call(message.creatureId) : options.longs === Number ? new $util.LongBits(message.creatureId.low >>> 0, message.creatureId.high >>> 0).toNumber() : message.creatureId;
         if (message.content != null && message.hasOwnProperty("content"))
             object.content = message.content;
         return object;

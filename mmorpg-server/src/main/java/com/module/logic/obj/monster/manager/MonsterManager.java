@@ -1,9 +1,9 @@
-package com.module.logic.monster.manager;
+package com.module.logic.obj.monster.manager;
 
 import com.common.resource.provider.ResourceProvider;
 import com.common.resource.provider.StaticResourceProvider;
-import com.module.logic.monster.resource.Follower;
-import com.module.logic.monster.resource.Monster;
+import com.module.logic.obj.monster.resource.Follower;
+import com.module.logic.obj.monster.resource.Monster;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

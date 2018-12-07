@@ -1,4 +1,4 @@
-package com.module.logic.monster.resource;
+package com.module.logic.obj.monster.resource;
 
 //@Resources
 public class Follower {

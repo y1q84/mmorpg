@@ -4,24 +4,23 @@ import com.module.logic.map.MapInstance;
 import com.module.logic.map.obj.CreatureObject;
 import com.module.logic.map.obj.ObjectType;
 import com.module.logic.map.resource.CreatureResource;
-import com.module.logic.obj.monster.resource.Monster;
+import com.module.logic.obj.npc.Npc;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MonsterCreator extends AbstractCreator {
+public class NpcCreator extends AbstractCreator {
     @Override
     public CreatureObject createObject(CreatureResource creatureResource, MapInstance mapInstance) {
-        Monster monster=new Monster();
-        monster.setId(creatureResource.getCreatureId());
-        monster.setName(creatureResource.getName());
-        monster.setHp(creatureResource.getHp());
-        monster.setLevel(creatureResource.getLevel());
-        //等等...其他属性设置
-        return monster;
+        Npc npc=new Npc();
+        npc.setId(creatureResource.getCreatureId());
+        npc.setName(creatureResource.getName());
+        npc.setHp(creatureResource.getHp());
+        npc.setMapId(creatureResource.getMapId());
+        return npc;
     }
 
     @Override
     public ObjectType getObjectType() {
-        return ObjectType.MONSTER;
+        return ObjectType.NPC;
     }
 }

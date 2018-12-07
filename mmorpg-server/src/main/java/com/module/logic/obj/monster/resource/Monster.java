@@ -1,4 +1,4 @@
-package com.module.logic.monster.resource;
+package com.module.logic.obj.monster.resource;
 
 import com.common.resource.ResourceDefaultFormat;
 import com.common.resource.annotation.Id;

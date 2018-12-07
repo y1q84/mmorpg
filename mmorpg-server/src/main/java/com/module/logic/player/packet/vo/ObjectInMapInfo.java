@@ -2,7 +2,8 @@ package com.module.logic.player.packet.vo;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.module.logic.map.obj.MapObject;
-import com.module.logic.monster.resource.Monster;
+import com.module.logic.obj.monster.resource.Monster;
+import com.module.logic.obj.npc.Npc;
 import com.module.logic.player.Player;
 
 public class ObjectInMapInfo {
@@ -38,6 +39,14 @@ public class ObjectInMapInfo {
             objectInMapInfo.setStatus(monster.getHp()>0?1:0);
             objectInMapInfo.setLevel(monster.getLevel());
             objectInMapInfo.setObjectType("MONSTER");
+            return objectInMapInfo;
+        }else if(mapObject instanceof Npc){
+            Npc npc=(Npc)mapObject;
+            objectInMapInfo.setObjectId(npc.getId());
+            objectInMapInfo.setObjectName(npc.getName());
+            objectInMapInfo.setHp(npc.getHp());
+            objectInMapInfo.setStatus(npc.getHp()>0?1:0);
+            objectInMapInfo.setObjectType("NPC");
             return objectInMapInfo;
         }
         //TODO 怪物、NPC转为改对象存储发送

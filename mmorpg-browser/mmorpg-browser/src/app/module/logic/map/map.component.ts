@@ -75,6 +75,8 @@ export class MapComponent implements OnInit {
   sendChangeSceneMessage() {
     this.wsService.sendMess(ReqChangeMapInstancePacket, {oldMapId: this.oldSceneId , newMapId: this.selectedScene});
   }
+
+  // 发送消息指令
   sendCommandMessage() {
     const command = this.inputContent.split(' ');
     console.log(command[1]);
@@ -90,6 +92,7 @@ export class MapComponent implements OnInit {
       default:
         console.log(`该请求${Number(command[0])}不存在...`);
     }
+    this.inputContent = '';
   }
 
 
@@ -115,6 +118,8 @@ export class MapComponent implements OnInit {
         }
         if (val.objectType === 'MONSTER') {
             this.receviceMessage += `怪物id:${val.objectId}\n怪物姓名:${val.objectName}\n怪物血量:${val.hp}\n状态:${status}\n怪物等级:${val.level}\n`;
+        } else  if (val.objectType === 'NPC') {
+            this.receviceMessage += `Npc id:${val.objectId}\nNpc姓名:${val.objectName}\nNpc血量:${val.hp}\n状态:${status}\n`;
         } else if (val.objectType === 'PLAYER') {
 
             this.receviceMessage += `玩家id:${val.objectId}\n玩家姓名:${val.objectName}\n玩家血量:${val.hp}\n状态:${status}\n玩家等级:${val.level}\n`;
@@ -147,6 +152,23 @@ export class MapComponent implements OnInit {
   // 响应聊天消息
   respSendChat(data: any) {
       console.log('响应聊天消息...');
-      this.receviceMessage += `消息内容：${data.respObj.content}`;
+      /**
+       * if (data.respObj.roleType === 'npc'){
+       *   this.receviceMessage += `发给npc的消息内容：${data.respObj.content}\n`;
+       *    // 发送npc响应的消息
+       *    // npc回应信息
+       *   this.receviceMessage += `npc回应消息：大侠，我早已恭候多时了，宝剑配英雄，来，接🗡！`;
+       * }
+       */
+      if ( data.respObj.creatureId !== -1) {
+        this.receviceMessage += `id为${data.respObj.playerId}的玩家，发给npc的消息内容：${data.respObj.content}\n`;
+        if (data.respObj.creatureId === 10101) {
+          this.receviceMessage += `npc回应消息：大侠，我早已恭候多时了，宝剑配英雄，来！接剑！\n`;
+        } else if (data.respObj.creatureId === 10102 ) {
+          this.receviceMessage += `npc回应消息：大侠，终于等到你啦，快来帮我出这口恶气！\n`;
+        }
+      } else {
+        this.receviceMessage += `id为${data.respObj.playerId}的玩家，发送的消息内容：${data.respObj.content}\n`;
+      }
   }
 }

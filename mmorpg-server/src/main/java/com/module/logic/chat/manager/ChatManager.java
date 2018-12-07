@@ -24,12 +24,12 @@ public class ChatManager {
         type2Handler.put(abstractChatScopeHandler.getChatScopeType(),abstractChatScopeHandler);
     }
 
-    public void dealWithChat(Player player,int channelId,String message){
+    public void dealWithChat(Player player,int channelId,long creatureId,String message){
         //需要根据channel获取到type
         List<ChannelResource> list=resourceProvider.readList();
         list.forEach((k)->{
             if(k.getChannelId()==channelId){
-                type2Handler.get(k.getChatScopeType()).dealWithChat(player,channelId,message);
+                type2Handler.get(k.getChatScopeType()).dealWithChat(player,channelId,creatureId,message);
             }
         });
     }

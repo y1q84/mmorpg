@@ -20,8 +20,16 @@ public class ChatService {
         Player player=playerManager.getPlayer2session().inverse().get(session);
         String content=reqChatWithOtherPacket.getContent();
         String[] arr=content.split("\\|");
+        //规定：第一个为channelId,第二个为生物id(可为空),第三个为消息内容
         int channelId=Integer.parseInt(arr[0]);
-        String message=arr[1];
-        chatManager.dealWithChat(player,channelId,message);
+        String message="";
+        long creatureId=-1;
+        if(arr.length>2){
+            creatureId=Long.parseLong(arr[1]);
+            message=arr[2];
+        }else{
+            message=arr[1];
+        }
+        chatManager.dealWithChat(player,channelId,creatureId,message);
     }
 }
