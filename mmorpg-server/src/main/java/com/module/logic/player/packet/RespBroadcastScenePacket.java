@@ -21,6 +21,14 @@ public class RespBroadcastScenePacket extends AbstractPacket {
     @Protobuf(description = "广播内容")
     private String result;
 
+    public RespBroadcastScenePacket(){}
+
+    public RespBroadcastScenePacket(long mapId,long playerId,String result){
+        this.mapId=mapId;
+        this.playerId=playerId;
+        this.result=result;
+    }
+
     public long getMapId() {
         return mapId;
     }

@@ -7,9 +7,11 @@ public class SkillResource {
     @Id
     private int id;//不同技能的唯一标识
     private int skillId;
+    private String skillName;
     private int level;
-    private String consume;
+    private int consumeMp;
     private int cd;//冷却
+    private int damage;
     // TODO 技能升级、升级消耗
 
 
@@ -29,6 +31,14 @@ public class SkillResource {
         this.skillId = skillId;
     }
 
+    public String getSkillName() {
+        return skillName;
+    }
+
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
+    }
+
     public int getLevel() {
         return level;
     }
@@ -37,12 +47,12 @@ public class SkillResource {
         this.level = level;
     }
 
-    public String getConsume() {
-        return consume;
+    public int getConsumeMp() {
+        return consumeMp;
     }
 
-    public void setConsume(String consume) {
-        this.consume = consume;
+    public void setConsumeMp(int consumeMp) {
+        this.consumeMp = consumeMp;
     }
 
     public int getCd() {
@@ -51,5 +61,13 @@ public class SkillResource {
 
     public void setCd(int cd) {
         this.cd = cd;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 }

@@ -1,7 +1,0 @@
-//请求进入场景
-message ReqEnterScenePacket {  
-// 玩家id
-optional int64 playerId=1;
-// 场景id
-optional int64 sceneId=2;
-}

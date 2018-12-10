@@ -59,6 +59,10 @@ public class PacketId {
     public static final short ATTACK_MONSTER_REQ=10203;
     /**响应攻击怪物**/
     public static final short ATTACK_MONSTER_RESP=10204;
+    /**请求使用技能**/
+    public static final short USE_SKILL_REQ=10205;
+    /**响应使用技能**/
+    public static final short USE_SKILL_RESP=10206;
 
     /**请求移动命令**/
     public static final short MOVE_COMMAND_REQ=10301;

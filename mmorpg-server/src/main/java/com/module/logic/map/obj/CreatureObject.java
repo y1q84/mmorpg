@@ -12,6 +12,8 @@ public class CreatureObject extends MapObject {
     private int level;
     //血量
     private int hp;
+    //蓝量
+    private int mp;
     //经验
     private int exp;
     //判断生物是否已在场景里面
@@ -47,6 +49,14 @@ public class CreatureObject extends MapObject {
 
     public void setHp(int hp) {
         this.hp = hp;
+    }
+
+    public int getMp() {
+        return mp;
+    }
+
+    public void setMp(int mp) {
+        this.mp = mp;
     }
 
     public int getExp() {

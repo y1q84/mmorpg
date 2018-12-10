@@ -1,7 +1,0 @@
-//用户登录
-message ReqLoginPacket {  
-// 账号
-optional string account=1;
-// 密码
-optional string password=2;
-}
