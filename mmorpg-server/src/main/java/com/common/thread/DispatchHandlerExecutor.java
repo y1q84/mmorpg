@@ -28,11 +28,19 @@ public class DispatchHandlerExecutor {
     }
 
     /**
-     * 添加定时任务
-     * @param task
-     * @param initialDelay
-     * @param period
-     * @param unit
+     * 添加延时任务
+     */
+    public Future schedule(AbstractTask task, long delay, TimeUnit unit){
+        ScheduledExecutorService executorService=getScheduledExecutorService(task.getDispatchHashCode());
+        return executorService.schedule(task,delay,unit);
+    }
+
+    /**
+     * 添加定时任务(周期执行)
+     * @param task 执行线程
+     * @param initialDelay 初始化延时
+     * @param period 两次开始执行最小间隔时间
+     * @param unit 计时单位
      * @return
      */
     public Future scheduleAtFixedRate(AbstractTask task, long initialDelay, long period, TimeUnit unit){
@@ -41,11 +49,11 @@ public class DispatchHandlerExecutor {
     }
 
     /**
-     * 添加延迟任务
-     * @param task
-     * @param initialDelay
-     * @param delay
-     * @param unit
+     * 添加延迟定时任务(周期执行)
+     * @param task 执行线程
+     * @param initialDelay 初始化延时
+     * @param delay 前一次执行结束到下一次执行开始的间隔时间
+     * @param unit 计时单位
      * @return
      */
     public Future scheduleWithFixedDelay(AbstractTask task, long initialDelay, long delay, TimeUnit unit){

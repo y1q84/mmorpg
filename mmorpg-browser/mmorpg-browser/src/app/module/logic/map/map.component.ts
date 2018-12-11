@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from 'src/app/shared/websocket.service';
 import { PacketId } from '../../packetId/PacketId';
-import { ReqEnterScenePacket, ReqChangeMapInstancePacket, ReqAttackMonsterPacket, ReqChatWithOtherPacket } from 'src/app/proto/bundle';
+import { ReqEnterScenePacket, ReqChangeMapInstancePacket, ReqAttackMonsterPacket, ReqChatWithOtherPacket,
+  ReqUseSkillPacket } from 'src/app/proto/bundle';
 
 @Component({
   selector: 'app-map',
@@ -18,6 +19,7 @@ export class MapComponent implements OnInit {
   // scene = '1001 1002 1003 1004'.split(' ');
   scene: string[] = [];
   selectedScene = '1001';
+  isChange: boolean;
 
 
   constructor(private wsService: WebsocketService) { }
@@ -30,6 +32,7 @@ export class MapComponent implements OnInit {
   onChange(newValue) {
     console.log(newValue);
     this.selectedScene = newValue;
+    this.isChange = true;
   }
 
   sceneMessage() {
@@ -57,6 +60,9 @@ export class MapComponent implements OnInit {
                     break;
               case PacketId.SEND_CHAT_RESP:
                     this.respSendChat(data);
+                    break;
+              case PacketId.USE_SKILL_RESP:
+                    this.respUseSkill(data);
                     break;
              default:
                   console.log(data.packetId + '对应请求为。。');
@@ -88,6 +94,12 @@ export class MapComponent implements OnInit {
         break;
       case PacketId.SEND_CHAT_REQ:
         this.wsService.sendMess(ReqChatWithOtherPacket, {content: command[1]});
+        break;
+      case PacketId.USE_SKILL_REQ:
+        const content = command[1].split('|');
+        console.log('mapId' + (this.isChange ? this.selectedScene : this.oldSceneId) + ',targetId' + content[0] + ',技能id' + content[1]);
+        this.wsService.sendMess(ReqUseSkillPacket,
+          {mapId: (this.isChange ? this.selectedScene : this.oldSceneId) , targetId: content[0] , skillId: content[1]});
         break;
       default:
         console.log(`该请求${Number(command[0])}不存在...`);
@@ -170,5 +182,11 @@ export class MapComponent implements OnInit {
       } else {
         this.receviceMessage += `id为${data.respObj.playerId}的玩家，发送的消息内容：${data.respObj.content}\n`;
       }
+  }
+
+  // 响应使用技能
+  respUseSkill(data: any) {
+    console.log('响应使用技能...');
+    this.receviceMessage += `${data.respObj.result}\n`;
   }
 }

@@ -1,7 +1,9 @@
 package com.module.logic.skill.resource;
 
 import com.common.resource.annotation.Id;
+import com.common.resource.annotation.Resources;
 
+@Resources
 public class SkillResource {
 
     @Id
@@ -9,9 +11,10 @@ public class SkillResource {
     private int skillId;
     private String skillName;
     private int level;
-    private int consumeMp;
+    private int consumeMp;//消耗蓝
     private int cd;//冷却
     private int damage;
+    private int increaseMp;//回蓝
     // TODO 技能升级、升级消耗
 
 
@@ -69,5 +72,13 @@ public class SkillResource {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public int getIncreaseMp() {
+        return increaseMp;
+    }
+
+    public void setIncreaseMp(int increaseMp) {
+        this.increaseMp = increaseMp;
     }
 }

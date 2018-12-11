@@ -2172,3 +2172,195 @@ export class RespAttackMonsterPacket implements IRespAttackMonsterPacket {
      */
     public toJSON(): { [k: string]: any };
 }
+
+/** Properties of a ReqUseSkillPacket. */
+export interface IReqUseSkillPacket {
+
+    /** ReqUseSkillPacket mapId */
+    mapId?: (number|Long|null);
+
+    /** ReqUseSkillPacket targetId */
+    targetId?: (number|Long|null);
+
+    /** ReqUseSkillPacket skillId */
+    skillId?: (number|null);
+}
+
+/** Represents a ReqUseSkillPacket. */
+export class ReqUseSkillPacket implements IReqUseSkillPacket {
+
+    /**
+     * Constructs a new ReqUseSkillPacket.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IReqUseSkillPacket);
+
+    /** ReqUseSkillPacket mapId. */
+    public mapId: (number|Long);
+
+    /** ReqUseSkillPacket targetId. */
+    public targetId: (number|Long);
+
+    /** ReqUseSkillPacket skillId. */
+    public skillId: number;
+
+    /**
+     * Creates a new ReqUseSkillPacket instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ReqUseSkillPacket instance
+     */
+    public static create(properties?: IReqUseSkillPacket): ReqUseSkillPacket;
+
+    /**
+     * Encodes the specified ReqUseSkillPacket message. Does not implicitly {@link ReqUseSkillPacket.verify|verify} messages.
+     * @param message ReqUseSkillPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IReqUseSkillPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ReqUseSkillPacket message, length delimited. Does not implicitly {@link ReqUseSkillPacket.verify|verify} messages.
+     * @param message ReqUseSkillPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IReqUseSkillPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a ReqUseSkillPacket message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ReqUseSkillPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ReqUseSkillPacket;
+
+    /**
+     * Decodes a ReqUseSkillPacket message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ReqUseSkillPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ReqUseSkillPacket;
+
+    /**
+     * Verifies a ReqUseSkillPacket message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a ReqUseSkillPacket message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ReqUseSkillPacket
+     */
+    public static fromObject(object: { [k: string]: any }): ReqUseSkillPacket;
+
+    /**
+     * Creates a plain object from a ReqUseSkillPacket message. Also converts values to other types if specified.
+     * @param message ReqUseSkillPacket
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ReqUseSkillPacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ReqUseSkillPacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a RespUseSkillPacket. */
+export interface IRespUseSkillPacket {
+
+    /** RespUseSkillPacket result */
+    result?: (string|null);
+}
+
+/** Represents a RespUseSkillPacket. */
+export class RespUseSkillPacket implements IRespUseSkillPacket {
+
+    /**
+     * Constructs a new RespUseSkillPacket.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IRespUseSkillPacket);
+
+    /** RespUseSkillPacket result. */
+    public result: string;
+
+    /**
+     * Creates a new RespUseSkillPacket instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns RespUseSkillPacket instance
+     */
+    public static create(properties?: IRespUseSkillPacket): RespUseSkillPacket;
+
+    /**
+     * Encodes the specified RespUseSkillPacket message. Does not implicitly {@link RespUseSkillPacket.verify|verify} messages.
+     * @param message RespUseSkillPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IRespUseSkillPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified RespUseSkillPacket message, length delimited. Does not implicitly {@link RespUseSkillPacket.verify|verify} messages.
+     * @param message RespUseSkillPacket message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IRespUseSkillPacket, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a RespUseSkillPacket message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns RespUseSkillPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RespUseSkillPacket;
+
+    /**
+     * Decodes a RespUseSkillPacket message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns RespUseSkillPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RespUseSkillPacket;
+
+    /**
+     * Verifies a RespUseSkillPacket message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a RespUseSkillPacket message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns RespUseSkillPacket
+     */
+    public static fromObject(object: { [k: string]: any }): RespUseSkillPacket;
+
+    /**
+     * Creates a plain object from a RespUseSkillPacket message. Also converts values to other types if specified.
+     * @param message RespUseSkillPacket
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: RespUseSkillPacket, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this RespUseSkillPacket to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}

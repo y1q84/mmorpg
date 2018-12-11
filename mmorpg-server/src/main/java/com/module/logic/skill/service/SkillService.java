@@ -1,11 +1,12 @@
 package com.module.logic.skill.service;
 
 import com.common.session.Session;
+import com.common.thread.DispatchHandlerExecutor;
+import com.common.thread.DispatchTask;
 import com.common.util.PacketUtil;
 import com.module.logic.map.MapInstance;
 import com.module.logic.map.manager.MapManager;
 import com.module.logic.map.obj.CreatureObject;
-import com.module.logic.map.obj.MapObject;
 import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
 import com.module.logic.player.manager.PlayerManager;
@@ -13,6 +14,7 @@ import com.module.logic.player.packet.RespBroadcastScenePacket;
 import com.module.logic.player.service.PlayerService;
 import com.module.logic.skill.manager.SkillManager;
 import com.module.logic.skill.packet.ReqUseSkillPacket;
+import com.module.logic.skill.packet.RespUseSkillPacket;
 import com.module.logic.skill.resource.SkillResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class SkillService {
@@ -31,6 +34,8 @@ public class SkillService {
 
     @Autowired
     private PlayerService playerService;
+    @Autowired
+    private DispatchHandlerExecutor dispatchHandlerExecutor;
 
     public void useSkill(Session session, ReqUseSkillPacket reqUseSkillPacket){
         //使用技能消耗mp
@@ -40,6 +45,7 @@ public class SkillService {
         long mapId=reqUseSkillPacket.getMapId();
         long targetId=reqUseSkillPacket.getTargetId();
         MapInstance mapInstance=MapManager.getInstance().getMapInstance(mapId);
+        RespUseSkillPacket respUseSkillPacket=new RespUseSkillPacket();
         if(mapInstance==null){
             logger.info("该场景不存在...");
             return;
@@ -52,6 +58,8 @@ public class SkillService {
         //判断上一个技能的cd是否到期
         SkillResource skillResource=SkillManager.getInstance().getSkillResourceById(skillId);
         if(!isCanUseSkill(skillResource)){
+            respUseSkillPacket.setResult("技能冷却中，暂时无法使用...");
+            PacketUtil.sendPacket(session,respUseSkillPacket);
             logger.info("技能冷却中，暂时无法使用...");
             return ;
         }
@@ -60,6 +68,8 @@ public class SkillService {
         PlayerEntity playerEntity=player.getPlayerEntity();
         int mp=playerEntity.getMp();
         if(skillResource.getConsumeMp()>mp){
+            respUseSkillPacket.setResult("蓝量不足，无法使用技能...");
+            PacketUtil.sendPacket(session,respUseSkillPacket);
             logger.info("蓝量不足，无法使用技能...");
             return;
         }
@@ -71,10 +81,11 @@ public class SkillService {
         int value=skillResource.getDamage();
         CreatureObject creatureObject=(CreatureObject) mapInstance.getObjectInMap().get(targetId);
         if(creatureObject==null){
+            respUseSkillPacket.setResult("技能攻击的目标不存在...");
+            PacketUtil.sendPacket(session,respUseSkillPacket);
             logger.info("技能攻击的目标不存在...");
             return;
         }
-
         //被攻击方血量减少
         int diff=creatureObject.getHp()-value;
         boolean flag=false;
@@ -87,6 +98,14 @@ public class SkillService {
         }
         //技能冷却
         addCoolDown(skillResource);
+        //设置恢复蓝量
+        //过一段时间恢复
+        //可以添加一个延时任务
+        increaseMp(session,skillResource);
+
+        //发送响应释放技能的包
+        respUseSkillPacket.setResult("成功释放技能...");
+        PacketUtil.sendPacket(session,respUseSkillPacket);
 
         //判断生物血量是否为空
         String result;
@@ -111,12 +130,13 @@ public class SkillService {
     public boolean isCanUseSkill(SkillResource skillResource){
         int skillId=skillResource.getSkillId();
         //判断skillCD是否为空
-        if(skillCD==null){
+        if(skillCD.size()<=0){
             return true;
         }
         //判断集合中是否存在该种技能
-        long cd=skillCD.get(skillId);
-        if(cd==0){
+        System.out.println("技能id对应的技能："+skillCD.get(skillId));
+        Long cd=skillCD.get(skillId);
+        if(cd==null){
             return true;
         }
         //是否超时
@@ -124,5 +144,30 @@ public class SkillService {
             return true;
         }
         return false;
+    }
+
+    //每隔一段时间回蓝
+    public void increaseMp(Session session,SkillResource skillResource){
+        dispatchHandlerExecutor.scheduleWithFixedDelay(new DispatchTask() {
+            @Override
+            public String getHashString() {
+                return String.valueOf(session.getId());
+            }
+
+            @Override
+            public void run() {
+                try{
+                    //回蓝
+                    PlayerManager playerManager=PlayerManager.getInstance();
+                    Player player=playerManager.getPlayer2session().inverse().get(session);
+                    PlayerEntity playerEntity=player.getPlayerEntity();
+                    playerEntity.setMp(playerEntity.getMp()+skillResource.getIncreaseMp());
+                    playerManager.updatePlayerEntity(playerEntity);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        },0,10, TimeUnit.MINUTES);
+
     }
 }

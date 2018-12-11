@@ -5172,4 +5172,451 @@ $root.RespAttackMonsterPacket = (function() {
     return RespAttackMonsterPacket;
 })();
 
+$root.ReqUseSkillPacket = (function() {
+
+    /**
+     * Properties of a ReqUseSkillPacket.
+     * @exports IReqUseSkillPacket
+     * @interface IReqUseSkillPacket
+     * @property {number|Long|null} [mapId] ReqUseSkillPacket mapId
+     * @property {number|Long|null} [targetId] ReqUseSkillPacket targetId
+     * @property {number|null} [skillId] ReqUseSkillPacket skillId
+     */
+
+    /**
+     * Constructs a new ReqUseSkillPacket.
+     * @exports ReqUseSkillPacket
+     * @classdesc Represents a ReqUseSkillPacket.
+     * @implements IReqUseSkillPacket
+     * @constructor
+     * @param {IReqUseSkillPacket=} [properties] Properties to set
+     */
+    function ReqUseSkillPacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ReqUseSkillPacket mapId.
+     * @member {number|Long} mapId
+     * @memberof ReqUseSkillPacket
+     * @instance
+     */
+    ReqUseSkillPacket.prototype.mapId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * ReqUseSkillPacket targetId.
+     * @member {number|Long} targetId
+     * @memberof ReqUseSkillPacket
+     * @instance
+     */
+    ReqUseSkillPacket.prototype.targetId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * ReqUseSkillPacket skillId.
+     * @member {number} skillId
+     * @memberof ReqUseSkillPacket
+     * @instance
+     */
+    ReqUseSkillPacket.prototype.skillId = 0;
+
+    /**
+     * Creates a new ReqUseSkillPacket instance using the specified properties.
+     * @function create
+     * @memberof ReqUseSkillPacket
+     * @static
+     * @param {IReqUseSkillPacket=} [properties] Properties to set
+     * @returns {ReqUseSkillPacket} ReqUseSkillPacket instance
+     */
+    ReqUseSkillPacket.create = function create(properties) {
+        return new ReqUseSkillPacket(properties);
+    };
+
+    /**
+     * Encodes the specified ReqUseSkillPacket message. Does not implicitly {@link ReqUseSkillPacket.verify|verify} messages.
+     * @function encode
+     * @memberof ReqUseSkillPacket
+     * @static
+     * @param {IReqUseSkillPacket} message ReqUseSkillPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqUseSkillPacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.mapId != null && message.hasOwnProperty("mapId"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.mapId);
+        if (message.targetId != null && message.hasOwnProperty("targetId"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.targetId);
+        if (message.skillId != null && message.hasOwnProperty("skillId"))
+            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.skillId);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ReqUseSkillPacket message, length delimited. Does not implicitly {@link ReqUseSkillPacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ReqUseSkillPacket
+     * @static
+     * @param {IReqUseSkillPacket} message ReqUseSkillPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReqUseSkillPacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ReqUseSkillPacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof ReqUseSkillPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ReqUseSkillPacket} ReqUseSkillPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqUseSkillPacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ReqUseSkillPacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.mapId = reader.int64();
+                break;
+            case 2:
+                message.targetId = reader.int64();
+                break;
+            case 3:
+                message.skillId = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ReqUseSkillPacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ReqUseSkillPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ReqUseSkillPacket} ReqUseSkillPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReqUseSkillPacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ReqUseSkillPacket message.
+     * @function verify
+     * @memberof ReqUseSkillPacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ReqUseSkillPacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.mapId != null && message.hasOwnProperty("mapId"))
+            if (!$util.isInteger(message.mapId) && !(message.mapId && $util.isInteger(message.mapId.low) && $util.isInteger(message.mapId.high)))
+                return "mapId: integer|Long expected";
+        if (message.targetId != null && message.hasOwnProperty("targetId"))
+            if (!$util.isInteger(message.targetId) && !(message.targetId && $util.isInteger(message.targetId.low) && $util.isInteger(message.targetId.high)))
+                return "targetId: integer|Long expected";
+        if (message.skillId != null && message.hasOwnProperty("skillId"))
+            if (!$util.isInteger(message.skillId))
+                return "skillId: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates a ReqUseSkillPacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ReqUseSkillPacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ReqUseSkillPacket} ReqUseSkillPacket
+     */
+    ReqUseSkillPacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.ReqUseSkillPacket)
+            return object;
+        var message = new $root.ReqUseSkillPacket();
+        if (object.mapId != null)
+            if ($util.Long)
+                (message.mapId = $util.Long.fromValue(object.mapId)).unsigned = false;
+            else if (typeof object.mapId === "string")
+                message.mapId = parseInt(object.mapId, 10);
+            else if (typeof object.mapId === "number")
+                message.mapId = object.mapId;
+            else if (typeof object.mapId === "object")
+                message.mapId = new $util.LongBits(object.mapId.low >>> 0, object.mapId.high >>> 0).toNumber();
+        if (object.targetId != null)
+            if ($util.Long)
+                (message.targetId = $util.Long.fromValue(object.targetId)).unsigned = false;
+            else if (typeof object.targetId === "string")
+                message.targetId = parseInt(object.targetId, 10);
+            else if (typeof object.targetId === "number")
+                message.targetId = object.targetId;
+            else if (typeof object.targetId === "object")
+                message.targetId = new $util.LongBits(object.targetId.low >>> 0, object.targetId.high >>> 0).toNumber();
+        if (object.skillId != null)
+            message.skillId = object.skillId | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ReqUseSkillPacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ReqUseSkillPacket
+     * @static
+     * @param {ReqUseSkillPacket} message ReqUseSkillPacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ReqUseSkillPacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.mapId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.mapId = options.longs === String ? "0" : 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.targetId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.targetId = options.longs === String ? "0" : 0;
+            object.skillId = 0;
+        }
+        if (message.mapId != null && message.hasOwnProperty("mapId"))
+            if (typeof message.mapId === "number")
+                object.mapId = options.longs === String ? String(message.mapId) : message.mapId;
+            else
+                object.mapId = options.longs === String ? $util.Long.prototype.toString.call(message.mapId) : options.longs === Number ? new $util.LongBits(message.mapId.low >>> 0, message.mapId.high >>> 0).toNumber() : message.mapId;
+        if (message.targetId != null && message.hasOwnProperty("targetId"))
+            if (typeof message.targetId === "number")
+                object.targetId = options.longs === String ? String(message.targetId) : message.targetId;
+            else
+                object.targetId = options.longs === String ? $util.Long.prototype.toString.call(message.targetId) : options.longs === Number ? new $util.LongBits(message.targetId.low >>> 0, message.targetId.high >>> 0).toNumber() : message.targetId;
+        if (message.skillId != null && message.hasOwnProperty("skillId"))
+            object.skillId = message.skillId;
+        return object;
+    };
+
+    /**
+     * Converts this ReqUseSkillPacket to JSON.
+     * @function toJSON
+     * @memberof ReqUseSkillPacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ReqUseSkillPacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ReqUseSkillPacket;
+})();
+
+$root.RespUseSkillPacket = (function() {
+
+    /**
+     * Properties of a RespUseSkillPacket.
+     * @exports IRespUseSkillPacket
+     * @interface IRespUseSkillPacket
+     * @property {string|null} [result] RespUseSkillPacket result
+     */
+
+    /**
+     * Constructs a new RespUseSkillPacket.
+     * @exports RespUseSkillPacket
+     * @classdesc Represents a RespUseSkillPacket.
+     * @implements IRespUseSkillPacket
+     * @constructor
+     * @param {IRespUseSkillPacket=} [properties] Properties to set
+     */
+    function RespUseSkillPacket(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * RespUseSkillPacket result.
+     * @member {string} result
+     * @memberof RespUseSkillPacket
+     * @instance
+     */
+    RespUseSkillPacket.prototype.result = "";
+
+    /**
+     * Creates a new RespUseSkillPacket instance using the specified properties.
+     * @function create
+     * @memberof RespUseSkillPacket
+     * @static
+     * @param {IRespUseSkillPacket=} [properties] Properties to set
+     * @returns {RespUseSkillPacket} RespUseSkillPacket instance
+     */
+    RespUseSkillPacket.create = function create(properties) {
+        return new RespUseSkillPacket(properties);
+    };
+
+    /**
+     * Encodes the specified RespUseSkillPacket message. Does not implicitly {@link RespUseSkillPacket.verify|verify} messages.
+     * @function encode
+     * @memberof RespUseSkillPacket
+     * @static
+     * @param {IRespUseSkillPacket} message RespUseSkillPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespUseSkillPacket.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.result != null && message.hasOwnProperty("result"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.result);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified RespUseSkillPacket message, length delimited. Does not implicitly {@link RespUseSkillPacket.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof RespUseSkillPacket
+     * @static
+     * @param {IRespUseSkillPacket} message RespUseSkillPacket message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RespUseSkillPacket.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a RespUseSkillPacket message from the specified reader or buffer.
+     * @function decode
+     * @memberof RespUseSkillPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {RespUseSkillPacket} RespUseSkillPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespUseSkillPacket.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RespUseSkillPacket();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.result = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a RespUseSkillPacket message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof RespUseSkillPacket
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {RespUseSkillPacket} RespUseSkillPacket
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RespUseSkillPacket.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a RespUseSkillPacket message.
+     * @function verify
+     * @memberof RespUseSkillPacket
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    RespUseSkillPacket.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.result != null && message.hasOwnProperty("result"))
+            if (!$util.isString(message.result))
+                return "result: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a RespUseSkillPacket message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof RespUseSkillPacket
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {RespUseSkillPacket} RespUseSkillPacket
+     */
+    RespUseSkillPacket.fromObject = function fromObject(object) {
+        if (object instanceof $root.RespUseSkillPacket)
+            return object;
+        var message = new $root.RespUseSkillPacket();
+        if (object.result != null)
+            message.result = String(object.result);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a RespUseSkillPacket message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof RespUseSkillPacket
+     * @static
+     * @param {RespUseSkillPacket} message RespUseSkillPacket
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    RespUseSkillPacket.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.result = "";
+        if (message.result != null && message.hasOwnProperty("result"))
+            object.result = message.result;
+        return object;
+    };
+
+    /**
+     * Converts this RespUseSkillPacket to JSON.
+     * @function toJSON
+     * @memberof RespUseSkillPacket
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    RespUseSkillPacket.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return RespUseSkillPacket;
+})();
+
 module.exports = $root;

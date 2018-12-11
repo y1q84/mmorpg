@@ -1,5 +1,8 @@
 package com.module.logic.chat.scope;
 
 public enum  ChatScopeType {
-    WORLD
+    WORLD,
+    MAP,
+    REGION,
+    TEAM
 }

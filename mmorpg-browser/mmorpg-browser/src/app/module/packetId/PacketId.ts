@@ -9,7 +9,9 @@ import { ReqLoginPacket, ResLoginPacket, ReqCreateRolePacket, RespCreateRolePack
     ReqAttackMonsterPacket,
     RespAttackMonsterPacket,
     ReqChatWithOtherPacket,
-    RespChatWithOtherPacket} from 'src/app/proto/bundle';
+    RespChatWithOtherPacket,
+    ReqUseSkillPacket,
+    RespUseSkillPacket} from 'src/app/proto/bundle';
 
 
 
@@ -63,6 +65,10 @@ export class PacketId {
     public static readonly ATTACK_MONSTER_REQ: number = 10203;
     /**响应攻击怪物**/
     public static readonly ATTACK_MONSTER_RESP: number = 10204;
+    /**请求使用技能**/
+    public static readonly USE_SKILL_REQ: number = 10205;
+    /**响应使用技能**/
+    public static readonly USE_SKILL_RESP: number = 10206;
 
     constructor() {
         PacketId.add(PacketId.LOGIN_REQ, ReqLoginPacket);
@@ -83,6 +89,8 @@ export class PacketId {
         PacketId.add(PacketId.ATTACK_MONSTER_RESP, RespAttackMonsterPacket);
         PacketId.add(PacketId.SEND_CHAT_REQ, ReqChatWithOtherPacket);
         PacketId.add(PacketId.SEND_CHAT_RESP, RespChatWithOtherPacket);
+        PacketId.add(PacketId.USE_SKILL_REQ, ReqUseSkillPacket);
+        PacketId.add(PacketId.USE_SKILL_RESP, RespUseSkillPacket);
     }
 
 

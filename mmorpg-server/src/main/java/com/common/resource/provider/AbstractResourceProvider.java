@@ -20,7 +20,7 @@ public abstract class AbstractResourceProvider<T,ID> implements ResourceProvider
     public void reload() {
         try{
             if(resourceDataObject.getResources()==null||resourceDataObject.getResources().length==0){
-                throw new FileNotFoundException(String.format("该路径下文件找不到%s"+resourceDataObject.getPath()));
+                throw new FileNotFoundException(String.format("找不到路径为%s的文件",resourceDataObject.getTotalPath()));
             }
         }catch (Exception e){
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.module.logic.skill.handler;
 
 import com.common.annotation.WsClass;
+import com.common.annotation.WsMethod;
 import com.common.session.Session;
 import com.module.logic.skill.packet.ReqUseSkillPacket;
 import com.module.logic.skill.service.SkillService;
@@ -12,6 +13,7 @@ public class SkillHandler {
     @Autowired
     private SkillService skillService;
 
+    @WsMethod
     public void useSkill(Session session, ReqUseSkillPacket reqUseSkillPacket){
         skillService.useSkill(session,reqUseSkillPacket);
     }
