@@ -96,8 +96,8 @@ public class DispatchHandler extends SimpleChannelInboundHandler implements Bean
                     packet2Bean.put(cla,bean);
                     packet2Method.put(cla,method);
 
-                    logger.info("spring中的bean初始化完成之后调用，bean对象为："+bean.getClass().getName());
-                    logger.info("spring中的bean初始化完成之后调用，对应方法为："+method.getName());
+//                    logger.info("spring中的bean初始化完成之后调用，bean对象为："+bean.getClass().getName());
+//                    logger.info("spring中的bean初始化完成之后调用，对应方法为："+method.getName());
 
                 }else{
                     continue;
@@ -110,7 +110,7 @@ public class DispatchHandler extends SimpleChannelInboundHandler implements Bean
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String name) throws BeansException {
-        logger.info("传进来的bean"+bean.getClass().getName());
+//        logger.info("传进来的bean"+bean.getClass().getName());
 
         return bean;
     }

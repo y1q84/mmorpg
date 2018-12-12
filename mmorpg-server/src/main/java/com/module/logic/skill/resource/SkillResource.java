@@ -15,6 +15,7 @@ public class SkillResource {
     private int cd;//冷却
     private int damage;
     private int increaseMp;//回蓝
+    private int maxIncreaseMp;//最大回蓝量
     // TODO 技能升级、升级消耗
 
 
@@ -80,5 +81,13 @@ public class SkillResource {
 
     public void setIncreaseMp(int increaseMp) {
         this.increaseMp = increaseMp;
+    }
+
+    public int getMaxIncreaseMp() {
+        return maxIncreaseMp;
+    }
+
+    public void setMaxIncreaseMp(int maxIncreaseMp) {
+        this.maxIncreaseMp = maxIncreaseMp;
     }
 }

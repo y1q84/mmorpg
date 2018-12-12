@@ -1,5 +1,9 @@
 package com.module.logic.map.obj;
 
+import com.module.logic.skill.resource.SkillResource;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -22,6 +26,36 @@ public class CreatureObject extends MapObject {
     KnownList knownList;
     //生物状态：生存->1，死亡->0
     private int status;
+
+    //需要注意的是这是一个单例类，里面的共享变量是被共享的，
+    //多个玩家共用同一个skillCD肯定是有问题的，应该作为玩家的属性比较合理
+    //技能id与技能冷却时间的映射
+    private Map<Integer,Long> skillCD=new HashMap<>();
+    private AtomicBoolean isIncreaseMp=new AtomicBoolean(true);
+
+    //设置对应技能的冷却时间
+    public void addCoolDown(SkillResource skillResource){
+        skillCD.put(skillResource.getSkillId(),System.currentTimeMillis()+skillResource.getCd());
+    }
+    //判断是否冷却超时，技能可用
+    public boolean isCanUseSkill(SkillResource skillResource){
+        int skillId=skillResource.getSkillId();
+        //判断skillCD是否为空
+        if(skillCD.size()<=0){
+            return true;
+        }
+        //判断集合中是否存在该种技能
+        System.out.println("技能id对应的技能："+skillCD.get(skillId));
+        Long cd=skillCD.get(skillId);
+        if(cd==null){
+            return true;
+        }
+        //是否超时
+        if(cd<System.currentTimeMillis()){
+            return true;
+        }
+        return false;
+    }
 
     public void updateKnownList(CreatureObject creatureObject){
         getKnownList().addKnown(creatureObject);
@@ -89,5 +123,21 @@ public class CreatureObject extends MapObject {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Map<Integer, Long> getSkillCD() {
+        return skillCD;
+    }
+
+    public void setSkillCD(Map<Integer, Long> skillCD) {
+        this.skillCD = skillCD;
+    }
+
+    public AtomicBoolean getIsIncreaseMp() {
+        return isIncreaseMp;
+    }
+
+    public void setIsIncreaseMp(AtomicBoolean isIncreaseMp) {
+        this.isIncreaseMp = isIncreaseMp;
     }
 }

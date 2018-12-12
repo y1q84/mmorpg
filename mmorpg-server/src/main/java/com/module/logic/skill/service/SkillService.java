@@ -24,13 +24,17 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 public class SkillService {
     Logger logger=LoggerFactory.getLogger(SkillService.class);
 
+    //需要注意的是这是一个单例类，里面的共享变量是被共享的，
+    //多个玩家共用同一个skillCD肯定是有问题的，应该作为玩家的属性比较合理
     //技能id与技能冷却时间的映射
-    private Map<Integer,Long> skillCD=new HashMap<>();
+//    private Map<Integer,Long> skillCD=new HashMap<>();
+//    AtomicBoolean isIncreaseMp=new AtomicBoolean(true);
 
     @Autowired
     private PlayerService playerService;
@@ -38,10 +42,8 @@ public class SkillService {
     private DispatchHandlerExecutor dispatchHandlerExecutor;
 
     public void useSkill(Session session, ReqUseSkillPacket reqUseSkillPacket){
-        //使用技能消耗mp
-        //使用技能攻击某个生物的话是要选择目标的
-        //具体使用哪一个技能
-        //不同技能的cd不同，厉害的技能cd较长
+
+        Player player=PlayerManager.getInstance().getPlayer2session().inverse().get(session);
         long mapId=reqUseSkillPacket.getMapId();
         long targetId=reqUseSkillPacket.getTargetId();
         MapInstance mapInstance=MapManager.getInstance().getMapInstance(mapId);
@@ -57,14 +59,20 @@ public class SkillService {
         }
         //判断上一个技能的cd是否到期
         SkillResource skillResource=SkillManager.getInstance().getSkillResourceById(skillId);
-        if(!isCanUseSkill(skillResource)){
+        if(!player.isCanUseSkill(skillResource)){
             respUseSkillPacket.setResult("技能冷却中，暂时无法使用...");
             PacketUtil.sendPacket(session,respUseSkillPacket);
             logger.info("技能冷却中，暂时无法使用...");
             return ;
         }
+
+        //设置恢复蓝量
+        while(player.getIsIncreaseMp().get()){
+            increaseMp(session,skillResource);
+            player.getIsIncreaseMp().set(false);
+        }
+
         //使用技能消耗mp
-        Player player=PlayerManager.getInstance().getPlayer2session().inverse().get(session);
         PlayerEntity playerEntity=player.getPlayerEntity();
         int mp=playerEntity.getMp();
         if(skillResource.getConsumeMp()>mp){
@@ -97,11 +105,7 @@ public class SkillService {
             creatureObject.setStatus(0);
         }
         //技能冷却
-        addCoolDown(skillResource);
-        //设置恢复蓝量
-        //过一段时间恢复
-        //可以添加一个延时任务
-        increaseMp(session,skillResource);
+        player.addCoolDown(skillResource);
 
         //发送响应释放技能的包
         respUseSkillPacket.setResult("成功释放技能...");
@@ -122,30 +126,6 @@ public class SkillService {
         PacketUtil.broadcast(session,respBroadcastScenePacket);
     }
 
-    //设置对应技能的冷却时间
-    public void addCoolDown(SkillResource skillResource){
-        skillCD.put(skillResource.getSkillId(),System.currentTimeMillis()+skillResource.getCd());
-    }
-    //判断是否冷却超时，技能可用
-    public boolean isCanUseSkill(SkillResource skillResource){
-        int skillId=skillResource.getSkillId();
-        //判断skillCD是否为空
-        if(skillCD.size()<=0){
-            return true;
-        }
-        //判断集合中是否存在该种技能
-        System.out.println("技能id对应的技能："+skillCD.get(skillId));
-        Long cd=skillCD.get(skillId);
-        if(cd==null){
-            return true;
-        }
-        //是否超时
-        if(cd<System.currentTimeMillis()){
-            return true;
-        }
-        return false;
-    }
-
     //每隔一段时间回蓝
     public void increaseMp(Session session,SkillResource skillResource){
         dispatchHandlerExecutor.scheduleWithFixedDelay(new DispatchTask() {
@@ -161,13 +141,16 @@ public class SkillService {
                     PlayerManager playerManager=PlayerManager.getInstance();
                     Player player=playerManager.getPlayer2session().inverse().get(session);
                     PlayerEntity playerEntity=player.getPlayerEntity();
-                    playerEntity.setMp(playerEntity.getMp()+skillResource.getIncreaseMp());
-                    playerManager.updatePlayerEntity(playerEntity);
+                    int mp=playerEntity.getMp();
+                    if(mp<skillResource.getMaxIncreaseMp()){
+                        playerEntity.setMp(mp+skillResource.getIncreaseMp());
+                        playerManager.updatePlayerEntity(playerEntity);
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
-        },0,10, TimeUnit.MINUTES);
+        },0,1, TimeUnit.MINUTES);
 
     }
 }
