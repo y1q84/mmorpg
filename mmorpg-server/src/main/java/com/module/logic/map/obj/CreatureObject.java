@@ -1,5 +1,6 @@
 package com.module.logic.map.obj;
 
+import com.common.observer.ListeningController;
 import com.module.logic.skill.resource.SkillResource;
 
 import java.util.HashMap;
@@ -32,6 +33,13 @@ public class CreatureObject extends MapObject {
     //技能id与技能冷却时间的映射
     private Map<Integer,Long> skillCD=new HashMap<>();
     private AtomicBoolean isIncreaseMp=new AtomicBoolean(true);
+
+    //添加监听控制器
+    private ListeningController listeningController;
+
+    public CreatureObject(){
+        this.listeningController=new ListeningController();
+    }
 
     //设置对应技能的冷却时间
     public void addCoolDown(SkillResource skillResource){
@@ -139,5 +147,13 @@ public class CreatureObject extends MapObject {
 
     public void setIsIncreaseMp(AtomicBoolean isIncreaseMp) {
         this.isIncreaseMp = isIncreaseMp;
+    }
+
+    public ListeningController getListeningController() {
+        return listeningController;
+    }
+
+    public void setListeningController(ListeningController listeningController) {
+        this.listeningController = listeningController;
     }
 }

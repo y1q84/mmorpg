@@ -41,13 +41,8 @@ public class PlayerManager {
 
     private static PlayerManager self;
 
-//    @Autowired
-//    private ResourceProvider<PlayerPositionResource, RoleType> resourceProvider;
     @Autowired
     private EntityProvider<PlayerEntity,Long> entityProvider;
-
-//    @Autowired
-//    private PlayerService playerService;
 
     @PostConstruct
     public void init(){

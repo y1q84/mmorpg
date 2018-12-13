@@ -13,6 +13,8 @@ public class Player extends CreatureObject {
     //保存玩家登录时的位置信息
     private InitialPosition initialPosition;
 
+    public Player(){}
+
     public Session getSession() {
         return session;
     }
