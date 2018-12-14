@@ -4,17 +4,23 @@ import com.alibaba.fastjson.JSON;
 import com.common.persist.CacheEntityProvider;
 import com.common.persist.EntityProvider;
 import com.module.logic.goods.entity.PlayerGoodsEntity;
-import com.module.logic.goods.provider.PlayerGoods;
+import com.module.logic.goods.provider.PlayerGoodsProvider;
+import com.module.logic.player.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class PlayerGoodsManager {
 
+    private Map<Long, PlayerGoodsProvider> id2provider=new HashMap<>();
+
     @Autowired
     private EntityProvider<PlayerGoodsEntity,Long> entityProvider;
+
     private static PlayerGoodsManager self;
 
     @PostConstruct
@@ -29,6 +35,16 @@ public class PlayerGoodsManager {
     public void addPlayerGoods(PlayerGoodsEntity playerGoodsEntity){
         CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
         cacheEntityProvider.update(playerGoodsEntity);
+    }
+
+    public PlayerGoodsProvider getPlayerGoodsProvider(long playerId){
+        PlayerGoodsProvider playerGoodsProvider=id2provider.get(playerId);
+        return playerGoodsProvider;
+    }
+
+    public void initPlayerGoods(Player player){
+        //初始化背包实体
+        //provider.init()
     }
 
 //    public void addPlayerGoods(PlayerGoodsEntity playerGoodsEntity,PlayerGoods playerGoods){

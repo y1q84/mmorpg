@@ -3,17 +3,14 @@ package com.module.logic.goods.entity;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.common.persist.IEntity;
-import com.common.resource.annotation.Id;
 import com.module.logic.goods.manager.PlayerGoodsManager;
 import com.module.logic.goods.provider.PlayerGoods;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Transient;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

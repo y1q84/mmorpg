@@ -13,6 +13,7 @@ import com.module.logic.account.manager.AccountManager;
 import com.module.logic.map.manager.MapManager;
 import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
+import com.module.logic.player.event.PlayerLoginEvent;
 import com.module.logic.player.logic.position.MapType;
 import com.module.logic.player.logic.position.handler.AbstractInitialPositionHandler;
 import com.module.logic.player.packet.RespBroadcastScenePacket;
@@ -23,6 +24,7 @@ import com.module.logic.player.type.RoleType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -213,6 +215,16 @@ public class PlayerManager {
             return list.get(0);
         }
         return null;
+    }
+
+    //全局事件监听器，当发布playerLoginEvent事件的时候执行此方法
+    @EventListener
+    public void loginListener(PlayerLoginEvent playerLoginEvent){
+        Player player=(Player)playerLoginEvent.getSource();
+        System.out.println("蓝量为："+player.getMp());
+        //TODO 初始化玩家信息
+        //初始化玩家背包信息
+//        player.setPlayerGoodsProvider();
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.module.logic.player.service;
 
+import com.common.event.publisher.EventPublisher;
 import com.common.session.Constants;
 import com.common.session.Session;
 import com.common.util.PacketUtil;
@@ -9,6 +10,7 @@ import com.module.logic.map.obj.MapObject;
 import com.module.logic.obj.monster.resource.Monster;
 import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
+import com.module.logic.player.event.PlayerLoginEvent;
 import com.module.logic.player.logic.position.InitialPosition;
 import com.module.logic.player.logic.position.MapType;
 import com.module.logic.player.manager.PlayerManager;
@@ -40,6 +42,8 @@ public class PlayerService {
 
     @Autowired
     PlayerManager playerManager;
+    @Autowired
+    EventPublisher eventPublisher;
 
     /**
      * 创建角色
@@ -290,6 +294,11 @@ public class PlayerService {
             PacketUtil.broadcast(session,respBroadcastScenePacket);
         }
 
+    }
+
+    //发布玩家登录事件
+    public void onLogin(Player player){
+        eventPublisher.publishEvent(new PlayerLoginEvent(player));
     }
 
     public Player getPlayerById(long playerId) {

@@ -1,6 +1,7 @@
 package com.module.logic.player;
 
 import com.common.session.Session;
+import com.module.logic.goods.provider.PlayerGoodsProvider;
 import com.module.logic.map.obj.CreatureObject;
 import com.module.logic.player.entity.PlayerEntity;
 import com.module.logic.player.logic.position.InitialPosition;
@@ -12,6 +13,7 @@ public class Player extends CreatureObject {
     private PlayerEntity playerEntity;
     //保存玩家登录时的位置信息
     private InitialPosition initialPosition;
+    private PlayerGoodsProvider playerGoodsProvider;//玩家背包产生器
 
     public Player(){}
 
@@ -41,5 +43,13 @@ public class Player extends CreatureObject {
 
     public void setInitialPosition(InitialPosition initialPosition) {
         this.initialPosition = initialPosition;
+    }
+
+    public PlayerGoodsProvider getPlayerGoodsProvider() {
+        return playerGoodsProvider;
+    }
+
+    public void setPlayerGoodsProvider(PlayerGoodsProvider playerGoodsProvider) {
+        this.playerGoodsProvider = playerGoodsProvider;
     }
 }
