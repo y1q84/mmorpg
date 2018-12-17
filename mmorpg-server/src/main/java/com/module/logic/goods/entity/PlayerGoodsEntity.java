@@ -43,8 +43,13 @@ public class PlayerGoodsEntity implements IEntity<Long> {
 
     //添加物品
     public void addPlayerGoods(PlayerGoods playerGoods){
-        id2PlayerGoods.put(playerGoods.getGoodsId(),playerGoods);
-        playerGoodsData=JSON.toJSONString(id2PlayerGoods.values());
+        if(playerGoods.getGoodsId()!=null){
+            id2PlayerGoods.put(playerGoods.getGoodsId(),playerGoods);
+            playerGoodsData=JSON.toJSONString(id2PlayerGoods.values());
+        }else{
+            playerGoodsData=null;
+        }
+
         //更新到数据库
         PlayerGoodsManager.getInstance().addPlayerGoods(this);
     }

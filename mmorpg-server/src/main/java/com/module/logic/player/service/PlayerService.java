@@ -130,6 +130,9 @@ public class PlayerService {
         if(statue){
 
             Player player=id2player.get(playerId);
+            //在登录成功后，添加监听
+            onLogin(player);
+
             //获取存储在数据库中的玩家位置信息
             PlayerEntity playerEntity=player.getPlayerEntity();
             MapType mapType=playerEntity.getMapType();

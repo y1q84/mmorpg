@@ -3,7 +3,9 @@ package com.module.logic.goods.manager;
 import com.alibaba.fastjson.JSON;
 import com.common.persist.CacheEntityProvider;
 import com.common.persist.EntityProvider;
+import com.common.persist.HibernateEntityProvider;
 import com.module.logic.goods.entity.PlayerGoodsEntity;
+import com.module.logic.goods.provider.PlayerGoods;
 import com.module.logic.goods.provider.PlayerGoodsProvider;
 import com.module.logic.player.Player;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +34,27 @@ public class PlayerGoodsManager {
         return self;
     }
 
-    public void addPlayerGoods(PlayerGoodsEntity playerGoodsEntity){
-        CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
-        cacheEntityProvider.update(playerGoodsEntity);
-    }
-
-    public PlayerGoodsProvider getPlayerGoodsProvider(long playerId){
+    public PlayerGoodsProvider getPlayerGoodsProvider(Player player){
+        long playerId=player.getId();
         PlayerGoodsProvider playerGoodsProvider=id2provider.get(playerId);
+        if(playerGoodsProvider==null){
+            PlayerGoodsEntity playerGoodsEntity= (PlayerGoodsEntity) ((CacheEntityProvider)entityProvider).get(playerId);
+            if(playerGoodsEntity==null){
+                playerGoodsEntity=new PlayerGoodsEntity();
+                playerGoodsEntity.setPlayerId(playerId);
+                playerGoodsEntity.addPlayerGoods(new PlayerGoods());
+            }
+            playerGoodsEntity.init();
+            playerGoodsProvider=new PlayerGoodsProvider(player,playerGoodsEntity);
+            id2provider.put(playerId,playerGoodsProvider);
+        }
         return playerGoodsProvider;
     }
 
-    public void initPlayerGoods(Player player){
-        //初始化背包实体
-        //provider.init()
+    //更新到数据库
+    public void addPlayerGoods(PlayerGoodsEntity playerGoodsEntity){
+        CacheEntityProvider cacheEntityProvider=(CacheEntityProvider)entityProvider;
+        cacheEntityProvider.add(playerGoodsEntity);
     }
 
 //    public void addPlayerGoods(PlayerGoodsEntity playerGoodsEntity,PlayerGoods playerGoods){

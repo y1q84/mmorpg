@@ -3,6 +3,10 @@ package com.module.logic.goods.entity;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.module.logic.goods.manager.PlayerGoodsManager;
+import com.module.logic.goods.provider.PlayerGoods;
+import com.module.logic.goods.provider.PlayerGoodsProvider;
+import com.module.logic.player.Player;
 import org.apache.commons.collections.MapUtils;
 import org.junit.Test;
 
@@ -44,5 +48,19 @@ public class PlayerGoodsEntityTest {
             System.out.println(s+"---a的值是："+eleVal);
         }
 
+    }
+
+    //增加物品
+    @Test
+    public void test3(){
+        Player player=new Player();
+        player.setId(1001);
+        PlayerGoodsProvider playerGoodsProvider=player.getPlayerGoodsProvider();
+        PlayerGoodsEntity playerGoodsEntity=playerGoodsProvider.getPlayerGoodsEntity();
+        PlayerGoods playerGoods=new PlayerGoods();
+        playerGoods.setGoodsId(10001+"");
+        playerGoods.setNumber(30);
+        playerGoods.setPlayerId(player.getId());
+        playerGoodsEntity.addPlayerGoods(playerGoods);
     }
 }

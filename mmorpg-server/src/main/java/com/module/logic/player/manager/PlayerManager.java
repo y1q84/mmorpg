@@ -10,6 +10,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.module.logic.account.entity.AccountEntity;
 import com.module.logic.account.manager.AccountManager;
+import com.module.logic.goods.manager.PlayerGoodsManager;
 import com.module.logic.map.manager.MapManager;
 import com.module.logic.player.Player;
 import com.module.logic.player.entity.PlayerEntity;
@@ -224,7 +225,7 @@ public class PlayerManager {
         System.out.println("蓝量为："+player.getMp());
         //TODO 初始化玩家信息
         //初始化玩家背包信息
-//        player.setPlayerGoodsProvider();
+        player.setPlayerGoodsProvider(PlayerGoodsManager.getInstance().getPlayerGoodsProvider(player));
     }
 
     /**

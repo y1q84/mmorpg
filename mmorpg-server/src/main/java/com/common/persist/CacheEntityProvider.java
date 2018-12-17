@@ -48,6 +48,11 @@ public class CacheEntityProvider<T extends IEntity<ID>,ID extends Serializable> 
         super.save(entity);
     }
 
+    //插入数据，主键不是自动生成
+    public void add(T entity){
+        super.save(entity);
+    }
+
     @Override
     public void update(T entity) {
         loadingCache.put(entity.getId(),entity);
