@@ -1,6 +1,6 @@
 package com.module.logic.goods.type;
 
-public enum GoodsType {
+public enum ContainerType {
     Backpack("背包",0,500),
     Equipment("装备",501,1000),
     Warehouse("仓库",1001,1500);
@@ -9,7 +9,7 @@ public enum GoodsType {
     private int start;
     private int end;
 
-    private GoodsType(String desc,int start,int end){
+    private ContainerType(String desc, int start, int end){
         this.desc=desc;
         this.start=start;
         this.end=end;

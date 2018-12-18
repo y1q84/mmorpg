@@ -3,23 +3,28 @@ package com.module.logic.goods.manager;
 import com.alibaba.fastjson.JSON;
 import com.common.persist.CacheEntityProvider;
 import com.common.persist.EntityProvider;
-import com.common.persist.HibernateEntityProvider;
+import com.common.resource.provider.ResourceProvider;
 import com.module.logic.goods.entity.PlayerGoodsEntity;
 import com.module.logic.goods.provider.PlayerGoods;
 import com.module.logic.goods.provider.PlayerGoodsProvider;
+import com.module.logic.goods.resource.PlayerGoodsResource;
 import com.module.logic.player.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class PlayerGoodsManager {
 
     private Map<Long, PlayerGoodsProvider> id2provider=new HashMap<>();
+    private Map<Long, PlayerGoodsResource> id2PlayerGoodsResource=new HashMap<>();
 
+    @Autowired
+    private ResourceProvider<PlayerGoodsResource,Long> resourceProvider;
     @Autowired
     private EntityProvider<PlayerGoodsEntity,Long> entityProvider;
 
@@ -28,6 +33,10 @@ public class PlayerGoodsManager {
     @PostConstruct
     public void init(){
         self=this;
+        List<PlayerGoodsResource> playerGoodsResources=resourceProvider.readList();
+        playerGoodsResources.forEach((k)->{
+            id2PlayerGoodsResource.put(k.getGoodsId(),k);
+        });
     }
 
     public static PlayerGoodsManager getInstance(){

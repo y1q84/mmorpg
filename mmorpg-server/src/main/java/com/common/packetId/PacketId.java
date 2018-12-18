@@ -69,6 +69,11 @@ public class PacketId {
     /**响应移动命令**/
     public static final short MOVE_COMMAND_RESP=10302;
 
+    /**请求增加物品**/
+    public static final short ADD_PLAYER_GOODS_REQ=10401;
+    /**响应增加物品**/
+    public static final short ADD_PLAYER_GOODS_RESP=10402;
+
     //添加packetId————>请求包的映射
     public void registerpacketId2AbstractPacket(AbstractPacket abstractPacket){
 
